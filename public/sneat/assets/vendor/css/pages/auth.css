@@ -1,0 +1,24 @@
+
+/* .navbar-brand {
+    max-width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .navbar-brand {
+      max-width: 30%;
+    }
+  } */
+  .btn-custom {
+    background-color: #696cff;
+  }
+  .btn-custom:hover {
+        background-color: lightgreen; /* Darker shade for hover effect */
+  }
+  .btn-not-allowed {
+      background-color: #6c757d !important;
+      cursor: not-allowed;
+  }
+  ::selection {
+            background-color: #378537; /* Warna hijau untuk highlight */
+            color: white; /* Warna teks saat disorot (opsional) */
+        }
