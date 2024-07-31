@@ -1,7 +1,7 @@
-<!-- resources/views/dashboard.blade.php -->
 @extends('layouts.main_owner')
 
 @section('dashboard')
+<!-- Help Center Header: Start -->
 <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
   <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}" alt="Help center header">
   <div class="container container-p-y">
@@ -49,5 +49,79 @@
     </div>
   </div>
 </section>
-<!-- Other sections -->
+<!-- Help Center Header: End -->
+
+<!-- Dashboard : Start -->
+<!-- Fun facts: Start -->
+<section id="landingFunFacts" class="section-py landing-fun-facts">
+  <div class="container">
+    <div class="row gy-3">
+      <div class="col-sm-6 col-lg-3">
+        <div class="card border border-label-primary shadow-none">
+          <div class="card-body text-center">
+            <img src="{{ asset('sneat/assets/img/sima/laptop.svg') }}" alt="laptop" class="mb-2" />
+            <h5 class="h2 mb-1">100</h5>
+            <p class="fw-medium mb-0">
+              Pemesanan Bus<br />
+              Sima Perkasya
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card border border-label-success shadow-none">
+          <div class="card-body text-center">
+            <img src="{{ asset('sneat/assets/img/sima/user-success.svg') }}" alt="laptop" class="mb-2" />
+            <h5 class="h2 mb-1">100</h5>
+            <p class="fw-medium mb-0">
+              Driver dan Co Driver<br /> Bus Sima Perkasya
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card border border-label-info shadow-none">
+          <div class="card-body text-center">
+            <img src="{{ asset('sneat/assets/img/sima/diamond-info.svg') }}" alt="laptop" class="mb-2" />
+            <h5 class="h2 mb-1"> 20</h5>
+            <p class="fw-medium mb-0">
+              Unit Bus<br />
+              Sima Perkasya
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card border border-label-warning shadow-none">
+          <div class="card-body text-center">
+            <img src="{{ asset('sneat/assets/img/sima/check-warning.svg') }}" alt="laptop" class="mb-2" />
+            <h5 class="h2 mb-1">12jt</h5>
+            <p class="fw-medium mb-0">
+              Rata-rata<br />
+              Profit per bulan
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Fun facts: End -->
+<!-- Dashboard : End -->
+<!-- Help Area: Start -->
+<section class="section-py bg-body">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6 text-center">
+        <h3>Terdapat Kendala?</h3>
+        <p class="mb-3"> Hubungi jika terdapat kendala dalam sistem ini.<br /> Hubungi kami selama jam kerja atau kirim email kapan saja, dan kami akan merespon secepat mungkin. </p>
+        <div class="d-flex justify-content-center flex-wrap gap-3">
+          <a href="javascript:void(0);" class="btn btn-primary">Email</a>
+          <a href="javascript:void(0);" class="btn btn-primary">Whats App</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Help Area: End -->
 @endsection

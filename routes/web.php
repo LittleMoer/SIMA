@@ -3,7 +3,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SPJController;
+use App\Http\Controllers\SJController;
 
 Route::get('login', function () {
     return view('auth.login');
@@ -15,7 +16,8 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('/dashboard', [AuthController::class, 'dashboard'])->middleware('auth');
+
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

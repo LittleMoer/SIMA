@@ -10,21 +10,21 @@ use App\Models\Akun;
 class AuthController extends Controller
 {
     public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-    
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $request->session()->put('username', $user->name);
-            return redirect()->intended('/dashboard');
-        }
-    
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
-    }
-    
+{
+    $credentials = $request->only('username', 'password');
 
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        $request->session()->put('username', $user->name);
+        return redirect()->intended('/dashboard');
+    }
+
+    return back()->withErrors([
+        'username' => 'The provided credentials do not match our records.',
+    ]);
+}
+
+    
     public function logout(Request $request)
     {
         Auth::logout();
@@ -64,9 +64,8 @@ class AuthController extends Controller
 
 public function dashboard()
 {
-    return view('dashboard', [
-        'username' => session('username')
-    ]);
+    return view('dashboard', ['username' => session('username')]);
 }
+
 
 }
