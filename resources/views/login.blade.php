@@ -6,9 +6,7 @@
     aria-labelledby="offcanvasEndLabel"
   >
     <div class="offcanvas-header">
-      <h5 id="offcanvasEndLabel" class="offcanvas-title">
-        Login
-      </h5>
+      <h5 id="offcanvasEndLabel" class="offcanvas-title">Login</h5>
       <button
         type="button"
         class="btn-close text-reset"
@@ -26,12 +24,11 @@
             src="{{ asset('sneat/assets/img/sima/sima.png') }}"
             style="width: 250px; height: auto;"
             alt="logo"
-          ></img>
+          />
         </span>
       </div>
       <h4 class="mb-2">
-         
-        Welcome to Sima Perkasya! 
+        Welcome to Sima Perkasya!
         <i
           class="bx bx-bus bx-tada"
           style="color:#54de1c; color:#009a44; font-size: 1.5em;"
@@ -42,27 +39,25 @@
       <form
         id="formAuthentication"
         class="mb-3"
-        action="{{ url('/dashboard') }}"
+        action="{{ route('login.post') }}"
         method="POST"
       >
+        @csrf
         <div class="mb-3">
-          <label for="username" class="form-label">
-            username
-          </label>
+          <label for="username" class="form-label">Username</label>
           <input
             type="text"
             class="form-control"
             id="username"
-            name="username-Id"
+            name="username"
             placeholder="Masukkan username"
+            required
             autofocus
           />
         </div>
         <div class="mb-3 form-password-toggle">
           <div class="d-flex justify-content-between">
-            <label class="form-label" for="password">
-              Password
-            </label>
+            <label class="form-label" for="password">Password</label>
             <a href="auth-forgot-password-basic.html">
               <small>Lupa Password?</small>
             </a>
@@ -74,6 +69,7 @@
               class="form-control"
               name="password"
               placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+              required
               aria-describedby="password"
             />
             <span class="input-group-text cursor-pointer">
@@ -84,24 +80,30 @@
         <div class="mb-3">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="remember-me" />
-            <label class="form-check-label" for="remember-me">
-               
-              Remember Me 
-            </label>
+            <label class="form-check-label" for="remember-me">Remember Me</label>
           </div>
         </div>
-        
-          <button
-            class="btn btn-custom d-grid w-100 btn-not-allowed "
-            style="color:white"
-            type="submit"
-            id="loginButton"
-            disabled
-          >
-            Login
-          </button>
-        
+        <button
+          class="btn btn-custom d-grid w-100 btn-not-allowed"
+          style="color:white"
+          type="submit"
+          id="loginButton"
+        >
+          Login
+        </button>
       </form>
     </div>
   </div>
 </div>
+
+<!-- JavaScript to enable the submit button when the form is valid -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('formAuthentication');
+    const loginButton = document.getElementById('loginButton');
+
+    form.addEventListener('input', function () {
+      loginButton.disabled = !form.checkValidity();
+    });
+  });
+</script>
