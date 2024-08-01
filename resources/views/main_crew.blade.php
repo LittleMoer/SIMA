@@ -7,18 +7,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title> Sima Perkasya </title>
-   <!-- Page CSS --> 
+    <title> Halaman Pemilik </title>
+   <!-- Page CSS -->
+
    @include('layouts.style')
    <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/pages/front-page.css') }}" />
    <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/pages/front-page-dashboard.css') }}" />
- 
+   <script src="{{ asset('sneat/assets/js/ui-modals.js') }}"></script>
+    
 </head>
 
 <body>
 
 <!-- Navbar: Start -->
-<nav class="layout-navbar shadow-none py-0">
+{{-- <nav class="layout-navbar shadow-none py-0">
   <div class="container">
     <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-4 ">
       <!-- Menu logo wrapper: Start -->
@@ -58,14 +60,14 @@
             <a class="nav-link fw-medium" href="{{ url('/manajemen_akun') }}">Manajemen Akun</a>
           </li>
         </ul
-
+        <div class="landing-menu-overlay d-lg-none"></div>
         <!-- Menu wrapper: End -->
         <!-- Toolbar: Start -->
         <ul class="navbar-nav flex-row align-items-center ms-auto">
           <!-- navbar button: Start -->
           <li>
             <a  href="{{ route('logout') }}"
-            onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-primary">  <span class="tf-icons bx bx-log-in-circle me-md-1"></span> <span class="d-none d-md-block"> Logout</span></a>
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-primary"  <i class='bx bx-log-in-circle  me-md-1'></i> <span class="d-none d-md-block"> Logout</span></a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
               @csrf
           </form>
@@ -76,16 +78,14 @@
       </div>
     </div>
   </div>
-</nav>
+</nav> --}}
 
 
-@yield('dashboard')
+<!-- Sections dashboard:Start -->
+@yield('dashboard_crew')
+<!-- / Sections dashboard:End -->
+<!-- Sections:Start -->
 
-@yield('data_sp')
-
-@yield('manajemen_akun')
-
-@yield('tambah_akun')
 
 
 {{-- <Footer> --}}

@@ -10,7 +10,58 @@
     <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/pages/front-page-landing.css') }}" />
     <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/pages/auth.css') }}" />
     <script src="{{ asset('sneat/assets/js/front-config.js') }}"></script>
-</head>
+    <link rel="manifest" href="site.webmanifest">
+<link rel="stylesheet" href="global.css?20231021">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build@3.2.1/event-calendar.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@event-calendar/build@3.2.1/event-calendar.min.js"></script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(75029251, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+    });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/75029251" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<style>
+    .ec-timeline .ec-time, .ec-timeline .ec-line {
+        width: 80px;
+    }
+    .row {
+            flex: 1; /* Mengatur tinggi setiap row agar sama */
+        }
+        .event-title-green {
+            font-weight: bold;
+            color: green;
+            font-size: 16px;
+        }
+        
+</style>
+
+    
+<script>
+  // JavaScript to handle scroll event
+window.addEventListener('scroll', function() {
+    var navbar = document.getElementById('navbar');
+    if (window.scrollY > 0) {
+        navbar.classList.remove('transparent-nav');
+        navbar.classList.add('solid-nav');
+    } else {
+        navbar.classList.remove('solid-nav');
+        navbar.classList.add('transparent-nav');
+    }
+});
+
+</script>
+  </head>
 <body>
 
 
@@ -26,7 +77,7 @@
       <a class="nav-link fw-medium" href="#landingFeatures">Tentang</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link fw-medium" href="#landingPricing">Jadwal</a>
+      <a class="nav-link fw-medium" href="#landingJadwal">Jadwal</a>
     </li>
     <li class="nav-item">
       <a class="nav-link fw-medium" href="#landingTeam">Bus</a>
@@ -35,8 +86,12 @@
       <a class="nav-link fw-medium" href="#landingFAQ">Pertanyaan</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link fw-medium" href="#landingContact">Kontak</a>
+      <a class="nav-link fw-medium" href="#Kontak">Kontak</a>
     </li>
+    {{-- <li class="nav-item">
+      <a class="nav-link fw-medium" href="#Kontak">Kontak</a>
+    </li> --}}
+    
   </ul>
    <!-- Toolbar: Start -->
    <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -72,12 +127,12 @@
           <h1 class="text-primary hero-title display-4 fw-bold">Sewa Bus Pariwisata<br> Nyaman, Aman, Berkesan </h1>
           {{-- <br class="d-none d-lg-block" /> --}}
           <h2 class="hero-sub-title h6 mb-4 pb-1">
-            ✧ Bus pariwisata terpercaya & terjangkau <br>Sima Perkasya siap menemani perjalananmu ✧
+            Bus pariwisata terpercaya <br>Sima Perkasya siap menemani perjalananmu
           </h2>
           <div class="landing-hero-btn d-inline-block position-relative">
             <span class="hero-btn-item position-absolute d-none d-md-flex text-heading">Lihat Jadwal
               <img src="{{ asset('sneat/assets/img/sima/Join-community-arrow.png') }}" alt="tanda panah" class="scaleX-n1-rtl" /></span>
-            <a href="#landingPricing" class="btn btn-primary">Jadwal tersedia</a>
+            <a href="#landingJadwal" class="btn btn-primary">Jadwal tersedia</a>
           </div>
         </div>
         <div id="heroDashboardAnimation" class="hero-animation-img">
@@ -107,9 +162,10 @@
       <div class="features-icon-wrapper row gx-0 gy-4 g-sm-5">
         <div class="col-lg-4 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-3">
-            <img src="{{ asset('sneat/assets/img/front-pages/icons/laptop.png')}}" alt="laptop charging" />
-          </div>
-          <h5 class="mb-3">Quality Code</h5>
+            <p>Berisi visi misi ...... </p>
+            {{-- <img src="{{ asset('sneat/assets/img/front-pages/icons/laptop.png')}}" alt="laptop charging" />
+          </div> --}}
+          {{-- <h5 class="mb-3">Quality Code</h5>
           <p class="features-icon-description">
             Code structure that all developers will easily understand and fall in love with.
           </p>
@@ -155,7 +211,7 @@
           <h5 class="mb-3">Well Documented</h5>
           <p class="features-icon-description">An easy-to-follow doc with lots of references and code examples.</p>
         </div>
-      </div>
+      </div> --}}
     </div>
   </section>
   <!-- Useful features: End -->
@@ -167,7 +223,7 @@
         <span class="badge bg-label-primary">Bus</span>
       </div>
       <h3 class="text-center mb-1">Jenis bus </h3>
-      <p class="text-center mb-md-5 pb-3">Pilih bus kebutuhan perjalananmu 🚎</p>
+      <p class="text-center mb-md-5 pb-3">Kebutuhan perjalananmu 🚎</p>
       <div class="row gy-5 mt-2">
         
         <div class="col-lg-3 col-sm-6">
@@ -219,304 +275,89 @@
   </section>
   <!-- Unit Bus: End -->
 
-  <!-- Pricing plans: Start -->
-  <section id="landingPricing" class="section-py bg-body landing-pricing">
+  <!-- Jadwal: Start -->
+  <section id="landingJadwal" class="section-py bg-body landing-jadwal">
     <div class="container">
       <div class="text-center mb-3 pb-1">
-        <span class="badge bg-label-primary">Pricing Plans</span>
+        <span class="badge bg-label-primary">Jadwal Tersedia</span>
       </div>
-      <h3 class="text-center mb-1">Tailored pricing plans designed for you</h3>
+      <h3 class="text-center mb-1">Lihat jadwal untuk mengetahui jadwal bis</h3>
       <p class="text-center mb-4 pb-3">
-        All plans include 40+ advanced tools and features to boost your product.<br />Choose the best plan to fit
-        your needs.
+        Hijau berarti sedang digunakan<br >kuning masih dalam tahap DP(bisa batal kapan saja)<br>putih berarti jadwal kosong yang tersedia
       </p>
-      <div class="text-center mb-5">
-        <div class="position-relative d-inline-block pt-3 pt-md-0">
-          <label class="switch switch-primary me-0">
-            <span class="switch-label">Pay Monthly</span>
-            <input type="checkbox" class="switch-input price-duration-toggler" checked />
-            <span class="switch-toggle-slider">
-              <span class="switch-on"></span>
-              <span class="switch-off"></span>
-            </span>
-            <span class="switch-label">Pay Annual</span>
-          </label>
-          <div class="pricing-plans-item position-absolute d-flex">
-            <img src="{{ asset('sneat/assets/img/front-pages/icons/pricing-plans-arrow.png') }}"" alt="pricing plans arrow" class="scaleX-n1-rtl" />
-            <span class="fw-medium mt-2 ms-1"> Save 25%</span>
-          </div>
-        </div>
-      </div>
-      <div class="row gy-4 pt-lg-3">
-        <!-- Basic Plan: Start -->
-        <div class="col-xl-4 col-lg-6">
-          <div class="card">
-            <div class="card-header">
-              <div class="text-center">
-                <img src="{{ asset('sneat/assets/img/front-pages/icons/paper-airplane.png') }}"" alt="paper airplane icon" class="mb-4 pb-2 scaleX-n1-rtl" />
-                <h4 class="mb-1">Basic</h4>
-                <div class="d-flex align-items-center justify-content-center">
-                  <span class="price-monthly h1 text-primary fw-bold mb-0">$19</span>
-                  <span class="price-yearly h1 text-primary fw-bold mb-0 d-none">$14</span>
-                  <sub class="h6 text-muted mb-0 ms-1">/mo</sub>
-                </div>
-                <div class="position-relative pt-2">
-                  <div class="price-yearly text-muted price-yearly-toggle d-none">$ 168 / year</div>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <ul class="list-unstyled">
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Timeline
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Basic search
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Live chat widget
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Email marketing
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Custom Forms
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Traffic analytics
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Basic Support
-                  </h5>
-                </li>
-              </ul>
-              <div class="d-grid mt-4 pt-3">
-                <a href="payment-page.html" class="btn btn-label-primary">Get Started</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Basic Plan: End -->
+      <div class="row">
+        <!-- Jadwal: Start -->
+        <div >
+          <div class="card " style="display: flex;
+>
+            <header class="row">
 
-        <!-- Favourite Plan: Start -->
-        <div class="col-xl-4 col-lg-6">
-          <div class="card border border-primary shadow-lg">
-            <div class="card-header">
-              <div class="text-center">
-                <img src="{{ asset('sneat/assets/img/front-pages/icons/plane.png') }}"" alt="plane icon" class="mb-4 pb-2 scaleX-n1-rtl" />
-                <h4 class="mb-1">Team</h4>
-                <div class="d-flex align-items-center justify-content-center">
-                  <span class="price-monthly h1 text-primary fw-bold mb-0">$29</span>
-                  <span class="price-yearly h1 text-primary fw-bold mb-0 d-none">$22</span>
-                  <sub class="h6 text-muted mb-0 ms-1">/mo</sub>
-                </div>
-                <div class="position-relative pt-2">
-                  <div class="price-yearly text-muted price-yearly-toggle d-none">$ 264 / year</div>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <ul class="list-unstyled">
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Everything in basic
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Timeline with database
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Advanced search
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Marketing automation
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Advanced chatbot
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Campaign management
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Collaboration tools
-                  </h5>
-                </li>
-              </ul>
-              <div class="d-grid mt-4 pt-3">
-                <a href="payment-page.html" class="btn btn-primary">Get Started</a>
-              </div>
-            </div>
+            </header>
+            <main class="row ">
+                <div id="ec" ></div>
+            </main>
+            
+            <script type="text/javascript">
+                const ec = new EventCalendar(document.getElementById('ec'), {
+                    view: 'dayGridMonth', // Setel tampilan default ke tampilan bulan
+                    headerToolbar: {
+                        start: 'prev,next today',
+                        center: 'title',
+                        end: ''
+                    },
+                    editable: false, // Nonaktifkan kemampuan drag and drop
+                    eventStartEditable: false, // Nonaktifkan drag pada start event
+                    eventDurationEditable: false, // Nonaktifkan resize pada event
+                    droppable: false, // Nonaktifkan kemampuan droppable
+                    selectable: false, // Nonaktifkan kemampuan selectable
+                    events: createEvents(),
+                    dayMaxEvents: true,
+                    nowIndicator: true
+                });
+            
+                function createEvents() {
+                    let days = [];
+                    for (let i = 0; i < 30; ++i) {
+                        let day = new Date();
+                        let diff = i - day.getDay();
+                        day.setDate(day.getDate() + diff);
+                        days[i] = day.getFullYear() + "-" + _pad(day.getMonth()+1) + "-" + _pad(day.getDate());
+                    }
+            
+                    return [
+                        {start: days[0] + " 00:00", end: days[0] + " 09:00", display: "background"},
+                        {start: days[1] + " 12:00", end: days[1] + " 14:00", display: "background"},
+                        {start: days[2] + " 17:00", end: days[2] + " 24:00", display: "background"},
+                        {start: days[0], end: days[0], title: "303", color: "#8BC34A"},
+                        {start: days[1], end: days[2], title: "202", color: "#FFC107"},
+                        {start: days[2] , end: days[2], title: "101", color: "#8BC34A"},
+                        {start: days[3], end: days[3], title: "201", color: "#8BC34A"},
+                        {start: days[3], end: days[3] , title: "301", color: "#FFC107"},
+                        {start: days[5], end: days[5], title: "101", color: "#8BC34A"},
+                        {start: days[5] , end: days[5], title: "301", color: "#8BC34A"},
+                        {start: days[5] , end: days[5]  , title: "201", color: "#FFC107"},
+                        {start: days[1], end: days[3], title: "202", color: "#8BC34A", allDay: true}
+                    ];
+                }
+            
+                function _pad(num) {
+                    let norm = Math.floor(Math.abs(num));
+                    return (norm < 10 ? '0' : '') + norm;
+                }
+            </script>
           </div>
         </div>
-        <!-- Favourite Plan: End -->
-
-        <!-- Standard Plan: Start -->
-        <div class="col-xl-4 col-lg-6">
-          <div class="card">
-            <div class="card-header">
-              <div class="text-center">
-                <img src="{{ asset('sneat/assets/img/front-pages/icons/shuttle-rocket.png') }}"" alt="shuttle rocket icon" class="mb-4 pb-2 scaleX-n1-rtl" />
-                <h4 class="mb-1">Enterprise</h4>
-                <div class="d-flex align-items-center justify-content-center">
-                  <span class="price-monthly h1 text-primary fw-bold mb-0">$49</span>
-                  <span class="price-yearly h1 text-primary fw-bold mb-0 d-none">$37</span>
-                  <sub class="h6 text-muted mb-0 ms-1">/mo</sub>
-                </div>
-                <div class="position-relative pt-2">
-                  <div class="price-yearly text-muted price-yearly-toggle d-none">$ 444 / year</div>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <ul class="list-unstyled">
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Everything in premium
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Timeline with database
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Fuzzy search
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    A/B testing sanbox
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Custom permissions
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Social media automation
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="bx bx-check bx-xs"></i></span>
-                    Sales automation tools
-                  </h5>
-                </li>
-              </ul>
-              <div class="d-grid mt-4 pt-3">
-                <a href="payment-page.html" class="btn btn-label-primary">Get Started</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Standard Plan: End -->
+        <!-- Jadwal: End -->
       </div>
     </div>
+    
   </section>
-  <!-- Pricing plans: End -->
+  <!-- Jadwal: End -->
 
   <!-- Fun facts: Start -->
-  <section id="landingFunFacts" class="section-py landing-fun-facts">
-    <div class="container">
-      <div class="row gy-3">
-        <div class="col-sm-6 col-lg-3">
-          <div class="card border border-label-primary shadow-none">
-            <div class="card-body text-center">
-              <img src="{{ asset('sneat/assets/img/front-pages/icons/laptop.png') }}"" alt="laptop" class="mb-2" />
-              <h5 class="h2 mb-1">7.1k+</h5>
-              <p class="fw-medium mb-0">
-                Support Tickets<br />
-                Resolved
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-          <div class="card border border-label-success shadow-none">
-            <div class="card-body text-center">
-              <img src="{{ asset('sneat/assets/img/front-pages/icons/user-success.png') }}"" alt="laptop" class="mb-2" />
-              <h5 class="h2 mb-1">50k+</h5>
-              <p class="fw-medium mb-0">
-                Join creatives<br />
-                community
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-          <div class="card border border-label-info shadow-none">
-            <div class="card-body text-center">
-              <img src="{{ asset('sneat/assets/img/front-pages/icons/diamond-info.png') }}"" alt="laptop" class="mb-2" />
-              <h5 class="h2 mb-1">4.8/5</h5>
-              <p class="fw-medium mb-0">
-                Highly Rated<br />
-                Products
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-          <div class="card border border-label-warning shadow-none">
-            <div class="card-body text-center">
-              <img src="{{ asset('sneat/assets/img/front-pages/icons/check-warning.png') }}"" alt="laptop" class="mb-2" />
-              <h5 class="h2 mb-1">100%</h5>
-              <p class="fw-medium mb-0">
-                Money Back<br />
-                Guarantee
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  {{-- <section id="landingFunFacts" class="section-py landing-fun-facts">
+        
+  </section> --}}
   <!-- Fun facts: End -->
 
   <!-- FAQ: Start -->
@@ -618,7 +459,7 @@
   <!-- FAQ: End -->
 
   <!-- Contact Us: Start -->
-  <section id="landingContact" class="section-py bg-body landing-contact">
+  <section id="Kontak" class="section-py bg-body landing-contact">
     <div class="container">
       <div class="text-center mb-3 pb-1">
         <span class="badge bg-label-primary">Kontak</span>

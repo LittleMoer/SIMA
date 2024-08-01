@@ -1,4 +1,4 @@
-@section('dashboard')
+@section('dashboard_crew')
 <!-- Help Center Header: Start -->
 <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
   <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}" alt="Help center header">
@@ -14,7 +14,7 @@
               <div class="card-body">
                 <h4 class="card-title text-primary">Selamat Datang {{ Auth::user()->name }}!! 🎉</h4>
                 <p class="mb-4">
-                  Pantau serta kelola data dengan efisien dan akurat, memastikan informasi selalu diperbarui dan mudah diakses
+                  Mari lihat jadwalmu! 
                 </p>
 
                 {{-- <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a> --}}

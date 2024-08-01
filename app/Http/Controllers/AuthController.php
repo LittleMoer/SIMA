@@ -3,38 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Models\Akun;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
+
+
 class AuthController extends Controller
 {
-    public function halamanlogin()
-    {
-        return view('/login');
-    }
-    function login(Request $request)
-    {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required'
-        ],[
+    
+    public function login(Request $request)
+{
+    $request->validate([
+        'username' => 'required',
+        'password' => 'required'
+    ],[
         'username.required' => 'Username wajib diisi',
         'password.required' => 'Password wajib diisi'
     ]);
-    
-    $credentials = $request->only('username', 'password');  
+
+    $credentials = [
+        'username' => $request->username,
+        'password' => $request->password
+    ];
 
     if (Auth::attempt($credentials)) {
-        $request->session( )->regenerate();
-        return redirect('/dashboard');
-    } else
-    {
-        return redirect('/')->withErrors([
+        $request->session()->regenerate();
+        Session:: put('username', $request->username);
+        return redirect("dashboard");
+    } else {
+        return redirect()->route('login')->withErrors([
             'username' => 'Username atau password salah',
         ]);
     }
-    }
+}
     public function logout(Request $request)
     {
         Auth::logout();
@@ -70,8 +73,5 @@ class AuthController extends Controller
         $akun->save();
         return redirect('/');
     }
-    public function dashboard()
-    {
-        return view('dashboard');
-    }
+
 }
