@@ -8,7 +8,11 @@ class Akun extends Authenticatable
 {
     // Jika Anda menggunakan field lain untuk username, pastikan menambahkan properti yang sesuai
     protected $fillable = [
-        'username', 'name', 'email', 'password', 'role_id'
+        'username'
+        , 'name'
+        , 'email'
+        , 'password'
+        , 'role_id'
     ];
 
     // Jika Anda ingin menentukan field untuk username yang digunakan dalam proses login

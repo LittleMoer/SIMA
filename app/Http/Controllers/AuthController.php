@@ -1,30 +1,40 @@
 <?php
+
 namespace App\Http\Controllers;
 
+use App\Models\Akun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Akun;
+
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
-{
-    $credentials = $request->only('username', 'password');
+    public function halamanlogin()
+    {
+        return view('/login');
+    }
+    function login(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required'
+        ],[
+        'username.required' => 'Username wajib diisi',
+        'password.required' => 'Password wajib diisi'
+    ]);
+    
+    $credentials = $request->only('username', 'password');  
 
     if (Auth::attempt($credentials)) {
-        $user = Auth::user();
-        $request->session()->put('username', $user->name);
-        return redirect()->intended('/dashboard');
+        $request->session( )->regenerate();
+        return redirect('/dashboard');
+    } else
+    {
+        return redirect('/')->withErrors([
+            'username' => 'Username atau password salah',
+        ]);
     }
-
-    return back()->withErrors([
-        'username' => 'The provided credentials do not match our records.',
-    ]);
-}
-
-    
+    }
     public function logout(Request $request)
     {
         Auth::logout();
@@ -32,40 +42,36 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/');
     }
-  
-    public function register(Request $request)
+    public function halamanregis()
     {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255|unique:akun,username',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:akun,email',
-            'password' => 'required|string|min:8|confirmed',
-            'role_id' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
-        $user = Akun::create([
-            'username' => $request->username,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => $request->role_id,
-        ]);
-
-        return response()->json($user, 201);
+        return view('auth/register');
     }
-    public function showRegisterForm()
-{
-    return view('auth.register');
-}
-
-public function dashboard()
-{
-    return view('dashboard', ['username' => session('username')]);
-}
-
-
+    public function registrasi(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'role_id' => 'required'
+        ],[
+            'username.required' => 'Username wajib diisi',
+            'name.required' => 'Nama wajib diisi',
+            'email.required' => 'Email wajib diisi',
+            'password.required' => 'Password wajib diisi',
+            'role_id.required' => 'Role wajib diisi'
+        ]);
+        $akun = new Akun();
+        $akun->username = $request->username;
+        $akun->name = $request->name;
+        $akun->email = $request->email;
+        $akun->password = bcrypt($request->password);
+        $akun->role_id = $request->role_id;
+        $akun->save();
+        return redirect('/');
+    }
+    public function dashboard()
+    {
+        return view('dashboard');
+    }
 }

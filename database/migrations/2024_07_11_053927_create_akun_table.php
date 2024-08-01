@@ -14,12 +14,12 @@ class CreateAkunTable extends Migration
     public function up()
     {
         Schema::create('akun', function (Blueprint $table) {
-            $table->increments('id_akun'); // Menggunakan increments untuk auto-increment
+            $table->increments('id_akun'); 
             $table->string('username', 255)->unique();
             $table->string('name', 255);
             $table->string('email', 255)->unique();
             $table->string('password');
-            $table->string('role_id', 1); // Asumsi role_id adalah string
+            $table->string('role_id', 1);
             $table->timestamps();
         });
     }

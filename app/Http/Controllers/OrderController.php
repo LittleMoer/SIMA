@@ -1,4 +1,4 @@
-<?php
+<!-- 
 
 namespace App\Http\Controllers;
 
@@ -75,4 +75,4 @@ class OrderController extends Controller
 
         return redirect()->route('order.create')->with('success', 'Order created successfully.');
     }
-}
+} -->
