@@ -2,42 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Akun;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-
-
+use App\Models\Akun;
+use Illuminate\Support\Facades\Hash;
+use Exception;
 
 class AuthController extends Controller
 {
-    
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
     public function login(Request $request)
-{
-    $request->validate([
-        'username' => 'required',
-        'password' => 'required'
-    ],[
-        'username.required' => 'Username wajib diisi',
-        'password.required' => 'Password wajib diisi'
-    ]);
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-    $credentials = [
-        'username' => $request->username,
-        'password' => $request->password
-    ];
+        $credentials = $request->only('username', 'password');
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-        Session:: put('username', $request->username);
-        return redirect("dashboard");
-    } else {
-        return redirect()->route('login')->withErrors([
-            'username' => 'Username atau password salah',
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
+        }
+
+        return back()->withErrors([
+            'username' => 'The provided credentials do not match our records.',
         ]);
     }
-}
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -45,33 +41,36 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/');
     }
-    public function halamanregis()
+
+    public function showRegistrationForm()
     {
-        return view('auth/register');
-    }
-    public function registrasi(Request $request)
-    {
-        $request->validate([
-            'username' => 'required',
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'role_id' => 'required'
-        ],[
-            'username.required' => 'Username wajib diisi',
-            'name.required' => 'Nama wajib diisi',
-            'email.required' => 'Email wajib diisi',
-            'password.required' => 'Password wajib diisi',
-            'role_id.required' => 'Role wajib diisi'
-        ]);
-        $akun = new Akun();
-        $akun->username = $request->username;
-        $akun->name = $request->name;
-        $akun->email = $request->email;
-        $akun->password = bcrypt($request->password);
-        $akun->role_id = $request->role_id;
-        $akun->save();
-        return redirect('/');
+        return view('auth.register');
     }
 
+    public function register(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|max:255|unique:akun',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:akun',
+            'role_id' => 'required|integer',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        try {
+            $akun = Akun::create([
+                'username' => $request->username,
+                'name' => $request->name,
+                'email' => $request->email,
+                'role_id' => $request->role_id,
+                'password' => Hash::make($request->password),
+            ]);
+
+            Auth::login($akun);
+
+            return redirect()->intended('/')->with('success', 'Akun berhasil dibuat!');
+        } catch (Exception $e) {
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat membuat akun: ' . $e->getMessage()]);
+        }
+    }
 }

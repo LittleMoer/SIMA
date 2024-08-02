@@ -1,29 +1,22 @@
 <?php
-// app/Models/Akun.php
+
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Akun extends Authenticatable
 {
-    // Jika Anda menggunakan field lain untuk username, pastikan menambahkan properti yang sesuai
+    use Notifiable;
+
+    protected $table = 'akun'; 
+    protected $primaryKey = 'id_akun'; 
+    
     protected $fillable = [
-        'username'
-        , 'name'
-        , 'email'
-        , 'password'
-        , 'role_id'
+        'id_akun', 'username', 'name', 'email', 'role_id', 'password',
     ];
 
-    // Jika Anda ingin menentukan field untuk username yang digunakan dalam proses login
-    public function getAuthPassword()
-    {
-        return $this->password;
-    }
-
-    public function getAuthIdentifierName()
-    {
-        return 'username'; // atau 'id_akun' jika menggunakan id
-    }
-    protected $table = 'akun';
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 }

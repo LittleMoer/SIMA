@@ -6,29 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAkunTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('akun', function (Blueprint $table) {
-            $table->increments('id_akun'); 
+            $table->increments('id_akun'); // Mengubah menjadi auto increment
             $table->string('username', 255)->unique();
             $table->string('name', 255);
             $table->string('email', 255)->unique();
-            $table->string('password');
-            $table->string('role_id', 1);
+            $table->integer('role_id');
+            $table->string('password', 255);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('akun');
