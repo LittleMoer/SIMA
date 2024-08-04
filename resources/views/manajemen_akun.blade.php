@@ -6,7 +6,21 @@
   <h3 class="text-center">Manajemen Akun </h3>
   <h5 class="text-center px-3 mb-0">Pemantauan, pembuatan manajemen akun</h5>
 </section>
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <!-- Manajemen Akun: Start -->
 <section>
   <!-- DataTable with Buttons -->
@@ -14,7 +28,7 @@
 
 <div class="no_print d-flex justify-content mb-4">  
               
-                <a href="{{ route('manajemen_akun') }}" class="btn btn-primary">
+                <a href="{{ route('tambah_akun') }}" class="btn btn-primary">
                   <span class="tf-icons bx bxs-user-plus me-2"></span>Tambah Akun
                 </a>
   
@@ -31,25 +45,20 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($akuns as $akun)
+                  @foreach($users as $user)
                       <tr>
                           <td>{{ $loop->iteration }}</td>
-                          <td>{{ $akun->name }}</td>
-                          <td>{{ $akun->username }}</td>
-                          <td class="role-id">{{ $akun->role_id }}</td>
-                          <td>{{ $akun->email }}</td>
+                          <td>{{ $user->name }}</td>
+                          <td>{{ $user->username }}</td>
+                          <td class="role-id">{{ $user->role_id }}</td>
+                          <td>{{ $user->email }}</td>
                           <td>
-<<<<<<< HEAD
-                              <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-name="{{ $akun->name }}" data-email="{{ $akun->email }}"  data-role="{{ $akun->role_id  }}"  >Edit</button>                              
-                              <button class="btn btn-danger btn-sm">Delete</button>
-
-=======
                               <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-name="{{ $user->name }}" data-email="{{ $user->email }}"  data-role="{{ $user->role_id  }}"  >Edit</button>                              
-                              <button class="btn btn-danger btn-sm">Delete</button>
-<<<<<<< HEAD
->>>>>>> parent of bbf575d (manajemen akun)
-=======
->>>>>>> parent of bbf575d (manajemen akun)
+                              <form action="{{ route('users.destroy', $user->username) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                                </form>
                           </td>
                       </tr>
 
@@ -107,12 +116,10 @@ $(document).ready(function(){
      
       // Map role_id to role_name
       const roleMap = {
-          1: 'Pemilik',
-          2: 'Admin',
-          3: 'Viewer',
-          4: 'Crew'
+          1: 'Admin',
+          2: 'Crew',
+          3: 'Viewer'
       };
-   
 
       // Change role_id to role_name
       $('.role-id').each(function() {
@@ -135,7 +142,7 @@ $(document).ready(function(){
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <form id="editUserForm" action="{{ route('users.update', ['username' => $akun->username]) }}" method="POST">
+      <form id="editUserForm" action="{{ route('user.update', ['username' => $user->username]) }}" method="POST">
           @csrf
           <div class="row mb-3">
               <label class="col-sm-2 col-form-label" for="name">Name</label>
@@ -162,9 +169,9 @@ $(document).ready(function(){
                       <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user-pin"></i></span>
                       <select class="form-select" id="role_id" name="role_id" required>
                           <option value="">-- Pilih Role --</option>
-                          <option value="2">Admin</option>
+                          <option value="1">Admin</option>
+                          <option value="2">Crew</option>
                           <option value="3">Viewer</option>
-                          <option value="4">Crew</option>
                       </select>
                   </div>
               </div>
