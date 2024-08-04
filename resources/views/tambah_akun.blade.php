@@ -14,7 +14,7 @@
                
               <div class="card">
                 <div class="card-body">
-                  <form method="POST" action="{{ route('manajemen_akun') }}">
+                <form id="editUserForm" action="{{ route('user.update', ['username' => $user->username]) }}" method="POST">
                     @csrf
                     <div class="row mb-3">
                       <label class="col-sm-2 col-form-label" for="name">Nama</label>

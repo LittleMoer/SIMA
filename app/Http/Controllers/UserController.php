@@ -4,54 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Akun;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
+
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        return view('user/dashboard');
-    }
-
     public function update(Request $request, $username)
     {
-        $user = Akun::where('username', $username)->firstOrFail();
-    
-        $emailRules = 'required|string|email|max:255';
-        if ($request->email !== $user->email) {
-            $emailRules .= '|unique:users';
-        }
-    
-        $validator = Validator::make($request->all(), [
+        // Validate the request data
+        $request->validate([
             'name' => 'required|string|max:255',
-            'email' => $emailRules,
-            'role_id' => 'required|exists:roles,roleid',
+            'email' => 'required|email|max:255',
+            'role_id' => 'required|integer',
         ]);
-    
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-    
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->role_id = $request->role_id;
-        $user->save();
-    
-        session()->flash('success', 'User berhasil diupdate.'); 
-        
-        return redirect()->route('manajemen_akun');
-    }
-    
-    
-    
-    public function destroy($username)
-    {
-        $user = Akun::where('username', $username)->firstOrFail();
-        $user->delete();
-    
-        return redirect()->route('manajemen_akun');
-    }
-    
 
+        // Find the user by username
+        $user = Akun::where('username', $username)->firstOrFail();
+
+        // Update the user information
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->role_id = $request->input('role_id');
+        $user->save();
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'User updated successfully');
+    }
+    public function index() {
+        $users = Akun::all();
+        return view('manajemen_akun', compact('users'));
+    }
 }

@@ -14,7 +14,7 @@
 
 <div class="no_print d-flex justify-content mb-4">  
               
-                <a href="{{ route('tambah_akun') }}" class="btn btn-primary">
+                <a href="{{ route('manajemen_akun') }}" class="btn btn-primary">
                   <span class="tf-icons bx bxs-user-plus me-2"></span>Tambah Akun
                 </a>
   
