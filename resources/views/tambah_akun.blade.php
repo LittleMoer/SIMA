@@ -14,7 +14,7 @@
                
               <div class="card">
                 <div class="card-body">
-                <form id="editUserForm" action="{{ route('user.update', ['username' => $user->username]) }}" method="POST">
+                <form id="editUserForm" action="{{route('register')}}" method="POST">
                     @csrf
                     <div class="row mb-3">
                       <label class="col-sm-2 col-form-label" for="name">Nama</label>
@@ -41,9 +41,9 @@
                           <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user-pin"></i></span>
                           <select class="form-select" id="role_id" name="role_id" required>
                             <option value="">-- Pilih Role --</option>
-                            <option value="2">Admin</option>
-                            <option value="3">Viewer</option>
-                            <option value="4">Crew</option>
+                            <option value="1">Admin</option>
+                            <option value="2">Viewer</option>
+                            <option value="3">Crew</option>
                           </select>
                         </div>
                       </div>
@@ -131,10 +131,9 @@ $(document).ready(function(){
      
       // Map role_id to role_name
       const roleMap = {
-          1: 'Pemilik',
-          2: 'Admin',
-          3: 'Viewer'
-          // 4: 'Crew'
+          1: 'Admin',
+          2: 'Viewer',
+          3: 'Crew'
       };
    
 
