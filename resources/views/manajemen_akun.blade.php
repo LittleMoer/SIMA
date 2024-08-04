@@ -45,20 +45,17 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($users as $user)
+                  @foreach($akuns as $akun)
                       <tr>
                           <td>{{ $loop->iteration }}</td>
-                          <td>{{ $user->name }}</td>
-                          <td>{{ $user->username }}</td>
-                          <td class="role-id">{{ $user->role_id }}</td>
-                          <td>{{ $user->email }}</td>
+                          <td>{{ $akun->name }}</td>
+                          <td>{{ $akun->username }}</td>
+                          <td class="role-id">{{ $akun->role_id }}</td>
+                          <td>{{ $akun->email }}</td>
                           <td>
-                              <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-name="{{ $user->name }}" data-email="{{ $user->email }}"  data-role="{{ $user->role_id  }}"  >Edit</button>                              
-                              <form action="{{ route('users.destroy', $user->username) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                                </form>
+                              <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-name="{{ $akun->name }}" data-email="{{ $akun->email }}"  data-role="{{ $akun->role_id  }}"  >Edit</button>                              
+                              <button class="btn btn-danger btn-sm">Delete</button>
+
                           </td>
                       </tr>
 
@@ -142,7 +139,7 @@ $(document).ready(function(){
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-      <form id="editUserForm" action="{{ route('user.update', ['username' => $user->username]) }}" method="POST">
+    <form id="editUserForm" action="{{ route('users.update', ['username' => $akun->username]) }}" method="POST">
           @csrf
           <div class="row mb-3">
               <label class="col-sm-2 col-form-label" for="name">Name</label>

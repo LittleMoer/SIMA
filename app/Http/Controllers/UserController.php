@@ -3,69 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Akun;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = Akun::all();
-        return view('manajemen_akun', compact('users'));
+        $akuns = Akun::all();
+        return view('manajemen_akun', compact('akuns'));
     }
-
     public function update(Request $request, $username)
     {
-        // Cari user berdasarkan username
-        $user = Akun::where('username', $username)->firstOrFail();
-
-        // Validasi dinamis
-        $validatedData = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => [
-                'sometimes',
-                'required',
-                'email',
-                function ($attribute, $value, $fail) use ($user) {
-                    if ($value !== $user->email) {
-                        $exists = Akun::where('email', $value)
-                                       ->where('id_akun', '!=', $user->id_akun)
-                                       ->exists();
-                        if ($exists) {
-                            $fail('The email has already been taken.');
-                        }
-                    }
-                }
-            ],
-            'role_id' => 'sometimes|required|integer',
-        ]);
-
-        // Hanya mengisi field yang ada dalam permintaan
-        if ($request->has('email') && $request->input('email') === $user->email) {
-            // Jika email tidak diubah, hapus dari data yang akan diupdate
-            unset($validatedData['email']);
+        $akun = Akun::where('username', $username)->firstOrFail();
+    
+        $emailRules = 'required|string|email|max:255';
+        if ($request->email !== $akun->email) {
+            $emailRules .= '|unique:akun';
         }
-
-        $user->fill($validatedData);
-
-        // Tambahkan log untuk debug
-        Log::info('User data before save:', $user->toArray());
-
-        // Simpan perubahan
-        $user->save();
-
-        Log::info('User updated successfully.');
-
-        return back()->with('success', 'User updated successfully.');
+    
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => $emailRules,
+            'role_id' => 'required|exists:roles,roleid',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+    
+        $akun->name = $request->name;
+        $akun->email = $request->email;
+        $akun->role_id = $request->role_id;
+        $akun->save();
+    
+        // session()->flash('success', 'User berhasil diupdate.'); 
+        
+        return redirect()->route('manajemen_akun');
     }
+    
+    
+    
     public function destroy($username)
     {
-        // Cari user berdasarkan username
-        $user = Akun::where('username', $username)->firstOrFail();
-
-        // Hapus user
-        $user->delete();
-
-        return back()->with('success', 'User deleted successfully.');
+        $akun = Akun::where('username', $username)->firstOrFail();
+        $akun->delete();
+    
+        return redirect()->route('manajemen_akun');
     }
+    
+
+
 }
