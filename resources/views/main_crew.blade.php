@@ -45,19 +45,13 @@
         </button>
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="{{ url('/dashboard') }}">Home</a>
+            <a class="nav-link fw-medium" href="{{ url('/user/dashboard') }}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link fw-medium" href="{{ url('/pesanan') }}">Data Pesanan</a>
           </li>
           <li class="nav-item">
             <a class="nav-link fw-medium" href="{{ url('/jadwal_owner') }}">Jadwal</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fw-medium" href="#landingContact">Rekap Gaji Crew</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fw-medium" href="{{ url('/manajemen_akun') }}">Manajemen Akun</a>
           </li>
         </ul
         <div class="landing-menu-overlay d-lg-none"></div>

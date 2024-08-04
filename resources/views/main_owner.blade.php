@@ -43,7 +43,7 @@
         </button>
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="{{ url('/dashboard') }}">Home</a>
+            <a class="nav-link fw-medium" href="{{ url('/admin/dashboard') }}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link fw-medium" href="{{ url('/pesanan') }}">Data Pesanan</a>

@@ -11,7 +11,10 @@
 <div style="padding: 30px 60px">
 
 <div >  
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
   @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -33,6 +36,7 @@
                       <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" value="{{ old('name') }}" required />
 
                   </div>
+<<<<<<< Updated upstream
 =======
                
               <div class="card">
@@ -107,6 +111,8 @@
                   </form>
                 </div>
 >>>>>>> parent of bbf575d (manajemen akun)
+=======
+>>>>>>> Stashed changes
               </div>
           </div>
 
@@ -127,9 +133,15 @@
                       <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user-pin"></i></span>
                       <select class="form-select @error('role_id') is-invalid @enderror" id="role_id" name="role_id" required>
                           <option value="">-- Pilih Role --</option>
+<<<<<<< Updated upstream
                           <option value="2" {{ old('role_id') == 2 ? 'selected' : '' }}>Admin</option>
                           <option value="3" {{ old('role_id') == 3 ? 'selected' : '' }}>Viewer</option>
                           <option value="4" {{ old('role_id') == 4 ? 'selected' : '' }}>Crew</option>
+=======
+                          <option value="1" {{ old('role_id') == 1 ? 'selected' : '' }}>Admin</option>
+                          <option value="2" {{ old('role_id') == 2 ? 'selected' : '' }}>Crew</option>
+                          <option value="3" {{ old('role_id') == 3 ? 'selected' : '' }}>Viewer</option>
+>>>>>>> Stashed changes
                       </select>
                   </div>
               </div>
@@ -227,10 +239,16 @@ $(document).ready(function(){
      
       // Map role_id to role_name
       const roleMap = {
+<<<<<<< Updated upstream
           1: 'Pemilik',
           2: 'Admin',
           3: 'Viewer'
           // 4: 'Crew'
+=======
+          1: 'Admin',
+          2: 'Crew',
+          3: 'Viewer'
+>>>>>>> Stashed changes
       };
    
 
