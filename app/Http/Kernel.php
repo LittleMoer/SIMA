@@ -3,6 +3,7 @@ namespace App\Http;
 
 <?php
 
+use App\Http\Middleware\CheckRole;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 
@@ -49,6 +50,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => Authenticate::class,
+        'role' => CheckRole::class,
     ];
 
     /**

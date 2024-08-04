@@ -1,4 +1,5 @@
 <?php
+// app/Models/Akun.php
 
 namespace App\Models;
 
@@ -13,7 +14,7 @@ class Akun extends Authenticatable
     protected $primaryKey = 'id_akun'; 
     
     protected $fillable = [
-        'id_akun', 'username', 'name', 'email', 'role_id', 'password',
+        'username', 'name', 'email', 'role_id', 'password',
     ];
 
     protected $hidden = [

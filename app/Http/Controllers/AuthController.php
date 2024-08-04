@@ -1,5 +1,7 @@
 <?php
 
+// app/Http/Controllers/AuthController.php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -26,7 +28,16 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+
+            // Check user role and redirect accordingly
+            $role = Auth::user()->role_id;
+            if ($role == 1) {
+                return redirect()->intended('admin/dashboard');
+            } elseif ($role == 2) {
+                return redirect()->intended('user/dashboard');
+            }
+
+            return redirect('/');
         }
 
         return back()->withErrors([

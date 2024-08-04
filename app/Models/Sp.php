@@ -30,6 +30,7 @@ class SP extends Model
         'biaya_tambahan',
         'total_biaya',
         'uang_muka',
+        'status_pembayaran',
         'sisa_pembayaran',
         'catatan_pembayaran',
     ];

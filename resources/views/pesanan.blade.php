@@ -146,16 +146,9 @@
                     </div>
                   
                     <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="nilai-kontrak-1">Nilai Kontrak 1</label>
+                      <label class="col-sm-2 form-label" for="nilai-kontrak-1">Nilai Kontrak</label>
                       <div class="col-sm-10">
-                        <input type="text" id="nilai-kontrak-1" class="form-control" placeholder="Masukkan nilai kontrak 1" aria-label="Nilai Kontrak 1" />
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="nilai-kontrak-2">Nilai Kontrak 2</label>
-                      <div class="col-sm-10">
-                        <input type="text" id="nilai-kontrak-2" class="form-control" placeholder="Masukkan nilai kontrak 2" aria-label="Nilai Kontrak 2" />
+                        <input type="text" id="nilai-kontrak" class="form-control" placeholder="Masukkan nilai kontrak 1" aria-label="Nilai Kontrak 1" />
                       </div>
                     </div>
                     
@@ -231,25 +224,7 @@
                           <input type="text" id="lain-lain" class="form-control" placeholder="Lain-lain" aria-label="Lain-lain"/>
                         </div>
                       </div>
-                    <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="no-lambung">No Lambung</label>
-                      <div class="col-sm-10">
-                        <input type="text" id="no-lambung" class="form-control" placeholder="no-lambung" aria-label="no-lambung"/>
-                      </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 form-label" for="driver">Driver</label>
-                        <div class="col-sm-10">
-                          <input type="text" id="driver" class="form-control" placeholder="driver" aria-label="driver"/>
-                        </div>
-                     </div>
-                     <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="co-driver">Co Driver</label>
-                      <div class="col-sm-10">
-                        <input type="text" id="co-driver" class="form-control" placeholder="co-driver" aria-label="co-driver"/>
-                      </div>
-                    </div>
-
                   </div>
 
 
