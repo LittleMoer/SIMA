@@ -52,7 +52,7 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required|string|max:255|unique:akun',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:akun',
+            'email' => 'required|string|email|max:255|unique:akun|regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
             'role_id' => 'required|integer',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -68,7 +68,7 @@ class AuthController extends Controller
 
             Auth::login($akun);
 
-            return redirect()->intended('/')->with('success', 'Akun berhasil dibuat!');
+            return redirect()->intended('/manajemen_akun')->with('success', 'Akun berhasil dibuat!');
         } catch (Exception $e) {
             return back()->withErrors(['error' => 'Terjadi kesalahan saat membuat akun: ' . $e->getMessage()]);
         }
