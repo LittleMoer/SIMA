@@ -46,6 +46,9 @@
 =======
                               <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-name="{{ $user->name }}" data-email="{{ $user->email }}"  data-role="{{ $user->role_id  }}"  >Edit</button>                              
                               <button class="btn btn-danger btn-sm">Delete</button>
+<<<<<<< HEAD
+>>>>>>> parent of bbf575d (manajemen akun)
+=======
 >>>>>>> parent of bbf575d (manajemen akun)
                           </td>
                       </tr>

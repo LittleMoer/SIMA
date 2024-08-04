@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Validator;
 
 
 
+
 class UserController extends Controller
 {
     public function update(Request $request, $username)
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
         $akuns = Akun::all();
         return view('manajemen_akun', compact('akuns'));
@@ -59,6 +61,8 @@ class UserController extends Controller
 
 
 =======
+=======
+>>>>>>> parent of bbf575d (manajemen akun)
         // Validate the request data
         $request->validate([
             'name' => 'required|string|max:255',
@@ -82,5 +86,8 @@ class UserController extends Controller
         $users = Akun::all();
         return view('manajemen_akun', compact('users'));
     }
+<<<<<<< HEAD
+>>>>>>> parent of bbf575d (manajemen akun)
+=======
 >>>>>>> parent of bbf575d (manajemen akun)
 }
