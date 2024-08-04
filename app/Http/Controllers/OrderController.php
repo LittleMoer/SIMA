@@ -33,6 +33,7 @@ class OrderController extends Controller
             'biaya_tambahan' => 'nullable|integer',
             'total_biaya' => 'required|integer',
             'uang_muka' => 'required|integer',
+            'status_pembayaran' => 'required|integer',
             'sisa_pembayaran' => 'nullable|integer',
             'catatan_pembayaran' => 'nullable|string'
         ]);
@@ -73,6 +74,6 @@ class OrderController extends Controller
             'id_sj' => $sj->id_sj,
         ]);
 
-        return redirect()->route('order.create')->with('success', 'Order created successfully.');
+        return redirect()->route('order.create')->with('success', 'Pesanan berhasil disimpan');
     }
 } -->

@@ -6,7 +6,21 @@
   <h3 class="text-center">Manajemen Akun </h3>
   <h5 class="text-center px-3 mb-0">Pemantauan, pembuatan manajemen akun</h5>
 </section>
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <!-- Manajemen Akun: Start -->
 <section>
   <!-- DataTable with Buttons -->
@@ -41,6 +55,7 @@
                           <td>
                               <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-name="{{ $akun->name }}" data-email="{{ $akun->email }}"  data-role="{{ $akun->role_id  }}"  >Edit</button>                              
                               <button class="btn btn-danger btn-sm">Delete</button>
+
                           </td>
                       </tr>
 
@@ -98,12 +113,10 @@ $(document).ready(function(){
      
       // Map role_id to role_name
       const roleMap = {
-          1: 'Pemilik',
-          2: 'Admin',
-          3: 'Viewer',
-          4: 'Crew'
+          1: 'Admin',
+          2: 'Crew',
+          3: 'Viewer'
       };
-   
 
       // Change role_id to role_name
       $('.role-id').each(function() {
@@ -153,9 +166,9 @@ $(document).ready(function(){
                       <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user-pin"></i></span>
                       <select class="form-select" id="role_id" name="role_id" required>
                           <option value="">-- Pilih Role --</option>
-                          <option value="2">Admin</option>
+                          <option value="1">Admin</option>
+                          <option value="2">Crew</option>
                           <option value="3">Viewer</option>
-                          <option value="4">Crew</option>
                       </select>
                   </div>
               </div>

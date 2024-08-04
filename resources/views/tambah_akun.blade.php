@@ -152,10 +152,9 @@ $(document).ready(function(){
      
       // Map role_id to role_name
       const roleMap = {
-          1: 'Pemilik',
-          2: 'Admin',
-          3: 'Viewer'
-          // 4: 'Crew'
+          1: 'Admin',
+          2: 'Viewer',
+          3: 'Crew'
       };
    
 

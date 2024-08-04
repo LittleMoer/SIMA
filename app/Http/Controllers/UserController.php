@@ -8,7 +8,6 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
 
-
 class UserController extends Controller
 {
     public function index()
@@ -55,5 +54,6 @@ class UserController extends Controller
         return redirect()->route('manajemen_akun');
     }
     
+
 
 }
