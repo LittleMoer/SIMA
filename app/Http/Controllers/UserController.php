@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         // Cari user berdasarkan username
         $user = Akun::where('username', $username)->firstOrFail();
-
+    
         // Validasi dinamis
         $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
@@ -27,6 +27,12 @@ class UserController extends Controller
                 'required',
                 'email',
                 function ($attribute, $value, $fail) use ($user) {
+                    // Validasi untuk domain gmail.com
+                    if (!str_ends_with($value, '@gmail.com')) {
+                        $fail('The email must be a Gmail address.');
+                    }
+    
+                    // Validasi untuk email yang sudah ada
                     if ($value !== $user->email) {
                         $exists = Akun::where('email', $value)
                                        ->where('id_akun', '!=', $user->id_akun)
@@ -39,33 +45,31 @@ class UserController extends Controller
             ],
             'role_id' => 'sometimes|required|integer',
         ]);
-
+    
         // Hanya mengisi field yang ada dalam permintaan
         if ($request->has('email') && $request->input('email') === $user->email) {
             // Jika email tidak diubah, hapus dari data yang akan diupdate
             unset($validatedData['email']);
         }
-
+    
         $user->fill($validatedData);
-
+    
         // Tambahkan log untuk debug
         Log::info('User data before save:', $user->toArray());
-
+    
         // Simpan perubahan
         $user->save();
-
+    
         Log::info('User updated successfully.');
-
+    
         return back()->with('success', 'User updated successfully.');
     }
+    
     public function destroy($username)
     {
-        // Cari user berdasarkan username
-        $user = Akun::where('username', $username)->firstOrFail();
-
-        // Hapus user
-        $user->delete();
-
-        return back()->with('success', 'User deleted successfully.');
+        $akun = Akun::where('username', $username)->firstOrFail();
+        $akun->delete();
+    
+        return redirect()->route('manajemen_akun');
     }
 }
