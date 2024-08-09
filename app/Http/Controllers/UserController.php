@@ -17,31 +17,25 @@ class UserController extends Controller
     }
     public function update(Request $request, $username)
     {
-        $akun = Akun::where('username', $username)->firstOrFail();
-    
-        $emailRules = 'required|string|email|max:255';
-        if ($request->email !== $akun->email) {
-            $emailRules .= '|unique:akun';
-        }
-    
-        $validator = Validator::make($request->all(), [
+        // Validasi input
+         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => $emailRules,
-            'role_id' => 'required|exists:roles,roleid',
+            'email' => 'required|email|max:255|unique:akun,email,' . $username . ',username',
+            'role_id' => 'required|integer'
         ]);
-    
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-    
-        $akun->name = $request->name;
-        $akun->email = $request->email;
-        $akun->role_id = $request->role_id;
-        $akun->save();
-    
-        // session()->flash('success', 'User berhasil diupdate.'); 
-        
-        return redirect()->route('manajemen_akun');
+
+        // Temukan akun berdasarkan username
+        $akun = Akun::where('username', $username)->firstOrFail();
+
+        // Update data akun
+        $akun->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role_id' => $request->role_id
+        ]);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('manajemen_akun')->with('success', 'Akun berhasil diperbarui.');
     }
     
     
