@@ -45,17 +45,22 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($akuns as $akun)
+                  @foreach($users as $user)
                       <tr>
                           <td>{{ $loop->iteration }}</td>
-                          <td>{{ $akun->name }}</td>
-                          <td>{{ $akun->username }}</td>
-                          <td class="role-id">{{ $akun->role_id }}</td>
-                          <td>{{ $akun->email }}</td>
+                          <td>{{ $user->name }}</td>
+                          <td>{{ $user->username }}</td>
+                          <td class="role-id">{{ $user->role_id }}</td>
+                          <td>{{ $user->email }}</td>
                           <td>
-                              <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-name="{{ $akun->name }}" data-email="{{ $akun->email }}"  data-role="{{ $akun->role_id  }}"  >Edit</button>                              
-                              <button class="btn btn-danger btn-sm">Delete</button>
-
+                              <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" 
+                              data-username="{{ $user->username }}"
+                              data-name="{{ $user->name }}" data-email="{{ $user->email }}"  data-role="{{ $user->role_id  }}"  >Edit</button>                              
+                              <form action="{{ route('users.destroy', $user->username) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                                </form>
                           </td>
                       </tr>
 
@@ -72,20 +77,6 @@
 
 <!-- Manajemen Akun: End -->
 
-<!-- Help Area: Start -->
-<section class="section-py bg-body">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-6 text-center">
-        <h3>Terdapat Kendala?</h3>
-        <p class="mb-3">Hubungi jika terdapat kendala dalam sistem ini.</p>
-        <div class="d-flex justify-content-center flex-wrap gap-3">
-          <a href="https://wa.me/6281235177505" class="btn btn-primary">WhatsApp</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 <style type="text/css" media="print"> 
   div.no_print {display: none; } 
 </style>  
@@ -139,8 +130,9 @@ $(document).ready(function(){
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <form id="editUserForm" action="{{ route('users.update', ['username' => $akun->username]) }}" method="POST">
+      <form id="editUserForm" action="{{ route('user.update', ['username' => $user->username]) }}" method="POST">
           @csrf
+          <input type="hidden" name="username" id="username">
           <div class="row mb-3">
               <label class="col-sm-2 col-form-label" for="name">Name</label>
               <div class="col-sm-10">
