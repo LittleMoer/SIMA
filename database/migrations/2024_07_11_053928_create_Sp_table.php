@@ -14,7 +14,7 @@ class CreateSpTable extends Migration
     public function up()
     {
         Schema::create('sp', function (Blueprint $table) {
-            $table->string('id_sp', 200)->primary();
+            $table->id();
             $table->string('nama_pemesan', 50);
             $table->string('pj_rombongan', 50);
             $table->string('no_telppn', 12);

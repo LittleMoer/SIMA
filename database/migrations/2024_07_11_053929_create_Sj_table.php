@@ -13,7 +13,7 @@ class CreateSjTable extends Migration
     public function up()
     {
         Schema::create('sj', function (Blueprint $table) {
-            $table->string('id_sj', 20)->primary();
+            $table->id();
             $table->string('seri_armada', 10);
             $table->integer('nilai_kontrak');
             $table->string('kmsebelum', 255);

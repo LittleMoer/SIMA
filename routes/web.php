@@ -37,9 +37,9 @@ Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
 Route::post('/store', [OrderController::class, 'store'])->name('order.store');
 Route::delete('/pesanan', [OrderController::class, 'destroy'])->name('order.destroy');
 
+Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
 Route::middleware(['auth'])->group(function () {
     Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
-    Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
     Route::post('/manajemen_akun/{username}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/manajemen_akun/{username}', [UserController::class, 'destroy'])->name('users.destroy');
 });

@@ -51,11 +51,12 @@ class OrderController extends Controller
         $orderData['tgl_keberangkatan'] = $tgl_keberangkatan;
         $orderData['jam_keberangkatan'] = $jam_keberangkatan;
         $orderData['tgl_kepulangan'] = $tgl_kepulangan;
-        $orderData['jam_kepulangan'] = $jam_kepulangan;
+        $orderData['jam_kepulangan'] = $jam_keberangkatan;
 
+        // Buat data SP
         $order = SP::create($orderData);
 
-        // Generate SPJ
+        // Buat SPJ
         $spj = SPJ::create([
             'nolambung' => 'Nolambung Auto',
             'SaldoEtollawal' => 0,
@@ -70,7 +71,7 @@ class OrderController extends Controller
             'totalsisa' => 0
         ]);
 
-        // Generate SJ
+        // Buat SJ
         $sj = SJ::create([
             'seri_armada' => 'Seri Armada Auto',
             'nilai_kontrak' => $request->nilai_kontrak,
@@ -83,12 +84,13 @@ class OrderController extends Controller
 
         // Update order dengan id_spj dan id_sj
         $order->update([
-            'id_spj' => $spj->id_spj,
-            'id_sj' => $sj->id_sj,
+            'id_spj' => $spj->id, // gunakan id dari model SPJ
+            'id_sj' => $sj->id,   // gunakan id dari model SJ
         ]);
 
         return redirect()->route('pesanan')->with('success', 'Pesanan berhasil disimpan');
     }
+
     public function destroy($id)
     {
         $sp = SP::findOrFail($id);

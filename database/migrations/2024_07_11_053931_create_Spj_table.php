@@ -13,7 +13,7 @@ class CreateSpjTable extends Migration
     public function up()
     {
         Schema::create('spj', function (Blueprint $table) {
-            $table->string('id_spj', 20)->primary();
+            $table->id();
             $table->string('nolambung', 20);
             $table->integer('SaldoEtollawal')->nullable();
             $table->integer('SaldoEtollakhir')->nullable();
