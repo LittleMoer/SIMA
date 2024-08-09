@@ -30,8 +30,9 @@ class CreateSpTable extends Migration
             $table->integer('biaya_tambahan');
             $table->integer('total_biaya');
             $table->integer('uang_muka');
-            $table->integer('status_pembayaran', 1);
+            $table->integer('status_pembayaran');
             $table->integer('sisa_pembayaran')->nullable();
+            $table->string('metode_pembayaran', 10);
             $table->text('catatan_pembayaran')->nullable();
             $table->timestamps();
         });

@@ -19,6 +19,15 @@
   <h3 class="text-center"> Data Pesanan</h3>
   <h5 class="text-center px-3 mb-0">Pemantauan, pembuatan data pesanan</h5>
 </section>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <!-- Header: End -->
 
   <!-- Data SP: Start -->
@@ -46,7 +55,7 @@
               <table id="accountTable" class="datatables-basic table border-top">
                 <thead>
                   <tr>
-                    <th>No</th>
+                    <th>Id Pesanan</th>
                     <th>Nama Pesanan</th>
                     <th>PJ Rombongan</th>
                     <th>Tanggal Keberangkatan</th>
@@ -56,21 +65,24 @@
                   </tr>
                 </thead>
                 <tbody>
+                  @foreach($sp as $order)
                   <tr>
-                    <td>1</td>
-                    <td>AC30</td>
-                    <td>johndoe</td>
-                    <td>24 Juli 2024</td>
-                    <td>Konoha Gakure</td>
-                    <td>Tembalang</td>
+                    <td>{{ $order->id_sp }}</td>
+                    <td>{{ $order->nama_pemesan }}</td>
+                    <td>{{ $order->pj_rombongan }}</td>
+                    <td>{{ $order->tgl_keberangkatan }}</td>
+                    <td>{{ $order->tujuan }}</td>
+                    <td>{{ $order->alamat_penjemputan }}</td>
                     <td>
-                      <button class="btn btn-info btn-sm">View</button>
-                      <button class="btn btn-warning btn-sm">Edit</button>
-                      <button class="btn btn-danger btn-sm">Delete</button>
+                      <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-name="{{ $order->nama_pemesan }}" data-email="{{ $order->email }}" data-role="{{ $order->role_id }}">Edit</button>
+                      <form action="{{ route('order.destroy', $order->id) }}" method="POST" style="display:inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this order?')">Delete</button>
+                      </form>
                     </td>
                   </tr>
-                  <!-- Tambahkan data lain di sini -->
-                </tbody>
+                  @endforeach
               </table>
             </div>
           </div>
@@ -78,13 +90,13 @@
             <div class="col-xxl">
               <div class="card mb-4">
                 <div class="card-body">
-                  <form>
+                  <form id="createorder" action="{{route('order.store')}}" method="POST">
+                    @csrf
                     <div class="row mb-3">
                       <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nama Pemesan </label>
                       <div class="col-sm-10">
                         <div class="input-group input-group-merge">
-        
-                          <input type="text" class="form-control" id="basic-icon-default-fullname" placeholder="JohnDoe" aria-label="JohnDoe" aria-describedby="basic-icon-default-fullname2" />
+                          <input type="text" class="form-control" name="nama_pemesan" id="nama_pemesan" placeholder="JohnDoe" aria-label="JohnDoe" aria-describedby="basic-icon-default-fullname2" />
                         </div>
                       </div>
                     </div>
@@ -92,7 +104,7 @@
                       <label class="col-sm-2 col-form-label" for="basic-icon-default-email">No Telp Pemesan</label>
                       <div class="col-sm-10">
                         <div class="input-group input-group-merge">
-                          <input type="text" id="" class="form-control" placeholder="083169251172" aria-label="083169251172" aria-describedby="2" />
+                          <input type="text" name="no_telppn" id="no_telppn" class="form-control" placeholder="083169251172" aria-label="083169251172" aria-describedby="2" />
                         </div>
                       </div>
                     </div>
@@ -100,7 +112,7 @@
                       <label class="col-sm-2 col-form-label" for="basic-icon-default-role">PJ Rombongan</label>
                       <div class="col-sm-10">
                         <div class="input-group input-group-merge">
-                          <input type="datetime-local" id="departure-datetime" class="form-control" aria-describedby="departure-datetime-icon" />
+                        <input type="text" name="pj_rombongan" id="pj_rombongan" class="form-control" placeholder="Masukkan Nama Pj Rombongan" aria-describedby="" />
                         </div>
                       </div>
                     </div>
@@ -108,128 +120,104 @@
                       <label class="col-sm-2 form-label" for="basic-icon-default-phone">No Telp PJ</label>
                       <div class="col-sm-10">
                         <div class="input-group input-group-merge">
-                          <input type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
+                          <input type="text" name="no_telpps" id="no_telpps"  class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
                         </div>
                       </div>
                     </div>
                     <div class="row mb-3">
                       <label class="col-sm-2 form-label" for="departure-datetime">Tanggal Waktu Keberangkatan</label>
                       <div class="col-sm-10">
-                        <div class="input-group input-group-merge">
-                          <input type="datetime-local" id="departure-datetime" class="form-control" aria-describedby="departure-datetime-icon" />
-                        </div>
+                          <div class="input-group input-group-merge">
+                              <input type="datetime-local" name="tgl_keberangkatan_full" id="tgl_keberangkatan" class="form-control" aria-describedby="departure-datetime-icon" />
+                          </div>
                       </div>
-                    </div>
-                    
-                    <div class="row mb-3">
+                  </div>
+                  <div class="row mb-3">
                       <label class="col-sm-2 form-label" for="return-datetime">Tanggal Waktu Kepulangan</label>
                       <div class="col-sm-10">
-                        <div class="input-group input-group-merge">
-                          <input type="datetime-local" id="return-datetime" class="form-control" aria-describedby="return-datetime-icon" />
-                        </div>
+                          <div class="input-group input-group-merge">
+                              <input type="datetime-local" name="tgl_kepulangan_full" id="tgl_kepulangan" class="form-control" aria-describedby="return-datetime-icon" />
+                          </div>
                       </div>
+                  </div>
                     </div>
                     <div class="row mb-3">
                       <label class="col-sm-2 form-label" for="pickup-address">Alamat Penjemputan</label>
                       <div class="col-sm-10">
                         <div class="input-group input-group-merge">
                           <span id="pickup-address-icon" class="input-group-text"><i class="bx bx-map"></i></span>
-                          <input type="text" id="pickup-address" class="form-control" placeholder="Masukkan alamat penjemputan" aria-describedby="pickup-address-icon" />
+                          <input type="text" name="alamat_penjemputan" id="alamat_penjemputan" class="form-control" placeholder="Masukkan alamat penjemputan" aria-describedby="pickup-address-icon" />
                         </div>
                       </div>
                     </div>
                     <div class="row mb-3">
                       <label class="col-sm-2 form-label" for="jumlah-armada">Jumlah Armada</label>
                       <div class="col-sm-10">
-                        <input type="number" id="jumlah-armada" class="form-control" placeholder="Masukkan jumlah armada" aria-label="Jumlah Armada" />
+                        <input type="number" name="jumlah_armada" id="jumlah_armada" class="form-control" placeholder="Masukkan jumlah armada" aria-label="Jumlah Armada" />
                       </div>
                     </div>
                   
                     <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="nilai-kontrak-1">Nilai Kontrak</label>
+                      <label class="col-sm-2 form-label" for="nilai-kontrak">Nilai Kontrak</label>
                       <div class="col-sm-10">
-                        <input type="text" id="nilai-kontrak" class="form-control" placeholder="Masukkan nilai kontrak 1" aria-label="Nilai Kontrak 1" />
+                        <input type="text" name="nilai_kontrak" id="nilai_kontrak" class="form-control" placeholder="Masukkan nilai kontrak" aria-label="Nilai Kontrak" />
                       </div>
                     </div>
                     
                     <div class="row mb-3">
                       <label class="col-sm-2 form-label" for="biaya-tambahan">Biaya Tambahan</label>
                       <div class="col-sm-10">
-                        <input type="text" id="biaya-tambahan" class="form-control" placeholder="Masukkan biaya tambahan" aria-label="Biaya Tambahan" />
+                        <input type="text" name="biaya_tambahan" id="biaya_tambahan" class="form-control" placeholder="Masukkan biaya tambahan" aria-label="Biaya Tambahan" />
                       </div>
                     </div>
                     <div class="row mb-3">
                       <label class="col-sm-2 form-label" for="total-biaya">Total Biaya</label>
                       <div class="col-sm-10">
-                        <input type="text" id="total-biaya" class="form-control" placeholder="Masukkan total biaya" aria-label="Total Biaya" />
+                        <input type="text" name="total_biaya" id="total_biaya" class="form-control" placeholder="Masukkan total biaya" aria-label="Total Biaya" />
                       </div>
                     </div>
                     <div class="row mb-3">
                       <label class="col-sm-2 form-label" for="uang-muka">Uang Muka</label>
                       <div class="col-sm-10">
-                        <input type="text" id="uang-muka" class="form-control" placeholder="Masukkan uang muka" aria-label="Uang Muka" />
+                        <input type="text" name="uang_muka" id="uang_muka" class="form-control" placeholder="Masukkan uang muka" aria-label="Uang Muka" />
                       </div>
                     </div>
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label" for="status_pembayaran">Status Pembayaran</label>
+                      <div class="col-sm-10">
+                          <div class="input-group input-group-merge">
+                              <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-money"></i></span>
+                              <select class="form-select @error('status_pembayaran') is-invalid @enderror" id="status-pembayaran" name="status_pembayaran" required onchange="toggleCustomMethod()">
+                                  <option value="">-- Pilih Status Pembayaran --</option>
+                                  <option value="1" {{ old('status_pembayaran') == 1 ? 'selected' : '' }}>Lunas</option>
+                                  <option value="2" {{ old('status_pembayaran') == 2 ? 'selected' : '' }}>DP</option>
+                                  <option value="3" {{ old('status_pembayaran') == 3 ? 'selected' : '' }}>Belum DP</option>
+                              </select>
+                          </div>
+                      </div>
+                  </div>
                     <div class="row mb-3">
                       <label class="col-sm-2 form-label" for="sisa-pembayaran">Sisa Pembayaran</label>
                       <div class="col-sm-10">
-                        <input type="text" id="sisa-pembayaran" class="form-control" placeholder="Sisa pembayaran" aria-label="Sisa Pembayaran" readonly />
+                        <input type="text" name="sisa_pembayaran" id="sisa_pembayaran" class="form-control" placeholder="Sisa pembayaran" aria-label="Sisa Pembayaran" readonly />
                       </div>
                     </div>
                     <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="metode-pembayaran">Metode Pembayaran</label>
+                      <label class="col-sm-2 form-label" for="metode_pembayaran">Metode Pembayaran</label>
                       <div class="col-sm-10">
-                        <select  class="form-select"  id="metode-pembayaran" onchange="toggleCustomMethod()">
-                          <option value="cash">Cash</option>
-                          <option value="tf">TF</option>
-                          <option value="debit">Debit</option>
-                          <option value="lainnya">Lainnya</option>
-                      </select>
-                      <input type="text" id="custom-method" class="form-control" style="display: none;"  placeholder="Masukkan metode pembayaran lainnya">
+                          <select name="metode_pembayaran" id="metode_pembayaran" class="form-control">
+                              <option value="cash">Cash</option>
+                              <option value="transfer">Transfer</option>
+                              <option value="credit_card">Kartu Kredit</option>
+                              <!-- Tambahkan opsi lainnya jika diperlukan -->
+                          </select>
                       </div>
-                    </div>
+                  </div>
                     <div class="row mb-3">
                       <label class="col-sm-2 form-label" for="catatan">Catatan</label>
                       <div class="col-sm-10">
-                        <textarea type="text" id="catatan" class="form-control" placeholder="Masukkan catatan" aria-label="catatan" /></textarea>
+                        <textarea type="text" name="catatan_pembayaran" id="catatan_pembayaran" class="form-control" placeholder="Masukkan catatan" aria-label="catatan"></textarea>
                       </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="km-berangkat">KM saat berangkat</label>
-                      <div class="col-sm-10">
-                        <input type="text" id="km-berangkat" class="form-control" placeholder="Masukkan KM saat berangkat" aria-label="KM saat berangkat" />
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="km-saat-tiba">KM saat tiba</label>
-                      <div class="col-sm-10">
-                        <input type="text" id="km-tiba" class="form-control" placeholder="Masukkan KM saat tiba" aria-label="KM saat tiba" />
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="kasbon-bbm">Kasbon BBM</label>
-                      <div class="col-sm-10">
-                        <input type="text" id="kasbon-bbm" class="form-control" placeholder="Kasbon BBM" aria-label="Kasbon BBM"/>
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label class="col-sm-2 form-label" for="kasbon-makan">Kasbon dan uang makan</label>
-                      <div class="col-sm-10">
-                        <input type="text" id="kasbon-makan" class="form-control" placeholder="Kasbon Makan" aria-label="Kasbon Makan"/>
-                      </div>
-                    </div>
-                      <div class="row mb-3">
-                        <label class="col-sm-2 form-label" for="lain-lain">Lain-lain</label>
-                        <div class="col-sm-10">
-                          <input type="text" id="lain-lain" class="form-control" placeholder="Lain-lain" aria-label="Lain-lain"/>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-                    
-
                     <div class="row justify-content-end">
                       <div class="col-sm-10">
                         <button type="submit" class="btn btn-primary">Send</button>
@@ -328,23 +316,32 @@
   }
 
   function updateSisaPembayaran() {
-    let totalBiaya = parseRupiah(document.getElementById('total-biaya').value || '0');
-    let uangMuka = parseRupiah(document.getElementById('uang-muka').value || '0');
+    let totalBiaya = parseRupiah(document.getElementById('total_biaya').value || '0');
+    let uangMuka = parseRupiah(document.getElementById('uang_muka').value || '0');
     let sisaPembayaran = totalBiaya - uangMuka;
-    document.getElementById('sisa-pembayaran').value = formatRupiah(sisaPembayaran.toString(), 'Rp ');
+    document.getElementById('sisa_pembayaran').value = formatRupiah(sisaPembayaran.toString(), 'Rp ');
   }
 
-  document.querySelectorAll('input[type="text"]').forEach(function (input) {
-    input.addEventListener('input', function (e) {
-      if (e.target.id !== 'sisa-pembayaran') {
-        e.target.value = formatRupiah(e.target.value, 'Rp ');
-      }
-      if (e.target.id === 'total-biaya' || e.target.id === 'uang-muka') {
-        updateSisaPembayaran();
-      }
+  document.addEventListener('DOMContentLoaded', function () {
+    // Daftar ID input yang akan diformat dalam Rupiah
+    const inputIds = ['nilai_kontrak', 'biaya_tambahan', 'total_biaya', 'uang_muka', 'sisa_pembayaran'];
+
+    inputIds.forEach(function (id) {
+      const inputElement = document.getElementById(id);
+
+      // Terapkan format Rupiah pada input yang relevan
+      inputElement.addEventListener('input', function (e) {
+        if (id !== 'sisa_pembayaran') {
+          e.target.value = formatRupiah(e.target.value, 'Rp ');
+        }
+        if (id === 'total_biaya' || id === 'uang_muka') {
+          updateSisaPembayaran();
+        }
+      });
     });
   });
 </script>
+
 
 
 @endsection

@@ -22,7 +22,6 @@ Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
-Route::post('register', [AuthController::class, 'register'])->name('register');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -34,11 +33,9 @@ Route::middleware(['auth'])->group(function () {
 
 
 //order sp
-// Route::get('/order', [OrderController::class, 'create'])-> name('order');
-
-route::get('/pesanan', function(){
-    return view('pesanan');
-});
+Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
+Route::post('/store', [OrderController::class, 'store'])->name('order.store');
+Route::delete('/pesanan', [OrderController::class, 'destroy'])->name('order.destroy');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');

@@ -32,6 +32,7 @@ class SP extends Model
         'uang_muka',
         'status_pembayaran',
         'sisa_pembayaran',
+        'metode_pembayaran',
         'catatan_pembayaran',
     ];
 }

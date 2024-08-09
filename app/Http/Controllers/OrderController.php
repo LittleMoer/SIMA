@@ -1,4 +1,4 @@
-<!-- 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -9,11 +9,12 @@ use App\Models\SJ;
 
 class OrderController extends Controller
 {
-    public function create()
+    public function index()
     {
-        return view('create_order');
+        $sp = SP::all(); 
+        return view('pesanan', compact('sp'));  // Mengirimkan data ke view
     }
-
+    
     public function store(Request $request)
     {
         // Validasi request
@@ -22,10 +23,8 @@ class OrderController extends Controller
             'pj_rombongan' => 'required|string|max:50',
             'no_telppn' => 'required|string|max:12',
             'no_telpps' => 'required|string|max:12',
-            'tgl_keberangkatan' => 'required|date',
-            'jam_keberangkatan' => 'required|date_format:H:i',
-            'tgl_kepulangan' => 'required|date',
-            'jam_kepulangan' => 'required|date_format:H:i',
+            'tgl_keberangkatan_full' => 'required|date_format:Y-m-d\TH:i',
+            'tgl_kepulangan_full' => 'required|date_format:Y-m-d\TH:i',
             'tujuan' => 'required|string|max:20',
             'alamat_penjemputan' => 'required|string|max:100',
             'jumlah_armada' => 'required|integer',
@@ -35,11 +34,25 @@ class OrderController extends Controller
             'uang_muka' => 'required|integer',
             'status_pembayaran' => 'required|integer',
             'sisa_pembayaran' => 'nullable|integer',
+            'metode_pembayaran' => 'required|string|max:10',
             'catatan_pembayaran' => 'nullable|string'
         ]);
 
+        // Pisahkan tanggal dan waktu keberangkatan
+        $tgl_keberangkatan = date('Y-m-d', strtotime($request->tgl_keberangkatan_full));
+        $jam_keberangkatan = date('H:i', strtotime($request->tgl_keberangkatan_full));
+
+        // Pisahkan tanggal dan waktu kepulangan
+        $tgl_kepulangan = date('Y-m-d', strtotime($request->tgl_kepulangan_full));
+        $jam_kepulangan = date('H:i', strtotime($request->tgl_kepulangan_full));
+
         // Simpan data order ke database
-        $orderData = $request->except('_token');
+        $orderData = $request->except('_token', 'tgl_keberangkatan_full', 'tgl_kepulangan_full');
+        $orderData['tgl_keberangkatan'] = $tgl_keberangkatan;
+        $orderData['jam_keberangkatan'] = $jam_keberangkatan;
+        $orderData['tgl_kepulangan'] = $tgl_kepulangan;
+        $orderData['jam_kepulangan'] = $jam_kepulangan;
+
         $order = SP::create($orderData);
 
         // Generate SPJ
@@ -74,6 +87,12 @@ class OrderController extends Controller
             'id_sj' => $sj->id_sj,
         ]);
 
-        return redirect()->route('order.create')->with('success', 'Pesanan berhasil disimpan');
+        return redirect()->route('pesanan')->with('success', 'Pesanan berhasil disimpan');
     }
-} -->
+    public function destroy($id)
+    {
+        $sp = SP::findOrFail($id);
+        $sp->delete();
+        return redirect()->route('pesanan')->with('success', 'Pesanan berhasil dihapus');
+    }
+}
