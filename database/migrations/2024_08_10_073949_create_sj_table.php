@@ -1,20 +1,17 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateSjTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('sj', function (Blueprint $table) {
-            $table->id();
-            $table->string('seri_armada', 10);
+            $table->id('id_sj');
+            $table->unsignedBigInteger('id_sp');
+            $table->foreign('id_sp')->references('id_sp')->on('sp')->onDelete('cascade');
             $table->integer('nilai_kontrak');
             $table->string('kmsebelum', 255);
             $table->string('kmtiba', 255)->nullable();
@@ -25,11 +22,6 @@ class CreateSjTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('sj');

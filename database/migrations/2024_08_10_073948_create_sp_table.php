@@ -6,15 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSpTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('sp', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_sp');
             $table->string('nama_pemesan', 50);
             $table->string('pj_rombongan', 50);
             $table->string('no_telppn', 12);
@@ -31,18 +26,13 @@ class CreateSpTable extends Migration
             $table->integer('total_biaya');
             $table->integer('uang_muka');
             $table->integer('status_pembayaran');
-            $table->integer('sisa_pembayaran')->nullable();
             $table->string('metode_pembayaran', 10);
+            $table->integer('sisa_pembayaran')->nullable();
             $table->text('catatan_pembayaran')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('sp');
