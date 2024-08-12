@@ -7,13 +7,17 @@ class SPJ extends Model
 {
     protected $table = 'spj';
     protected $fillable = [
-        'nolambung', 'SaldoEtollawal', 'SaldoEtollakhir', 'PenggunaanToll', 'uanglainlain', 
+        'id_sj','nolambung', 'SaldoEtollawal', 'SaldoEtollakhir', 'PenggunaanToll', 'uanglainlain', 
         'uangmakan', 'idkonsumbbm', 'sisabbm', 'totalisibbm', 'sisasaku', 'totalsisa'
     ];
     public $timestamps = true;
 
-    public function sp()
+    public function sj()
     {
-        return $this->hasOne(SP::class, 'id_spj');
+        return $this->belongsTo(SJ::class);
+    }
+    public function konsumbbm()
+    {
+        return $this->hasMany(konsumbbm::class);
     }
 }

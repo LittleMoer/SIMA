@@ -21,7 +21,8 @@ class CreateSpTable extends Migration
             $table->string('tujuan', 20);
             $table->string('alamat_penjemputan', 100);
             $table->integer('jumlah_armada');
-            $table->integer('nilai_kontrak');
+            $table->integer('nilai_kontrak1');
+            $table->integer('nilai_kontrak2')->nullable();
             $table->integer('biaya_tambahan');
             $table->integer('total_biaya');
             $table->integer('uang_muka');

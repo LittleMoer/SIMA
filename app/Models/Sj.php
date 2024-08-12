@@ -8,12 +8,12 @@ class SJ extends Model
 {
     protected $table = 'sj';
     protected $fillable = [
-        'seri_armada', 'nilai_kontrak', 'kmsebelum', 'kmtiba', 'kasbonbbm', 'kasbonmakan', 'lainlain'
+        'id_sp','seri_armada', 'nilai_kontrak', 'kmsebelum', 'kmtiba', 'kasbonbbm', 'kasbonmakan', 'lainlain'
     ];
     public $timestamps = true;
 
     public function sp()
     {
-        return $this->hasOne(SP::class, 'id_sj');
+        return $this->belongsTo(SP::class);
     }
 }

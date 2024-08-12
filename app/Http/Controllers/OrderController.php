@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KonsumBbm;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\SP;
 use App\Models\SPJ;
@@ -16,29 +18,30 @@ class OrderController extends Controller
     }
     
     public function store(Request $request)
-    {
-        // Validate request
-        $request->validate([
-            'nama_pemesan' => 'required|string|max:50',
-            'pj_rombongan' => 'required|string|max:50',
-            'no_telppn' => 'required|string|max:12',
-            'no_telpps' => 'required|string|max:12',
-            'tgl_keberangkatan_full' => 'required|date_format:Y-m-d\TH:i',
-            'tgl_kepulangan_full' => 'required|date_format:Y-m-d\TH:i',
-            'tujuan' => 'required|string|max:20',
-            'alamat_penjemputan' => 'required|string|max:100',
-            'jumlah_armada' => 'required|integer',
-            'nilai_kontrak' => 'required|integer',
-            'biaya_tambahan' => 'nullable|integer',
-            'total_biaya' => 'required|integer',
-            'uang_muka' => 'required|integer',
-            'status_pembayaran' => 'required|integer',
-            'sisa_pembayaran' => 'nullable|integer',
-            'metode_pembayaran' => 'required|string|max:10',
-            'catatan_pembayaran' => 'nullable|string'
-        ]);
-    
-        // Extract date and time from input
+{
+    // Validate request
+    $request->validate([
+        'nama_pemesan' => 'required|string|max:50',
+        'pj_rombongan' => 'required|string|max:50',
+        'no_telppn' => 'required|string|max:12',
+        'no_telpps' => 'required|string|max:12',
+        'tgl_keberangkatan_full' => 'required|date_format:Y-m-d\TH:i',
+        'tgl_kepulangan_full' => 'required|date_format:Y-m-d\TH:i',
+        'tujuan' => 'required|string|max:20',
+        'alamat_penjemputan' => 'required|string|max:100',
+        'jumlah_armada' => 'required|integer',
+        'nilai_kontrak1' => 'required|integer',
+        'nilai_kontrak2' => 'nullable|integer',
+        'biaya_tambahan' => 'nullable|integer',
+        'total_biaya' => 'required|integer',
+        'uang_muka' => 'required|integer',
+        'status_pembayaran' => 'required|integer',
+        'sisa_pembayaran' => 'nullable|integer',
+        'metode_pembayaran' => 'required|string|max:10',
+        'catatan_pembayaran' => 'nullable|string'
+    ]);
+
+    // Extract date and time from input
     $tgl_keberangkatan = date('Y-m-d', strtotime($request->tgl_keberangkatan_full));
     $jam_keberangkatan = date('H:i', strtotime($request->tgl_keberangkatan_full));
     $tgl_kepulangan = date('Y-m-d', strtotime($request->tgl_kepulangan_full));
@@ -51,49 +54,158 @@ class OrderController extends Controller
     $orderData['tgl_kepulangan'] = $tgl_kepulangan;
     $orderData['jam_kepulangan'] = $jam_keberangkatan;
 
-// Create the SP record first
-$order = SP::create($orderData);
+    // Create the SP record
+    $order = SP::create($orderData);
 
-// Create the required SJ and SPJ records as many as "jumlah armada"
-for ($i = 0; $i < $request->jumlah_armada; $i++) {
-    // Create SJ
-    $sj = SJ::create([
-        'id_sp' => $order->id, // Associate SJ with the SP record
-        'nilai_kontrak' => $request->nilai_kontrak,
-        'kmsebelum' => '0',
-        'kmtiba' => '0',
-        'kasbonbbm' => '0',
-        'kasbonmakan' => '0',
-        'lainlain' => '0'
+    
+        // Create the required SJ and SPJ records as many as "jumlah armada"
+        for ($i = 0; $i < $request->jumlah_armada; $i++) {
+            // Generate a random 4-digit number for id_sj and id_spj
+            $randomId = mt_rand(1000, 9999);
+    
+            // Create SJ
+            $sj = SJ::create([
+                'id_sj' => $randomId, 
+                'id_sp' => $order->id, 
+                'nilai_kontrak' => $request->nilai_kontrak1,
+                'kmsebelum' => '0',
+                'kmtiba' => '0',
+                'kasbonbbm' => '0',
+                'kasbonmakan' => '0',
+                'lainlain' => '0'
+            ]);
+    
+            // Create a new KonsumBbm record and get its ID
+            $konsumBbm = KonsumBbm::create([
+                'idkonsumbbm' => $randomId, 
+                'isiBBM' => null,           
+                'tanggal' => null,
+                'lokasiisi' => null,
+                'totalbayar' => null,
+            ]);
+    
+            // Create SPJ and link it to the SJ records
+            SPJ::create([
+                'id_spj' => $randomId,
+                'id_sj' => $sj->id,
+                'SaldoEtollawal' => 0,
+                'SaldoEtollakhir' => 0,
+                'PenggunaanToll' => 0,
+                'uanglainlain' => 0,
+                'uangmakan' => 0,
+                'idkonsumbbm' => $konsumBbm->idkonsumbbm,
+                'sisabbm' => 0,
+                'totalisibbm' => 0,
+                'sisasaku' => 0,
+                'totalsisa' => 0,
+                'id_sp' => $order->id 
+            ]);
+        }
+    
+        return redirect()->route('pesanan')->with('success', 'Pesanan berhasil disimpan');
+    }
+
+    public function updateSP(Request $request, $id)
+{
+    $request->validate([
+        'nama_pemesan' => 'required|string|max:50',
+        'pj_rombongan' => 'required|string|max:50',
+        'no_telppn' => 'required|string|max:12',
+        'no_telpps' => 'required|string|max:12',
+        'tgl_keberangkatan_full' => 'required|date_format:Y-m-d\TH:i',
+        'tgl_kepulangan_full' => 'required|date_format:Y-m-d\TH:i',
+        'tujuan' => 'required|string|max:20',
+        'alamat_penjemputan' => 'required|string|max:100',
+        'jumlah_armada' => 'required|integer',
+        'nilai_kontrak1' => 'required|integer',
+        'nilai_kontrak2' => 'nullable|integer',
+        'biaya_tambahan' => 'nullable|integer',
+        'total_biaya' => 'required|integer',
+        'uang_muka' => 'required|integer',
+        'status_pembayaran' => 'required|integer',
+        'sisa_pembayaran' => 'nullable|integer',
+        'metode_pembayaran' => 'required|string|max:10',
+        'catatan_pembayaran' => 'nullable|string'
     ]);
 
-    // Create a new KonsumBbm record and get its ID
-    // $konsumBbm = KonsumBbm::create([
-    //     'isiBBM' => 0,
-    //     'tanggal' => now(),
-    //     'lokasiisi' => 'Auto-generated',
-    //     'totalbayar' => 0,
-    // ]);
+    $sp = SP::findOrFail($id);
+    $sp->update($request->except('_token', '_method', 'tgl_keberangkatan_full', 'tgl_kepulangan_full'));
 
-    // Create SPJ and link it to the SJ records
-    SPJ::create([
-        'id_sj' => $sj->id, // Associate SPJ with the SJ record
-        'SaldoEtollawal' => 0,
-        'SaldoEtollakhir' => 0,
-        'PenggunaanToll' => 0,
-        'uanglainlain' => 0,
-        'uangmakan' => 0,
-        // 'idkonsumbbm' => $konsumBbm->id, // Associate SPJ with the KonsumBbm record
-        'sisabbm' => 0,
-        'totalisibbm' => 0,
-        'sisasaku' => 0,
-        'totalsisa' => 0,
-        'id_sp' => $order->id // Associate SPJ with the SP record
+    // Update date and time separately
+    $tgl_keberangkatan = date('Y-m-d', strtotime($request->tgl_keberangkatan_full));
+    $jam_keberangkatan = date('H:i', strtotime($request->tgl_keberangkatan_full));
+    $tgl_kepulangan = date('Y-m-d', strtotime($request->tgl_kepulangan_full));
+    $jam_kepulangan = date('H:i', strtotime($request->tgl_kepulangan_full));
+
+    $sp->update([
+        'tgl_keberangkatan' => $tgl_keberangkatan,
+        'jam_keberangkatan' => $jam_keberangkatan,
+        'tgl_kepulangan' => $tgl_kepulangan,
+        'jam_kepulangan' => $jam_kepulangan,
     ]);
+
+    return redirect()->route('pesanan')->with('success', 'SP berhasil diperbarui');
 }
 
-return redirect()->route('pesanan')->with('success', 'Pesanan berhasil disimpan');
+public function updateSJ(Request $request, $id)
+{
+    $request->validate([
+        'nilai_kontrak' => 'required|integer',
+        // Add any other validation rules if necessary
+    ]);
+
+    $sj = SJ::findOrFail($id);
+    $sj->update($request->only('nilai_kontrak'));
+
+    return redirect()->route('pesanan')->with('success', 'SJ berhasil diperbarui');
 }
+
+public function updateSPJ(Request $request, $id)
+{
+    $request->validate([
+        'SaldoEtollawal' => 'required|integer',
+        'SaldoEtollakhir' => 'required|integer',
+        // Add other validation rules as needed
+    ]);
+
+    $spj = SPJ::findOrFail($id);
+    $spj->update($request->only([
+        'SaldoEtollawal',
+        'SaldoEtollakhir',
+        'PenggunaanToll',
+        'uanglainlain',
+        'uangmakan',
+        'sisabbm',
+        'totalisibbm',
+        'sisasaku',
+        'totalsisa',
+    ]));
+
+    return redirect()->route('pesanan')->with('success', 'SPJ berhasil diperbarui');
+}
+
+public function updateKonsumBbm(Request $request, $id)
+{
+    $request->validate([
+        'isiBBM' => 'required|integer',
+        'tanggal' => 'required|date',
+        'lokasiisi' => 'required|string|max:100',
+        'totalbayar' => 'required|integer',
+    ]);
+
+    $konsumBbm = KonsumBbm::findOrFail($id);
+    $konsumBbm->update($request->only([
+        'isiBBM',
+        'tanggal',
+        'lokasiisi',
+        'totalbayar',
+    ]));
+
+    return redirect()->route('pesanan')->with('success', 'KonsumBBM berhasil diperbarui');
+}
+
+
+
     public function destroy($id)
     {
         $sp = SP::findOrFail($id);

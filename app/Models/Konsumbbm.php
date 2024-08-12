@@ -20,4 +20,5 @@ class KonsumBbm extends Model
         'lokasiisi',
         'totalbayar',
     ];
+    
 }
