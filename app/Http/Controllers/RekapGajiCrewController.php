@@ -37,31 +37,46 @@ class RekapGajiCrewController extends Controller
         $request->validate([
             'id_armada' => 'required|string',
         ]);
-
+    
         $armada = Armada::findOrFail($request->id_armada);
-        
+    
         // Fetch SPJ records associated with the selected Armada
         $spjRecords = SPJ::where('id_armada', $armada->id_armada)->get();
-
-        // dd($spjRecords);
+    
+        // Clear existing records if needed
+        RekapGajiCrew::where('crew', $armada->id_armada)->delete();
+    
         foreach ($spjRecords as $spj) {
+            // Retrieve the related SJ record
+            $sj = SJ::where('id_sj', $spj->id_sj)->first();
+    
+            // Retrieve the related SP record
+            $sp = SP::where('id_sp', $sj->id_sp)->first();
+    
+            // Calculate or fetch required values
+            $nilaiKontrak = $sj->nilai_kontrak;
+            $totalOperasional = $spj ? $spj->total_operasional : 0;
+            $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional; // Example calculation
+            $totalGaji = $nilaiKontrak; // Modify as per actual calculation
+    
             // Create a new Rekap Gaji Crew entry
             RekapGajiCrew::create([
                 'nama' => $armada->driver, // or codriver
-                'crew' => $armada->id_armada, 
+                'crew' => $armada->id_armada,
                 'bulan' => date('F'),
-                'no' => $spj->id,
-                'tanggal' => $spj->created_at->format('Y-m-d'), // Assuming 'created_at' as the departure date
-                'pj_rombongan' => $spj->pj_rombongan, // or fetch from related SPJ record
-                'nilai_kontrak' => $spj->nilai_kontrak,
-                'total_operasional' => $spj->total_operasional,
-                'sisa_nilai_kontrak' => $spj->sisa_nilai_kontrak,
-                'total_gaji' => $spj->nilai_kontrak, // Modify as per actual calculation
+                'no' => RekapGajiCrew::count() + 1,
+                'tanggal' => $spj->created_at->format('Y-m-d'),
+                'pj_rombongan' => $sp->pj_rombongan ?? 'Unknown',
+                'nilai_kontrak' => $nilaiKontrak,
+                'total_operasional' => $totalOperasional,
+                'sisa_nilai_kontrak' => $sisaNilaiKontrak,
+                'total_gaji' => $totalGaji,
             ]);
         }
-
+    
         return redirect()->route('rekap.gaji.show', ['id_armada' => $armada->id_armada])
                          ->with('success', 'Rekap Gaji Crew berhasil di-generate');
     }
+      
 }
 
