@@ -4,7 +4,7 @@
     <title>Rekap Gaji Crew</title>
 </head>
 <body>
-    <h2>Rekap Gaji Crew for Armada: {{ $armada->id_armada }}</h2>
+    <h2>Rekap Gaji Crew JSP - {{ $armada->id_armada }}</h2>
     <h2>Nama Crew: {{ $armada->driver }} dan {{ $armada->codriver }}</h2>
     <h2>Rekap Bulan: {{ \Carbon\Carbon::parse($rekapGaji->first()->tanggal)->format('F Y') }}</h2>
     
