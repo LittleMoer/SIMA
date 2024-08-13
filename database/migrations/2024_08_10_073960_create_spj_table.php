@@ -19,8 +19,7 @@ class CreateSpjTable extends Migration
             $table->integer('PenggunaanToll')->nullable();
             $table->integer('uanglainlain')->nullable();
             $table->integer('uangmakan')->nullable();
-            $table->unsignedBigInteger('idkonsumbbm');
-            $table->foreign('idkonsumbbm')->references('idkonsumbbm')->on('konsum_bbm')->onDelete('cascade');
+            $table->Integer('idkonsumbbm');
             $table->integer('sisabbm')->nullable();
             $table->integer('totalisibbm')->nullable();
             $table->integer('sisasaku')->nullable();

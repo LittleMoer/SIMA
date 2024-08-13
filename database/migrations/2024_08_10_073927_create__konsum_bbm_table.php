@@ -9,7 +9,7 @@ class CreateKonsumBbmTable extends Migration
     public function up()
     {
         Schema::create('konsum_bbm', function (Blueprint $table) {
-            $table->id('idkonsumbbm');
+            $table->integer('idkonsumbbm');
             $table->integer('isiBBM')->nullable();
             $table->date('tanggal')->nullable();
             $table->string('lokasiisi')->nullable();

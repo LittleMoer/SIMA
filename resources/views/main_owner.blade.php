@@ -52,7 +52,7 @@
             <a class="nav-link fw-medium" href="{{ url('/jadwal_owner') }}">Jadwal</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="#landingContact">Rekap Gaji Crew</a>
+            <a class="nav-link fw-medium" href="{{ url('/rekap-gaji-crew') }}">Rekap Gaji Crew</a>
           </li>
           <li class="nav-item">
             <a class="nav-link fw-medium" href="{{ url('/manajemen_akun') }}">Manajemen Akun</a>
