@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SP extends Model
 {
+    protected $primaryKey = 'id_sp';
     protected $table = 'sp';
     protected $fillable = [
         'nama_pemesan', 'no_telppn', 'pj_rombongan', 'no_telpps', 'tujuan', 'alamat_penjemputan', 

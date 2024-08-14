@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
 //order sp
 Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
 Route::post('/store', [OrderController::class, 'store'])->name('order.store');
-Route::delete('/pesanan', [OrderController::class, 'destroy'])->name('order.destroy');
+Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
 Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'index'])->name('rekap.gaji.index');
 Route::post('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
 Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generatePayrollSummary'])->name('rekap.gaji.generate');

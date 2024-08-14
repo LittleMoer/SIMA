@@ -219,10 +219,16 @@ public function updateKonsumBbm(Request $request, $id)
 
 
 
-    public function destroy($id)
-    {
-        $sp = SP::findOrFail($id);
-        $sp->delete();
-        return redirect()->route('pesanan')->with('success', 'Pesanan berhasil dihapus');
+public function destroy($id)
+{
+    // Find the SP record by its id
+    $order = SP::where('id_sp', $id)->firstOrFail();
+    // Attempt to delete the record
+    try {
+        $order->delete();
+        return redirect()->route('pesanan')->with('success', 'Order deleted successfully.');
+    } catch (\Exception $e) {
+        return redirect()->route('pesanan')->with('error', 'Failed to delete order: ' . $e->getMessage());
     }
+}
 }
