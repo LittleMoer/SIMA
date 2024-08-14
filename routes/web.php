@@ -35,6 +35,13 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
 Route::post('/store', [OrderController::class, 'store'])->name('order.store');
 Route::delete('/pesanan', [OrderController::class, 'destroy'])->name('order.destroy');
+//detail pesanan
+Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
+Route::post('/detail_pesanan/{id}', [OrderController::class, 'updateSP'])->name('detail_pesanan');
+//view data pesanan
+Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
+
+
 Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'index'])->name('rekap.gaji.index');
 Route::post('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
 Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generatePayrollSummary'])->name('rekap.gaji.generate');

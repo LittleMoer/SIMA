@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SPJ extends Model
+class Spj extends Model
 {
     protected $table = 'spj';
     protected $fillable = [

@@ -81,12 +81,17 @@
 
 @yield('dashboard')
 
-@yield('data_sp')
+@yield('data_pesanan')
+
+@yield('detail_pesanan')
 
 @yield('manajemen_akun')
 
 @yield('tambah_akun')
 
+
+{{-- Hubungi diyan --}}
+@include('layouts.hubungi') 
 
 {{-- <Footer> --}}
   @include('layouts.footer')

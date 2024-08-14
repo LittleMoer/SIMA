@@ -1,4 +1,4 @@
-@section('data_sp')
+@section('data_pesanan')
 <script>
     function toggleCustomMethod() {
         const select = document.getElementById('metode-pembayaran');
@@ -80,14 +80,15 @@
                                             <td>{{ $order->tujuan }}</td>
                                             <td>{{ $order->alamat_penjemputan }}</td>
                                             <td>
-                                                <button class="btn btn-warning btn-sm edit-btn"
+                                                {{-- <button class="btn btn-warning btn-sm edit-btn"
                                                     data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop"
                                                     aria-controls="offcanvasBackdrop"
                                                     data-name="{{ $order->nama_pemesan }}"
                                                     data-email="{{ $order->email }}"
-                                                    data-role="{{ $order->role_id }}">Edit</button>
+                                                    data-role="{{ $order->role_id }}">Tinjau</button> --}}
+                                                <a href="{{ route('detail_pesanan', [ $order->id_sp]) }}" class="btn btn-warning btn-sm view-btn">Tinjau</a>
                                                 <form
-                                                    action="{{ route('order.destroy', $order->id) }}"
+                                                    action="{{ route('order.destroy', $order->id_sp) }}"
                                                     method="POST" style="display:inline-block;">
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"
@@ -310,23 +311,7 @@
 </section>
 <!-- Data SP: End -->
 
-<!-- Help Area: Start -->
-<section class="section-py bg-body">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6 text-center">
-                <h3>Terdapat Kendala?</h3>
-                <p class="mb-3"> Hubungi jika terdapat kendala dalam sistem ini.<br /> Hubungi kami selama jam kerja
-                    atau kirim email kapan saja, dan kami akan merespon secepat mungkin. </p>
-                <div class="d-flex justify-content-center flex-wrap gap-3">
-                    <a href="javascript:void(0);" class="btn btn-primary">Email</a>
-                    <a href="javascript:void(0);" class="btn btn-primary">Whats App</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Help Area: End -->
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const departureInput = document.getElementById('departure-datetime');

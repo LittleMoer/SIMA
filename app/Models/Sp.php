@@ -3,9 +3,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SP extends Model
+class Sp extends Model
 {
     protected $table = 'sp';
+    // protected $primaryKey = 'id_sp';
     protected $fillable = [
         'nama_pemesan', 'no_telppn', 'pj_rombongan', 'no_telpps', 'tujuan', 'alamat_penjemputan', 
         'jumlah_armada', 'nilai_kontrak1','nilai_kontrak2', 'biaya_tambahan', 'total_biaya', 'uang_muka', 'status_pembayaran',

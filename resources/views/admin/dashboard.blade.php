@@ -115,22 +115,7 @@
   </section>
   <!-- Fun facts: End -->
 <!-- Dashboard : End -->
-<!-- Help Area: Start -->
-<section class="section-py bg-body">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-6 text-center">
-        <h3>Terdapat Kendala?</h3>
-        <p class="mb-3"> Hubungi jika terdapat kendala dalam sistem ini.<br /> Hubungi kami selama jam kerja atau kirim email kapan saja, dan kami akan merespon secepat mungkin. </p>
-        <div class="d-flex justify-content-center flex-wrap gap-3">
-          <a href="javascript:void(0);" class="btn btn-primary">Email</a>
-          <a href="javascript:void(0);" class="btn btn-primary">Whats App</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Help Area: End -->
+
 @endsection
 
 @include('main_owner')

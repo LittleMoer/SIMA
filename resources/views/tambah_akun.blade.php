@@ -5,7 +5,7 @@
   <h5 class="text-center px-3 mb-0">Membuat akun baru untuk dapat akses masuk </h5>
 </section>
 
-<!-- Manajemen Akun: Start -->
+<!-- Tambah Akun Start -->
 <section>
   <!-- Form with Buttons -->
 <div style="padding: 30px 60px">
@@ -110,22 +110,9 @@
   <!--/ Form with Buttons -->
 </section>
 
-<!-- Manajemen Akun: End -->
+<!-- Tambah Akun End -->
 
-<!-- Help Area: Start -->
-<section class="section-py bg-body">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-6 text-center">
-        <h3>Terdapat Kendala?</h3>
-        <p class="mb-3">Hubungi jika terdapat kendala dalam sistem ini.<br />Hubungi kami selama jam kerja atau kirim email kapan saja, dan kami akan merespon secepat mungkin.</p>
-        <div class="d-flex justify-content-center flex-wrap gap-3">
-          <a href="https://wa.me/6281235177505" class="btn btn-primary">WhatsApp</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+
 <style type="text/css" media="print"> 
   div.no_print {display: none; } 
 </style>  
