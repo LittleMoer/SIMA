@@ -8,7 +8,7 @@ class Sj extends Model
 {
     protected $table = 'sj';
     protected $fillable = [
-        'id_sp','seri_armada', 'nilai_kontrak', 'kmsebelum', 'kmtiba', 'kasbonbbm', 'kasbonmakan', 'lainlain'
+        'id_sp','id_armada', 'nilai_kontrak', 'kmsebelum', 'kmtiba', 'kasbonbbm', 'kasbonmakan', 'lainlain'
     ];
     public $timestamps = true;
 
