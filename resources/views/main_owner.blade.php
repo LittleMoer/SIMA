@@ -89,6 +89,8 @@
 
 @yield('tambah_akun')
 
+@yield('rekap_gaji_crew')
+
 
 {{-- Hubungi diyan --}}
 @include('layouts.hubungi') 

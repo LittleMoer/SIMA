@@ -291,12 +291,12 @@ function printPreview() {
                     <tr>
                         <th rowspan="2">Jumlah Armada</th>
                         <td rowspan="2">{{ $sp->jumlah_armada }}</td>
-                        <td>Nilai Kontrak</td>
-                        <td>{{ $sp->nilai_kontrak }}</td>
+                        <td>Nilai Kontrak 1</td>
+                        <td>{{ $sp->nilai_kontrak1 }}</td>
                     </tr>
                     <tr>
-                        <td>Nilai Kontrak</td>
-                        <td>{{ $sp->nilai_kontrak1 }}</td>
+                        <td>Nilai Kontrak 2</td>
+                        <td>{{ $sp->nilai_kontrak2 }}</td>
                     </tr>
                     <tr>
                         <td>Biaya Tambahan</td>
@@ -317,7 +317,7 @@ function printPreview() {
                     <tr>
                         <td>Metode Pembayaran</td>
                         <td colspan="3">
-                            {{ $sp->custom_method }}
+                            {{ $sp->metode_pembayaran }}
                         </td>
                     </tr>
                     <tr>

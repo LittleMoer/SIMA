@@ -1,4 +1,5 @@
-@section('rekapgajicrew')
+@section('rekap_gaji_crew')
+
 <div class="container">
     <h2>Rekap Gaji Crew for Armada: {{ $armada->id_armada }}</h2>
     <table class="table table-bordered">

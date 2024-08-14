@@ -45,7 +45,7 @@
                   <span class="d-block mb-1">Tanggal hari ini</span>
                   
 
-                  <h3 class="card-title text-nowrap mb-2" id="current-date"></h3>
+                  <h4 class="card-title text-nowrap mb-2" id="current-date"></h4>
                 </div>
             </div>
           </div>

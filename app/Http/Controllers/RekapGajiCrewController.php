@@ -41,12 +41,12 @@ class RekapGajiCrewController extends Controller
         $armada = Armada::findOrFail($request->id_armada);
     
         // Fetch SPJ records associated with the selected Armada
-        $spjRecords = SPJ::where('id_armada', $armada->id_armada)->get();
+        $sjRecords = SJ::where('id_armada', $armada->id_armada)->get();
     
         // Clear existing records if needed
         RekapGajiCrew::where('crew', $armada->id_armada)->delete();
     
-        foreach ($spjRecords as $spj) {
+        foreach ($sjRecords as $spj) {
             // Retrieve the related SJ record
             $sj = SJ::where('id_sj', $spj->id_sj)->first();
     

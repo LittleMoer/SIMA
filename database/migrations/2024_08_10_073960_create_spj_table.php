@@ -12,8 +12,6 @@ class CreateSpjTable extends Migration
             $table->id('id_spj');
             $table->unsignedBigInteger('id_sj');
             $table->foreign('id_sj')->references('id_sj')->on('sj')->onDelete('cascade');
-            $table->unsignedBigInteger('id_armada')->nullable();
-            $table->foreign('id_armada')->references('id_armada')->on('armada')->onDelete('cascade');
             $table->integer('SaldoEtollawal')->nullable();
             $table->integer('SaldoEtollakhir')->nullable();
             $table->integer('PenggunaanToll')->nullable();

@@ -34,7 +34,6 @@ Route::middleware(['auth'])->group(function () {
 //order sp
 Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
 Route::post('/store', [OrderController::class, 'store'])->name('order.store');
-<<<<<<< HEAD
 Route::delete('/pesanan', [OrderController::class, 'destroy'])->name('order.destroy');
 //detail pesanan
 Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
@@ -43,17 +42,15 @@ Route::post('/detail_pesanan/{id}', [OrderController::class, 'updateSP'])->name(
 Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
 
 
-=======
 Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
->>>>>>> 5c6001b94d63f3032f1cb12a57ae4278fa4bf908
 Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'index'])->name('rekap.gaji.index');
 Route::post('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
 Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generatePayrollSummary'])->name('rekap.gaji.generate');
 
 Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
+Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
 Route::middleware(['auth'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
     Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
     Route::post('/manajemen_akun/{username}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/manajemen_akun/{username}', [UserController::class, 'destroy'])->name('users.destroy');

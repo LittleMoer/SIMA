@@ -153,9 +153,16 @@
                                 <!--Nilai Kontrak-->  
 
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="nilai_kontrak">Nilai Kontrak</label>
+                                    <label class="col-sm-2 form-label" for="nilai_kontrak">Nilai Kontrak 1</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="nilai_kontrak" id="nilai_kontrak" class="form-control" placeholder="Masukkan nilai kontrak" value="{{ $order->nilai_kontrak1 }}" aria-label="Nilai Kontrak" />
+                                        <input type="text" name="nilai_kontrak1" id="nilai_kontrak1" class="form-control" placeholder="Masukkan nilai kontrak" value="{{ $order->nilai_kontrak1 }}" aria-label="Nilai Kontrak" />
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label class="col-sm-2 form-label" for="nilai_kontrak">Nilai Kontrak 2</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="nilai_kontrak2" id="nilai_kontrak2" class="form-control" placeholder="Masukkan nilai kontrak" value="{{ $order->nilai_kontrak2 }}" aria-label="Nilai Kontrak" />
                                     </div>
                                 </div>
                                 
