@@ -90,6 +90,7 @@
                                                 <form
                                                     action="{{ route('order.destroy', $order->id_sp) }}"
                                                     method="POST" style="display:inline-block;">
+                                                    @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Are you sure you want to delete this order?')">Delete</button>
@@ -175,130 +176,141 @@
                                             </div>
                                         </div>
 
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="tujuan">Tujuan</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group input-group-merge">
-                                            <input type="text" name="tujuan" id="tujuan" class="form-control"
-                                                placeholder="Masukkan tujuan" aria-describedby="tujuan" />
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="tujuan">Tujuan</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group input-group-merge">
+                                                    <input type="text" name="tujuan" id="tujuan" class="form-control"
+                                                        placeholder="Masukkan tujuan" aria-describedby="tujuan" />
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="pickup-address">Alamat Penjemputan</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group input-group-merge">
-                                            <span id="pickup-address-icon" class="input-group-text"><i
-                                                    class="bx bx-map"></i></span>
-                                            <input type="text" name="alamat_penjemputan" id="alamat_penjemputan"
-                                                class="form-control" placeholder="Masukkan alamat penjemputan"
-                                                aria-describedby="pickup-address-icon" />
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="pickup-address">Alamat
+                                                Penjemputan</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group input-group-merge">
+                                                    <span id="pickup-address-icon" class="input-group-text"><i
+                                                            class="bx bx-map"></i></span>
+                                                    <input type="text" name="alamat_penjemputan" id="alamat_penjemputan"
+                                                        class="form-control" placeholder="Masukkan alamat penjemputan"
+                                                        aria-describedby="pickup-address-icon" />
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="jumlah-armada">Jumlah Armada</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" name="jumlah_armada" id="jumlah_armada"
-                                            class="form-control" placeholder="Masukkan jumlah armada"
-                                            aria-label="Jumlah Armada" />
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="nilai-kontrak1">Nilai Kontrak 1</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="nilai_kontrak1" id="nilai_kontrak1" class="form-control"
-                                            placeholder="Masukkan nilai kontrak 1" aria-label="Nilai Kontrak" />
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="nilai-kontrak2">Nilai Kontrak 2</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="nilai_kontrak2" id="nilai_kontrak2" class="form-control"
-                                            placeholder="Masukkan nilai kontrak 2" aria-label="Nilai Kontrak" />
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="biaya-tambahan">Biaya Tambahan</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="biaya_tambahan" id="biaya_tambahan"
-                                            class="form-control" placeholder="Masukkan biaya tambahan"
-                                            aria-label="Biaya Tambahan" />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="total-biaya">Total Biaya</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="total_biaya" id="total_biaya" class="form-control"
-                                            placeholder="Masukkan total biaya" aria-label="Total Biaya" />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="uang-muka">Uang Muka</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="uang_muka" id="uang_muka" class="form-control"
-                                            placeholder="Masukkan uang muka" aria-label="Uang Muka" />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="status_pembayaran">Status
-                                        Pembayaran</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group input-group-merge">
-                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                    class="bx bx-money"></i></span>
-                                            <select class="form-select @error('status_pembayaran') is-invalid @enderror"
-                                                id="status-pembayaran" name="status_pembayaran" required
-                                                onchange="toggleCustomMethod()">
-                                                <option value="">-- Pilih Status Pembayaran --</option>
-                                                <option value="1"
-                                                    {{ old('status_pembayaran') == 1 ? 'selected' : '' }}>
-                                                    Lunas</option>
-                                                <option value="2"
-                                                    {{ old('status_pembayaran') == 2 ? 'selected' : '' }}>
-                                                    DP</option>
-                                                <option value="3"
-                                                    {{ old('status_pembayaran') == 3 ? 'selected' : '' }}>
-                                                    Belum DP</option>
-                                            </select>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="jumlah-armada">Jumlah Armada</label>
+                                            <div class="col-sm-10">
+                                                <input type="number" name="jumlah_armada" id="jumlah_armada"
+                                                    class="form-control" placeholder="Masukkan jumlah armada"
+                                                    aria-label="Jumlah Armada" />
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="sisa_pembayaran">Sisa Pembayaran</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="sisa_pembayaran" id="sisa_pembayaran"
-                                            class="form-control" placeholder="Sisa pembayaran"
-                                            aria-label="Sisa Pembayaran" />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="metode_pembayaran">Metode Pembayaran</label>
-                                    <div class="col-sm-10">
-                                        <select name="metode_pembayaran" id="metode_pembayaran" class="form-control">
-                                            <option value="cash">Cash</option>
-                                            <option value="transfer">Transfer</option>
-                                            <option value="credit_card">Kartu Kredit</option>
-                                            <!-- Tambahkan opsi lainnya jika diperlukan -->
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 form-label" for="catatan_pembayaran">Catatan</label>
-                                    <div class="col-sm-10">
-                                        <textarea type="text" name="catatan_pembayaran" id="catatan_pembayaran"
-                                            class="form-control" placeholder="Masukkan catatan"
-                                            aria-label="catatan"></textarea>
-                                    </div>
-                                    <div class="row justify-content-end">
-                                        <div class="col-sm-10">
-                                            <button type="submit" class="btn btn-primary">Send</button>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="nilai-kontrak1">Nilai Kontrak
+                                                1</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="nilai_kontrak1" id="nilai_kontrak1"
+                                                    class="form-control" placeholder="Masukkan nilai kontrak 1"
+                                                    aria-label="Nilai Kontrak" />
+                                            </div>
                                         </div>
-                                    </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="nilai-kontrak2">Nilai Kontrak
+                                                2</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="nilai_kontrak2" id="nilai_kontrak2"
+                                                    class="form-control" placeholder="Masukkan nilai kontrak 2"
+                                                    aria-label="Nilai Kontrak" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="biaya-tambahan">Biaya
+                                                Tambahan</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="biaya_tambahan" id="biaya_tambahan"
+                                                    class="form-control" placeholder="Masukkan biaya tambahan"
+                                                    aria-label="Biaya Tambahan" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="total-biaya">Total Biaya</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="total_biaya" id="total_biaya"
+                                                    class="form-control" placeholder="Masukkan total biaya"
+                                                    aria-label="Total Biaya" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="uang-muka">Uang Muka</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="uang_muka" id="uang_muka" class="form-control"
+                                                    placeholder="Masukkan uang muka" aria-label="Uang Muka" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="status_pembayaran">Status
+                                                Pembayaran</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group input-group-merge">
+                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                            class="bx bx-money"></i></span>
+                                                    <select
+                                                        class="form-select @error('status_pembayaran') is-invalid @enderror"
+                                                        id="status-pembayaran" name="status_pembayaran" required
+                                                        onchange="toggleCustomMethod()">
+                                                        <option value="">-- Pilih Status Pembayaran --</option>
+                                                        <option value="1"
+                                                            {{ old('status_pembayaran') == 1 ? 'selected' : '' }}>
+                                                            Lunas</option>
+                                                        <option value="2"
+                                                            {{ old('status_pembayaran') == 2 ? 'selected' : '' }}>
+                                                            DP</option>
+                                                        <option value="3"
+                                                            {{ old('status_pembayaran') == 3 ? 'selected' : '' }}>
+                                                            Belum DP</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="sisa_pembayaran">Sisa
+                                                Pembayaran</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="sisa_pembayaran" id="sisa_pembayaran"
+                                                    class="form-control" placeholder="Sisa pembayaran"
+                                                    aria-label="Sisa Pembayaran" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="metode_pembayaran">Metode
+                                                Pembayaran</label>
+                                            <div class="col-sm-10">
+                                                <select name="metode_pembayaran" id="metode_pembayaran"
+                                                    class="form-control">
+                                                    <option value="cash">Cash</option>
+                                                    <option value="transfer">Transfer</option>
+                                                    <option value="credit_card">Kartu Kredit</option>
+                                                    <!-- Tambahkan opsi lainnya jika diperlukan -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 form-label" for="catatan_pembayaran">Catatan</label>
+                                            <div class="col-sm-10">
+                                                <textarea type="text" name="catatan_pembayaran" id="catatan_pembayaran"
+                                                    class="form-control" placeholder="Masukkan catatan"
+                                                    aria-label="catatan"></textarea>
+                                            </div>
+                                            <div class="row justify-content-end">
+                                                <div class="col-sm-10">
+                                                    <button type="submit" class="btn btn-primary">Send</button>
+                                                </div>
+                                            </div>
                                     </form>
                                 </div>
                             </div>
@@ -351,7 +363,7 @@
             if (selectedReturnDateTime < selectedDepartureDateTime) {
                 alert(
                     'Tanggal dan waktu kepulangan tidak boleh kurang dari tanggal dan waktu keberangkatan'
-                    );
+                );
                 returnInput.value = ''; // Reset the input
             }
         });

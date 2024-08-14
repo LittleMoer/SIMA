@@ -242,6 +242,7 @@ public function updateKonsumBbm(Request $request, $id)
 
 
 
+<<<<<<< HEAD
     // public function destroy($id)
     // {
     //     $sp = SP::findOrFail($id);
@@ -249,6 +250,9 @@ public function updateKonsumBbm(Request $request, $id)
     //     return redirect()->route('pesanan')->with('success', 'Pesanan berhasil dihapus');
     // }
     public function destroy($id)
+=======
+public function destroy($id)
+>>>>>>> 5c6001b94d63f3032f1cb12a57ae4278fa4bf908
 {
     // Find the SP record by its id
     $order = SP::where('id_sp', $id)->firstOrFail();
