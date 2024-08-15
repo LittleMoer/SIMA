@@ -9,11 +9,7 @@
 </section>
 
 <section>
-    {{-- @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif --}}
+
     <div class="row">
         <div class="col-xl-12">
            
@@ -23,14 +19,14 @@
                     <li class="nav-item">
                         <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
                             data-bs-target="#SuratPesanan" aria-controls="SuratPesanan"
-                            aria-selected="true">
+                            aria-selected="true"  href="#SuratPesanan">
                             <i class="tf-icons bx bx-file"></i> Surat Pesanan
                         </button>
                     </li>
                     <li class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                             data-bs-target="#SuratJalan" aria-controls="SuratJalan"
-                            aria-selected="false">
+                            aria-selected="false" href="#SuratJalan">
                             <i class="tf-icons bx bx-file"></i> Surat Jalan
                         </button>
                     </li>
@@ -43,18 +39,33 @@
                     </li>
 
                 </ul>
+                @if(session('success'))
+                <div id="success-alert" class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
 
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="SuratPesanan" role="tabpanel">
+                   {{-- Tab Surat Pemesanan --}}
+                    <div class="tab-pane fade show active" id="SuratPesanan" role="tabpanel">                     
                         <div class="container">
                          
-                            <div class="d-flex justify-content-end mb-4">
-                                <a href="{{ route('view',  $order->id_sp) }}" class="btn btn-primary">
-                                    <span class="tf-icons bx bx-show me-2"></span>Lihat SP
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>Surat Pemesanan {{ $order->id_sp }}</h2>
+                                <a href="#" onclick="printPreview('{{ route('view', $order->id_sp) }}'); return false;" class="btn btn-primary">
+                                    <span class="tf-icons bx bx-printer me-2"></span> Print SP
                                 </a>
                             </div>
+                            
+                            <script>
+                            function printPreview(url) {
+                                var printWindow = window.open(url, 'printWindow', 'width=800,height=600');
+                                printWindow.onload = function() {
+                                    printWindow.print();
+                                };
+                            }
+                            </script>
 
-                            <h2>Edit Surat Pesanan</h2>
                             <form action="{{ route('detail_pesanan',  $order->id_sp) }}" method="POST">
 
                                 @csrf
@@ -235,9 +246,122 @@
                             </form>
                         </div>
                     </div>
+                    {{-- Tab Surat Jalan --}}
                     <div class="tab-pane fade" id="SuratJalan" role="tabpanel">
+                        <div class="container">
+                         
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>Surat Jalan {{ $order->id_sp }}</h2>
+                                <a href="#" onclick="printPreview('{{ route('viewSJ', $order->id_sp) }}'); return false;" class="btn btn-primary">
+                                    <span class="tf-icons bx bx-printer me-2"></span> Print SJ
+                                </a>
+                            </div>
+                            
+                            <script>
+                            function printPreview(url) {
+                                var printWindow = window.open(url, 'printWindow', 'width=800,height=600');
+                                printWindow.onload = function() {
+                                    printWindow.print();
+                                };
+                            }
+                            </script>
+
+                            <form action="{{ route('detail_pesanan',  $order->id_sp) }}" method="POST">
+
+                                @csrf
+                                @method('POST')
+                                
+                                 <!-- Armada -->
+                                 <div class="row mb-3">
+                                    <label class="col-sm-2 col-form-label" for="id_armada">Armada</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group input-group-merge">
+                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-bus"></i></span>
+                                     {{-- <select name="id_armada" id="id_armada" required>
+                                        @foreach($sjs as $sj)
+                                        <option value="{{ $sj->id_armada }}">{{ $sj->id_armada }} </option>
+                                        @endforeach
+                                    </select> --}}
+                                    
+                                    <select class="form-select @error('id_armada') is-invalid @enderror" id="id_armada" name="id_armada" required>
+                                        <option value="">{{ $datasj->id_armada }} </option>
+                                        <option value="101" {{ $datasj->id_armada == 1 ? 'selected' : '' }}>101</option>
+                                        <option value="102" {{ $datasj->id_armada== 2 ? 'selected' : '' }}>102</option>
+                                        <option value="103" {{ $datasj->id_armada== 3 ? 'selected' : '' }}>103</option>
+                                    </select>
+                                </div>
+                                    </div>
+                                </div>
+
+                                <!-- Nilai Kontrak -->
+                                <div class="row mb-3">
+                                    <label class="col-sm-2 form-label" for="nilai_kontrak">Nilai Kontrak </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="nilai_kontrak" id="nilai_kontrak" class="form-control" placeholder="Masukkan nilai kontrak" value="{{ $datasj->nilai_kontrak }}" aria-label="Nilai Kontrak" />
+                                    </div>
+                                </div>
+                    
+                                <!-- KM Sebelum  -->
+                                <div class="row mb-3">
+                                    <label for="kmsebelum" class="col-sm-2 col-form-label form-label">KM saat Berangkat</label>
+                                    <div class="col-sm-10 ">
+                                        <div class="input-group input-group-merge">
+                                        <input type="text" class="form-control" name="kmsebelum" value="{{ $datasj->kmsebelum }}">
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                                <!-- KM Tiba -->
+                                <div class="row mb-3">
+                                    <label for="no_telppn" class="col-sm-2 col-form-label form-label">KM saat Tiba</label>
+                                    <div class="col-sm-10 ">
+                                        <div class="input-group input-group-merge">
+                                        <input type="text" class="form-control" name="kmtiba" value="{{ $datasj->kmtiba }}">
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                                <!-- Kasbon BBM -->
+                                <div class="row mb-3">
+                                    <label for="kasbonbbm" class="col-sm-2 col-form-label form-label">Kasbon BBM</label>
+                                    <div class="col-sm-10 ">
+                                        <div class="input-group input-group-merge">
+                                        <input type="text" class="form-control" name="kasbonbbm" value="{{ $datasj->kasbonbbm}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Kasbon Makan -->
+                                <div class="row mb-3">
+                                    <label for="kasbonmakan" class="col-sm-2 col-form-label form-label">Kasbon Makan</label>
+                                    <div class="col-sm-10 ">
+                                        <div class="input-group input-group-merge">
+                                        <input type="text" class="form-control" name="kasbonmakan" value="{{ $datasj->kasbonmakan}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Lain-lain -->
+                                <div class="row mb-3">
+                                    <label for="lainlain" class="col-sm-2 col-form-label form-label">Lain-lain</label>
+                                    <div class="col-sm-10 ">
+                                        <div class="input-group input-group-merge">
+                                        <input type="text" class="form-control" name="lainlain" value="{{ $datasj->lainlain}}">
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                    
+                                <!-- Button Submit -->
+                                <div class="d-flex justify-content-end mb-4">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                </div>
+                            </form>
+                        </div>
                         
                     </div>
+
+                     {{-- Tab Surat Perintah Jalan --}}
                     <div class="tab-pane fade" id="SuratPerintahJalan" role="tabpanel">
                         
                     </div>
@@ -296,9 +420,46 @@
 <script>
 
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alert = document.getElementById('success-alert');
+        if (alert) {
+            setTimeout(() => {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = 0;
+                setTimeout(() => {
+                    alert.remove();
+                }, 500); // Waktu untuk menghapus elemen setelah efek transisi
+            }, 2000); // Menampilkan pesan selama 2 detik
+        }
+    });
+    </script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('.nav-link');
 
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-bs-target');
+                if (targetId) {
+                    history.pushState(null, null, targetId);
+                }
+            });
+        });
 
+        // Handle URL hash on page load
+        const hash = window.location.hash;
+        if (hash) {
+            const targetTab = document.querySelector(`.nav-link[data-bs-target="${hash}"]`);
+            if (targetTab) {
+                const tab = new bootstrap.Tab(targetTab);
+                tab.show();
+            }
+        }
+    });
+</script>
 @endsection
 
 @include('main_owner')

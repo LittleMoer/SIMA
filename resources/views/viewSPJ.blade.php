@@ -238,8 +238,8 @@
                 </div>
     
                 <div class="order-title" >
-                    <h5><b>SURAT PEMESANAN</b></h5>
-                    <p>No. {{ $sp->id_sp }}</p>
+                    <h5><b>SURAT JALAN</b></h5>
+                    <p>No. {{ $sj->id_sj }}</p>
                 </div>
                 <tbody>
                     <tr>
@@ -275,45 +275,38 @@
                         <td colspan="3">{{ $sp->alamat_penjemputan }}</td>
                     </tr>
                     <tr>
-                        <th rowspan="2">Jumlah Armada</th>
-                        <td rowspan="2">{{ $sp->jumlah_armada }}</td>
+                        <th rowspan="2"> Armada</th>
+                        <td rowspan="2">{{ $sj->id_armada }}</td>
                         <td>Nilai Kontrak 1</td>
-                        <td>{{ $sp->nilai_kontrak1 }}</td>
+                        <td>{{ $sj->nilai_kontrak}}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>KM saat Berangkat</td>
+                        <td colspan="3">{{ $sj->kmsebelum}}</td>
                     </tr>
                     <tr>
-                        <td>Nilai Kontrak 2</td>
-                        <td>{{ $sp->nilai_kontrak2 }}</td>
+                        <td>KM saat Tiba</td>
+                        <td colspan="3">{{ $sj->kmtiba }}</td>
                     </tr>
                     <tr>
-                        <td>Biaya Tambahan</td>
-                        <td colspan="3">{{ $sp->biaya_tambahan }}</td>
+                        <td>Kasbon BBM</td>
+                        <td colspan="3">{{ $sj->kasbonbbm }}</td>
                     </tr>
                     <tr>
-                        <td>Total Biaya</td>
-                        <td colspan="3">{{ $sp->total_biaya }}</td>
+                        <td>Kasbon uang makan</td>
+                        <td colspan="3">{{ $sj->kasbonmakan }}</td>
                     </tr>
                     <tr>
-                        <td>Uang Muka</td>
-                        <td colspan="3">{{ $sp->uang_muka }}</td>
-                    </tr>
-                    <tr>
-                        <td>Sisa Pembayaran</td>
-                        <td colspan="3">{{ $sp->sisa_pembayaran }}</td>
-                    </tr>
-                    <tr>
-                        <td>Metode Pembayaran</td>
+                        <td>Lain-lain</td>
                         <td colspan="3">
-                            {{ $sp->metode_pembayaran }}
+                            {{ $sj->lainlain}}
                         </td>
-                    </tr>
-                    <tr>
-                        <td>Catatan Lainnya</td>
-                        <td colspan="3">{{ $sp->catatan_pembayaran }}</td>
                     </tr>
                 </tbody>
             </table>
     
-            <div class="signature-container">
+            <div class="signature-container" >
                 <div class="signaturePemesan">
                     Pemesan<br><br><br><br><br>
                     (____________________)

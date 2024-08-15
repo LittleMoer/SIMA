@@ -36,22 +36,29 @@ Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
 Route::post('/store', [OrderController::class, 'store'])->name('order.store');
 Route::delete('/pesanan', [OrderController::class, 'destroy'])->name('order.destroy');
 //detail pesanan
-Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
+Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail','index'])->name('detail_pesanan');
 Route::post('/detail_pesanan/{id}', [OrderController::class, 'updateSP'])->name('detail_pesanan');
-//view data pesanan
+//view data SP
 Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
-
-
+//view data SJ
+Route::get('/viewSJ/{id}', [OrderController::class, 'viewSJ'])->name('viewSJ');
 Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
+
+//Rekap Gaji
 Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'index'])->name('rekap.gaji.index');
 Route::post('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
 Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generatePayrollSummary'])->name('rekap.gaji.generate');
+// // FE Rekap Gaji
+// Route::get('/rekap_gaji_crew', function () {
+//     return view('rekap_gaji_crew');
+// });
 
 Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
 Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
+Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
+Route::post('/manajemen_akun/{username}', [UserController::class, 'update'])->name('user.update');
+Route::delete('/manajemen_akun/{username}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::middleware(['auth'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
-    Route::post('/manajemen_akun/{username}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/manajemen_akun/{username}', [UserController::class, 'destroy'])->name('users.destroy');
+   
 });

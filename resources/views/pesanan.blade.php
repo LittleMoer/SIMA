@@ -34,7 +34,7 @@
 
 <!-- Data SP: Start -->
 <!-- Manajemen Akun: Start -->
-<section id="landingFunFacts">
+<section>
     <!-- DataTable with Buttons -->
     <div class="row">
         <div class="col-xl-12">
@@ -79,13 +79,7 @@
                                             <td>{{ $order->tgl_keberangkatan }}</td>
                                             <td>{{ $order->tujuan }}</td>
                                             <td>{{ $order->alamat_penjemputan }}</td>
-                                            <td>
-                                                {{-- <button class="btn btn-warning btn-sm edit-btn"
-                                                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop"
-                                                    aria-controls="offcanvasBackdrop"
-                                                    data-name="{{ $order->nama_pemesan }}"
-                                                    data-email="{{ $order->email }}"
-                                                    data-role="{{ $order->role_id }}">Tinjau</button> --}}
+                                            <td>                                                
                                                 <a href="{{ route('detail_pesanan', [ $order->id_sp]) }}" class="btn btn-warning btn-sm view-btn">Tinjau</a>
                                                 <form
                                                     action="{{ route('order.destroy', $order->id_sp) }}"

@@ -14,7 +14,8 @@ class OrderController extends Controller
     public function index()
     {
         $sp = SP::all(); 
-        return view('pesanan', compact('sp'));  // Mengirimkan data ke view
+        $sjs = SJ::all(); 
+        return view('pesanan', compact('sp', 'sjs'));  // Mengirimkan data ke view
     }
     
     public function store(Request $request)
@@ -70,11 +71,11 @@ class OrderController extends Controller
                 'id_sj' => $randomId, 
                 'id_sp' => $order->id_sp, 
                 'nilai_kontrak' => $nilaiKontrak,
-                'kmsebelum' => '0',
-                'kmtiba' => '0',
-                'kasbonbbm' => '0',
-                'kasbonmakan' => '0',
-                'lainlain' => '0'
+                'kmsebelum' => null,
+                'kmtiba' => null,
+                'kasbonbbm' => null,
+                'kasbonmakan' => null,
+                'lainlain' => null
             ]);
             // Create a new KonsumBbm record and get its ID
             $konsumBbm = KonsumBbm::create([
@@ -112,10 +113,18 @@ public function view($id)
     return view('view', compact('sp'));
 }
 
+public function viewSJ($id)
+{
+    $sp = SP::where('id_sp', $id)->firstOrFail();
+    $sj = SJ::where('id_sp', $id)->firstOrFail();
+    return view('viewSJ', compact('sp', 'sj'));
+}
+
 public function detail($id)
 {
     $order = SP::where('id_sp', $id)->firstOrFail();
-    return view('detail_pesanan', compact('order'));
+    $datasj = SJ::where('id_sp', $id)->firstOrFail();
+    return view('detail_pesanan', compact('order', 'datasj'));
 }
     // Update data pesanan
     public function updateSP(Request $request, $id)

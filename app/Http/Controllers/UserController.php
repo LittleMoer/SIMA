@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Akun;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 
 class UserController extends Controller
 {
@@ -16,54 +18,34 @@ class UserController extends Controller
 
     public function update(Request $request, $username)
     {
-        // Cari user berdasarkan username
-        $user = Akun::where('username', $username)->firstOrFail();
-    
-        // Validasi dinamis
-        $validatedData = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
+        // Validasi input
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
             'email' => [
-                'sometimes',
                 'required',
                 'email',
-                function ($attribute, $value, $fail) use ($user) {
-                    // Validasi untuk domain gmail.com
-                    if (!str_ends_with($value, '@gmail.com')) {
-                        $fail('The email must be a Gmail address.');
-                    }
-    
-                    // Validasi untuk email yang sudah ada
-                    if ($value !== $user->email) {
-                        $exists = Akun::where('email', $value)
-                                       ->where('id_akun', '!=', $user->id_akun)
-                                       ->exists();
-                        if ($exists) {
-                            $fail('The email has already been taken.');
-                        }
-                    }
-                }
+                'max:255',
+                Rule::unique('akun')->ignore($username, 'username')
             ],
-            'role_id' => 'sometimes|required|integer',
+            'role_id' => 'required|integer'
         ]);
     
-        // Hanya mengisi field yang ada dalam permintaan
-        if ($request->has('email') && $request->input('email') === $user->email) {
-            // Jika email tidak diubah, hapus dari data yang akan diupdate
-            unset($validatedData['email']);
-        }
+        // Temukan akun berdasarkan username
+        $akun = Akun::where('username', $username)->firstOrFail();
     
-        $user->fill($validatedData);
+        // Update data akun
+        $akun->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role_id' => $request->role_id
+        ]);
     
-        // Tambahkan log untuk debug
-        Log::info('User data before save:', $user->toArray());
-    
-        // Simpan perubahan
-        $user->save();
-    
-        Log::info('User updated successfully.');
-    
-        return back()->with('success', 'User updated successfully.');
+        // Redirect dengan pesan sukses
+        return redirect()->route('manajemen_akun')->with('success', 'Akun berhasil diperbarui.');
     }
+    
+    
+    
     
     public function destroy($username)
     {

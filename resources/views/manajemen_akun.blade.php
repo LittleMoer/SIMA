@@ -131,8 +131,9 @@ $(document).ready(function(){
   <div class="offcanvas-body">
       <form id="editUserForm" action="{{ route('user.update', ['username' => $user->username]) }}" method="POST">
           @csrf
-          <div class="row mb-3">
-              <label class="col-sm-2 col-form-label" for="name">Name</label>
+          <input type="hidden" name="username" id="username"> 
+          <div class="row mb-3">         
+            <label class="col-sm-2 col-form-label" for="name">Name</label>
               <div class="col-sm-10">
                   <div class="input-group input-group-merge">
                       <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
@@ -185,28 +186,29 @@ $(document).ready(function(){
 });  
 </script>  
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-      const editButtons = document.querySelectorAll('.edit-btn');
-      const form = document.getElementById('editUserForm');
-      
-      editButtons.forEach(button => {
-          button.addEventListener('click', function () {
-              const name = this.getAttribute('data-name');
-              const email = this.getAttribute('data-email');
-              const role = this.getAttribute('data-role');
-              const username = this.getAttribute('data-username');
-  
-              // Mengisi form dengan data dari tabel
-              form.querySelector('#name').value = name;
-              form.querySelector('#email').value = email;
-              form.querySelector('#role_id').value = role;
-              form.querySelector('#username').value = username;
-  
-              // Mengupdate action form dengan username yang diambil dari data-atribut
-              form.action = `{{ url('/manajemen_akun') }}/${username}`;
-          });
-      });
-  });
+document.addEventListener('DOMContentLoaded', function () {
+    const editButtons = document.querySelectorAll('.edit-btn');
+    const form = document.getElementById('editUserForm');
+    
+    editButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const name = this.getAttribute('data-name');
+            const email = this.getAttribute('data-email');
+            const role = this.getAttribute('data-role');
+            const username = this.getAttribute('data-username');
+
+            // Mengisi form dengan data dari tabel
+            form.querySelector('#name').value = name;
+            form.querySelector('#email').value = email;
+            form.querySelector('#role_id').value = role;
+            form.querySelector('#username').value = username;
+
+            // Mengupdate action form dengan username yang diambil dari data-atribut
+            form.action = '{{ url('/manajemen_akun') }}';
+        });
+    });
+});
+
   </script>
   
 
