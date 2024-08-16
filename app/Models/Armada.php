@@ -15,7 +15,5 @@ class Armada extends Model
 
     protected $fillable = [
         'id_armada',
-        'driver',
-        'codriver',
     ];
 }

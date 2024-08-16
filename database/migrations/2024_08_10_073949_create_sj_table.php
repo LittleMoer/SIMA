@@ -15,10 +15,10 @@ class CreateSjTable extends Migration
             $table->unsignedBigInteger('id_armada')->nullable();
             $table->foreign('id_armada')->references('id_armada')->on('armada')->onDelete('cascade');
             $table->integer('nilai_kontrak');
-            $table->string('kmsebelum', 255);
+            $table->string('kmsebelum', 255)->nullable();
             $table->string('kmtiba', 255)->nullable();
-            $table->string('kasbonbbm', 255);
-            $table->string('kasbonmakan', 255);
+            $table->string('kasbonbbm', 255)->nullable();
+            $table->string('kasbonmakan', 255)->nullable();
             $table->text('lainlain')->nullable();
             $table->timestamps();
         });

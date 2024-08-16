@@ -10,9 +10,6 @@ class CreateArmadaTable extends Migration
     {
         Schema::create('armada', function (Blueprint $table) {
             $table->id('id_armada');
-            $table->string('driver', 50)->nullable();
-            $table->string('codriver', 50)->nullable();
-            $table->timestamps();
         });
     }
 

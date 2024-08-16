@@ -23,7 +23,6 @@ class RekapGajiCrew extends Model
         'nama',
         'crew',
         'bulan',
-        'no',
         'tanggal',
         'pj_rombongan',
         'nilai_kontrak',

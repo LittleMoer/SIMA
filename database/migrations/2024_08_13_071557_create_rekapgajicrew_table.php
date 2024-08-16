@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('nama');
             $table->integer('crew');
             $table->string('bulan');
-            $table->integer('no');
             $table->date('tanggal');
             $table->string('pj_rombongan');
             $table->integer('nilai_kontrak');
