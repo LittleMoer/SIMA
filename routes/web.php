@@ -36,10 +36,14 @@ Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
 Route::post('/store', [OrderController::class, 'store'])->name('order.store');
 Route::delete('/pesanan', [OrderController::class, 'destroy'])->name('order.destroy');
 //detail pesanan
-Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
+Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail','index','detailSJ'])->name('detail_pesanan');
 Route::post('/detail_pesanan/{id}', [OrderController::class, 'updateSP'])->name('detail_pesanan');
-//view data pesanan
+Route::post('/detail_pesanan/{id}', [OrderController::class, 'updateSJ'])->name('detail_pesanan');
+//view data SP
 Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
+//view data SJ
+Route::get('/viewSJ/{id}', [OrderController::class, 'viewSJ'])->name('viewSJ');
+Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
 
 
 Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
@@ -58,4 +62,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
     Route::post('/manajemen_akun/{username}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/manajemen_akun/{username}', [UserController::class, 'destroy'])->name('users.destroy');
+});
+
+
+//MAnajemen Armada
+Route::get('/manajemen_armada', function () {
+    return view('manajemen_armada');
 });

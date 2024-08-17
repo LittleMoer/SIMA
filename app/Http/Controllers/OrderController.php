@@ -14,7 +14,8 @@ class OrderController extends Controller
     public function index()
     {
         $sp = SP::all(); 
-        return view('pesanan', compact('sp'));  // Mengirimkan data ke view
+        $sjs = SJ::all(); 
+        return view('pesanan', compact('sp', 'sjs'));  // Mengirimkan data ke view
     }
     
     public function store(Request $request)
@@ -112,20 +113,48 @@ public function view($id)
     return view('view', compact('sp'));
 }
 
+public function viewSJ($id)
+{
+    $sp = SP::where('id_sp', $id)->firstOrFail();
+    $sj = SJ::where('id_sp', $id)->firstOrFail();
+    return view('viewSJ', compact('sp', 'sj'));
+}
+
 public function detail($id)
 {
     $order = SP::where('id_sp', $id)->firstOrFail();
-    return view('detail_pesanan', compact('order'));
+    $datasj = SJ::where('id_sp', $id)->firstOrFail();
+    return view('detail_pesanan', compact('order', 'datasj'));
 }
-    // Update data pesanan
+ 
+
+// public function detailSJ($id)
+// {
+//     $order = SP::where('id_sp', $id)->firstOrFail();
+//     $ordersj = SJ::where('id_sp', $id)->get();
+//     return view('detail_pesanan', compact('order', 'ordersj'));
+// }
+
+
+// Update data pesanan
     public function updateSP(Request $request, $id)
     {
         $order = SP::where('id_sp', $id)->firstOrFail();
         $order->update($request->all());
-        return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'Pesanan berhasil diupdate!');
+        return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'Surat Pemesanan berhasil diupdate!');
     }
     
+    public function updateSJ(Request $request, $id)
+    {
+        $order = SJ::where('id_sp', $id)->firstOrFail();
+        
+        SJ::where('id_sp', $id)->update($request->only([
+            'id_armada', 'nilai_kontrak', 'kmsebelum', 'kmtiba', 'kasbonbbm', 'kasbonmakan', 'lainlain'
+        ]));
+        return redirect()->to(route('detail_pesanan', ['id' => $id]) . '#SuratJalan')->with('success', 'Surat Jalan berhasil diupdate!');
 
+    }
+    
 
 
 public function updateKonsumBbm(Request $request, $id)

@@ -57,6 +57,9 @@
           <li class="nav-item">
             <a class="nav-link fw-medium" href="{{ url('/manajemen_akun') }}">Manajemen Akun</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link fw-medium" href="{{ url('/manajemen_armada') }}">Manajemen Armada</a>
+          </li>
         </ul
 
         <!-- Menu wrapper: End -->
@@ -87,9 +90,13 @@
 
 @yield('manajemen_akun')
 
+@yield('manajemen_armada')
+
 @yield('tambah_akun')
 
+@yield('rekap_gaji')
 @yield('rekap_gaji_crew')
+@yield('rekap_gaji_show')
 
 
 {{-- Hubungi diyan --}}
