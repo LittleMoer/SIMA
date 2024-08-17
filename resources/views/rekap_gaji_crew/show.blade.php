@@ -1,16 +1,13 @@
-{{-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Rekap Gaji Crew</title>
-</head>
-<body> --}}
+@extends('main_owner')
+
 @section('rekap_gaji_crew')
 <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
     <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}"
         alt="Help center header">
-    <h3 class="text-center"> Rekap Gaji Crew</h3>
+    <h3 class="text-center">Rekap Gaji Crew</h3>
     <h5 class="text-center px-3 mb-0">Catatan penghasilan crew perbulan</h5>
 </section>
+
 @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
@@ -22,6 +19,7 @@
         {{ session('error') }}
     </div>
 @endif
+
 @if($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -31,14 +29,13 @@
         </ul>
     </div>
 @endif
+
 <section>
-    <h2>Rekap Gaji Crew JSP - {{ $armada->id_armada }}</h2>
+    <h2>Rekap Gaji Crew - {{ $armada->id_armada }}</h2>
 
-    @foreach($akun as $member)
-        <h3>Nama Crew: {{ $member->name }}</h3>
-    @endforeach
 
-    <form action="{{ route('rekap.gaji.generate') }}" method="POST">
+
+    <form action="{{ route('rekap.gaji.generate') }}" method="POST" style="margin-bottom: 20px;">
         @csrf
         <input type="hidden" name="id_armada" value="{{ $armada->id_armada }}">
         <label for="bulan">Pilih Bulan:</label>
@@ -57,63 +54,68 @@
             <option value="11">November</option>
             <option value="12">Desember</option>
         </select>
-        <button type="submit">Generate Rekap Gaji</button>
+        <button type="submit" class="btn btn-success">Generate Payroll Summary</button>
     </form>
 
-    @if($rekapGaji->isEmpty())
-        <p>Tidak ada data rekap gaji untuk armada ini.</p>
-    @else
-        <table border="1">
-            <thead>
+    <table border="1" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Tanggal</th>
+                <th>Nama Pekerjaan</th>
+                <th>Nilai Kontrak</th>
+                <th>BBM</th>
+                <th>Uang Makan</th>
+                <th>Parkir</th>
+                <th>Cuci</th>
+                <th>Toll</th>
+                <th>Total Operasional</th>
+                <th>Sisa Nilai Kontrak</th>
+                <th>Premi</th>
+                <th>Subsidi</th>
+                <th>Total Pendapatan</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($rekapGaji as $index => $rekap)
                 <tr>
-                    <th>No</th>
-                    <th>Tanggal</th>
-                    <th>PJ Rombongan</th>
-                    <th>Nilai Kontrak</th>
-                    <th>BBM</th>
-                    <th>Uang Makan</th>
-                    <th>Parkir</th>
-                    <th>Cuci</th>
-                    <th>Toll</th>
-                    <th>Total Operasional</th>
-                    <th>Sisa Nilai Kontrak</th>
-                    <th>Premi</th>
-                    <th>Subsidi</th>
-                    <th>Total Gaji</th>
-                    <th>Aksi</th> <!-- Added column for actions -->
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $rekap->tanggal }}</td>
+                    <td>{{ $rekap->pj_rombongan }}</td>
+                    <td>{{ number_format($rekap->nilai_kontrak, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->bbm, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->uang_makan, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->parkir, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->cuci, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->toll, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->total_operasional, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->sisa_nilai_kontrak, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->premi, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->subsidi, 0, ',', '.') }}
+                    </td>
+                    <td>{{ number_format($rekap->total_gaji, 0, ',', '.') }}
+                    </td>
+                    <td>
+                        <a href="{{ route('rekap.gaji.edit', ['no_rekap' => $rekap->no_rekap, 'nama' => $rekap->nama]) }}"
+                            class="btn btn-primary">Edit</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($rekapGaji as $index => $rekap)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $rekap->tanggal }}</td>
-                        <td>{{ $rekap->pj_rombongan }}</td>
-                        <td>{{ $rekap->nilai_kontrak }}</td>
-                        <td>{{ $rekap->bbm }}</td>
-                        <td>{{ $rekap->uang_makan }}</td>
-                        <td>{{ $rekap->parkir }}</td>
-                        <td>{{ $rekap->cuci }}</td>
-                        <td>{{ $rekap->toll }}</td>
-                        <td>{{ $rekap->total_operasional }}</td>
-                        <td>{{ $rekap->sisa_nilai_kontrak }}</td>
-                        <td>{{ $rekap->premi }}</td>
-                        <td>{{ $rekap->subsidi }}</td>
-                        <td>{{ $rekap->total_gaji }}</td>
-                        <td>
-                            <a href="{{ route('rekap.gaji.edit', ['nama' => $rekap->nama]) }}"
-                                class="btn btn-primary">Edit</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+            @endforeach
+        </tbody>
+    </table>
 
-    <a href="{{ route('rekap.gaji.index') }}">Kembali ke Pilih Armada</a>
+
 </section>
-@endsection
 
-@include('main_owner')
-{{-- </body>
-    </html> --}}
+<a href="{{ route('rekap.gaji.index') }}">Kembali ke Pilih Armada</a>
+@endsection

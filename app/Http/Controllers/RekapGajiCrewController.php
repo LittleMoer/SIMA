@@ -9,9 +9,7 @@ use App\Models\Armada;
 use App\Models\SP;
 use App\Models\SJ;
 use App\Models\SPJ;
-use App\Models\KonsumBbm;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+
 
 class RekapGajiCrewController extends Controller
 {
@@ -73,6 +71,7 @@ class RekapGajiCrewController extends Controller
                 
                 // Create a new Rekap Gaji Crew entry
                 RekapGajiCrew::create([
+                    'no_rekap' => RekapGajiCrew::count() + 1,
                     'nama' => $user->name,
                     'crew' => $armada->id_armada,
                     'bulan' => $selectedMonth,
@@ -97,38 +96,43 @@ class RekapGajiCrewController extends Controller
         return redirect()->route('rekap.gaji.show', ['id_armada' => $armada->id_armada])
                          ->with('success', 'Rekap Gaji Crew berhasil di-generate');
     }
-    public function edit($nama)
+    public function edit($no_rekap, $nama)
     {
-        // Ambil data Rekap Gaji Crew berdasarkan nama
-        $rekapGaji = RekapGajiCrew::where('nama', $nama)->firstOrFail();
+        $rekapGaji = RekapGajiCrew::where('no', $no_rekap)
+            ->where('nama', $nama)
+            ->firstOrFail();
     
         return view('rekap_gaji_crew.edit', compact('rekapGaji'));
     }
+
+    public function update(Request $request, $no_rekap, $nama)
+    {
+        $validatedData = $request->validate([
+            'tanggal' => 'required|date',
+            'pj_rombongan' => 'required|string|max:255',
+            'nilai_kontrak' => 'required|integer',
+            'bbm' => 'nullable|integer',
+            'uang_makan' => 'nullable|integer',
+            'parkir' => 'nullable|integer',
+            'cuci' => 'nullable|integer',
+            'toll' => 'nullable|integer',
+            'total_operasional' => 'nullable|integer',
+            'sisa_nilai_kontrak' => 'nullable|integer',
+            'premi' => 'nullable|integer',
+            'subsidi' => 'nullable|integer',
+            'total_gaji' => 'nullable|integer',
+        ]);
     
-
-    public function update(Request $request, $nama)
-{
-    $validatedData = $request->validate([
-        'tanggal' => 'required|date',
-        'pj_rombongan' => 'required|string|max:255',
-        'nilai_kontrak' => 'required|integer',
-        'bbm' => 'nullable|integer',
-        'uang_makan' => 'nullable|integer',
-        'parkir' => 'nullable|integer',
-        'cuci' => 'nullable|integer',
-        'toll' => 'nullable|integer',
-        'total_operasional' => 'nullable|integer',
-        'sisa_nilai_kontrak' => 'nullable|integer',
-        'premi' => 'nullable|integer',
-        'subsidi' => 'nullable|integer',
-        'total_gaji' => 'nullable|integer',
-    ]);
-
-    $rekapGaji = RekapGajiCrew::where('nama', $nama)->firstOrFail();
-    $rekapGaji->update($request->all());
-
-    return redirect()->route('rekap.gaji.show', ['id_armada' => $rekapGaji->crew])
-                     ->with('success', 'Rekap Gaji Crew berhasil diperbarui');
-}    
+        // Find the record based on 'no' (no_rekap) and 'nama'
+        $rekapGaji = RekapGajiCrew::where('no_rekap', $no_rekap)
+            ->where('nama', $nama)
+            ->firstOrFail();
+    
+        // Update the record with validated data
+        $rekapGaji->update($validatedData);
+    
+        return redirect()->route('rekap.gaji.show', ['id_armada' => $rekapGaji->crew])
+            ->with('success', 'Rekap Gaji Crew berhasil diperbarui');
+    }    
 }
 

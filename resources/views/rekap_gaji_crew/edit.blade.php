@@ -1,50 +1,29 @@
-{{-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Rekap Gaji Crew</title>
-</head>
-<body> --}}
+@extends('main_owner')
+
 @section('rekap_gaji_crew')
-<section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
-    <h3 class="text-center">Edit Rekap Gaji Crew</h3>
-</section>
-
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 <section>
-<form action="{{ route('rekap.gaji.update', ['nama' => $rekapGaji->nama]) }}" method="POST">
+    <h2>Edit Rekap Gaji Crew</h2>
+
+    <form action="{{ route('rekap.gaji.update', ['no_rekap' => $rekapGaji->no_rekap, 'nama' => $rekapGaji->nama]) }}" method="POST">
         @csrf
-        <input type="hidden" name="id_armada" value="{{ $rekapGaji->id_armada }}">
+        @method('PUT')
+
         <label for="tanggal">Tanggal:</label>
         <input type="date" name="tanggal" id="tanggal" value="{{ $rekapGaji->tanggal }}" required>
-        
-        <label for="pj_rombongan">PJ Rombongan:</label>
-        <input type="text" name="pj_rombongan" id="pj_rombongan" value="{{ $rekapGaji->pj_rombongan }}" required>
-        
+
+        <label for="nama_pekerjaan">Nama Pekerjaan:</label>
+        <input type="text" name="nama_pekerjaan" id="nama_pekerjaan" value="{{ $rekapGaji->nama_pekerjaan }}" required>
+
         <label for="nilai_kontrak">Nilai Kontrak:</label>
         <input type="number" name="nilai_kontrak" id="nilai_kontrak" value="{{ $rekapGaji->nilai_kontrak }}" required>
-        
-        <label for="bbm">bbm:</label>
+
+        <label for="bbm">BBM:</label>
         <input type="number" name="bbm" id="bbm" value="{{ $rekapGaji->bbm }}" required>
 
         <label for="uang_makan">Uang Makan:</label>
         <input type="number" name="uang_makan" id="uang_makan" value="{{ $rekapGaji->uang_makan }}" required>
 
-        <label for="parkir">parkir:</label>
+        <label for="parkir">Parkir:</label>
         <input type="number" name="parkir" id="parkir" value="{{ $rekapGaji->parkir }}" required>
 
         <label for="cuci">Cuci:</label>
@@ -59,22 +38,18 @@
         <label for="sisa_nilai_kontrak">Sisa Nilai Kontrak:</label>
         <input type="number" name="sisa_nilai_kontrak" id="sisa_nilai_kontrak" value="{{ $rekapGaji->sisa_nilai_kontrak }}" required>
 
-        <label for="premi">Premi:</label>
+        <label for="premi">Premi 21%:</label>
         <input type="number" name="premi" id="premi" value="{{ $rekapGaji->premi }}" required>
 
         <label for="subsidi">Subsidi:</label>
         <input type="number" name="subsidi" id="subsidi" value="{{ $rekapGaji->subsidi }}" required>
 
-        <label for="total_gaji">Total Gaji:</label>
-        <input type="number" name="total_gaji" id="total_gaji" value="{{ $rekapGaji->total_gaji }}" required>
-        
+        <label for="total_pendapatan">Total Pendapatan:</label>
+        <input type="number" name="total_pendapatan" id="total_pendapatan" value="{{ $rekapGaji->total_pendapatan }}" required>
 
-        <button type="submit">Update Rekap Gaji</button>
+        <button type="submit">Update</button>
     </form>
 
-    <a href="{{ route('rekap.gaji.show', ['id_armada' => $rekapGaji->id_armada]) }}">Kembali</a>
+    <a href="{{ route('rekap.gaji.index') }}">Kembali ke Pilih Armada</a>
 </section>
 @endsection
-@include('main_owner')
-{{-- </body>
-    </html> --}}

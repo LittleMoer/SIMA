@@ -20,6 +20,7 @@ class RekapGajiCrew extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'no_rekap',
         'nama',
         'crew',
         'bulan',

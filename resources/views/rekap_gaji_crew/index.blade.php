@@ -3,7 +3,7 @@
 <head>
     <title>Rekap Gaji Crew</title>
 </head>
-<body> --}}
+<body> 
 @section('rekap_gaji_crew')
 <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
     <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}"

@@ -47,8 +47,9 @@ Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order
 Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'index'])->name('rekap.gaji.index');
 Route::post('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
 Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generatePayrollSummary'])->name('rekap.gaji.generate');
-Route::get('rekap-gaji-crew/edit/{nama}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
-Route::post('rekap-gaji-crew/update/{nama}', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update');
+Route::get('rekap-gaji-crew/edit/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
+Route::put('rekap-gaji-crew/update/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update');
+
 
 
 
