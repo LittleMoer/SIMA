@@ -57,11 +57,12 @@ Route::post('rekap-gaji-crew/update/{nama}', [RekapGajiCrewController::class, 'u
 
 Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
 Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
+Route::post('/manajemen_akun/{username}', [UserController::class, 'update'])->name('user.update');
+Route::delete('/manajemen_akun/{username}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::middleware(['auth'])->group(function () {
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
-    Route::post('/manajemen_akun/{username}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/manajemen_akun/{username}', [UserController::class, 'destroy'])->name('users.destroy');
+ 
 });
 
 

@@ -12,10 +12,21 @@
 
 <div style="padding: 30px 60px">
     <div class=" d-flex justify-content mb-4"> 
-        <a href="{{ route('tambah_akun') }}" class="btn btn-primary">
-            <span class="tf-icons bx bxs-user-plus me-2"></span>Tambah Armada
-        </a> 
+        <form action="{{ route('rekap.gaji.show') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <h2>Pilih Armada <i class="bx bx-bus bx-tada" style="font-size: 1.5em;"> </i></h2>
+                <select class="form-select" name="id_armada" id="id_armada" required>
+                    {{-- <option value=""> Select Armada</option> --}}
+                    @foreach($armadas as $armada)
+                        <option value="{{ $armada->id_armada }}">{{ $armada->id_armada }} - {{ $armada->driver }} / {{ $armada->codriver }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Lihat Rekap Gaji</button>
+        </form>
     </div> 
+
     
 
 
