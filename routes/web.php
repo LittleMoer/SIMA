@@ -54,14 +54,6 @@ Route::post('rekap-gaji-crew/update/{nama}', [RekapGajiCrewController::class, 'u
 
 Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
 Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
-<<<<<<< Updated upstream
-Route::middleware(['auth'])->group(function () {
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
-    Route::post('/manajemen_akun/{username}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/manajemen_akun/{username}', [UserController::class, 'destroy'])->name('users.destroy');
-});
-=======
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
 Route::post('/manajemen_akun/{username}', [UserController::class, 'update'])->name('user.update');
@@ -74,4 +66,3 @@ Route::get('/manajemen_armada', function () {
 });
 Route::get('/manajemen_armada', [ManajemenArmadaController::class, 'index'])->name('manajemen_armada.index');
 Route::get('/manajemen_armada', [ManajemenArmadaController::class, 'show'])->name('manajemen_armada.show');
->>>>>>> Stashed changes
