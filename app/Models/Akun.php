@@ -14,7 +14,11 @@ class Akun extends Authenticatable
     protected $primaryKey = 'id_akun'; 
     
     protected $fillable = [
-        'username', 'name', 'email', 'role_id','id_armada', 'password',
+        'username'
+        , 'name'
+        , 'email'
+        , 'role_id'
+        , 'password'
     ];
 
     protected $hidden = [

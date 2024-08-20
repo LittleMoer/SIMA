@@ -15,10 +15,13 @@ class KonsumBbm extends Model
 
     protected $fillable = [
         'idkonsumbbm',
+        'id_spj',
         'isiBBM',
         'tanggal',
         'lokasiisi',
         'totalbayar',
+        'foto_struk',
+        'isvalid'
     ];
     
 }

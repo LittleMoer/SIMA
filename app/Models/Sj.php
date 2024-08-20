@@ -8,7 +8,14 @@ class Sj extends Model
 {
     protected $table = 'sj';
     protected $fillable = [
-        'id_sp','id_armada', 'nilai_kontrak', 'kmsebelum', 'kmtiba', 'kasbonbbm', 'kasbonmakan', 'lainlain'
+        'id_sp'
+        ,'id_unit'
+        , 'nilai_kontrak'
+        , 'kmsebelum'
+        , 'kmtiba'
+        , 'kasbonbbm'
+        , 'kasbonmakan'
+        , 'lainlain'
     ];
     public $timestamps = true;
 

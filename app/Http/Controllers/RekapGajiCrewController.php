@@ -29,7 +29,7 @@ class RekapGajiCrewController extends Controller
         $armada = Armada::findOrFail($request->id_armada);
     
         // Fetch the accounts (akun) associated with the selected Armada
-        $akun = Akun::where('id_armada', $armada->id_armada)->get();
+        $akun = Akun::where('id_akun', $armada->id_akun)->get();
     
         // Fetch Rekap Gaji Crew based on the driver and codriver's names in the retrieved accounts
         $rekapGaji = RekapGajiCrew::whereIn('nama', $akun->pluck('name'))->get();
@@ -73,9 +73,10 @@ class RekapGajiCrewController extends Controller
                 RekapGajiCrew::create([
                     'no_rekap' => RekapGajiCrew::count() + 1,
                     'nama' => $user->name,
-                    'crew' => $armada->id_armada,
+                    'armada' => $armada->id_armada,
                     'bulan' => $selectedMonth,
                     'tanggal' => $sj->created_at->format('Y-m-d'),
+                    'hari_kerja' => 0,
                     'pj_rombongan' => $sp->pj_rombongan ?? 'Unknown',
                     'nilai_kontrak' => $nilaiKontrak,
                     'bbm' => $spj->bbm ?? null,
@@ -98,7 +99,7 @@ class RekapGajiCrewController extends Controller
     }
     public function edit($no_rekap, $nama)
     {
-        $rekapGaji = RekapGajiCrew::where('no', $no_rekap)
+        $rekapGaji = RekapGajiCrew::where('no_rekap', $no_rekap)
             ->where('nama', $nama)
             ->firstOrFail();
     

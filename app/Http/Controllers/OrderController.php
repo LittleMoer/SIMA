@@ -70,36 +70,36 @@ class OrderController extends Controller
                 'id_sj' => $randomId, 
                 'id_sp' => $order->id_sp, 
                 'nilai_kontrak' => $nilaiKontrak,
-                'kmsebelum' => '0',
-                'kmtiba' => '0',
-                'kasbonbbm' => '0',
-                'kasbonmakan' => '0',
-                'lainlain' => '0'
+                'kmsebelum' => null,
+                'kmtiba' => null,
+                'kasbonbbm' => null,
+                'kasbonmakan' => null,
+                'lainlain' => null
+            ]);
+            
+            // Create SPJ and link it to the SJ records
+            $spj = SPJ::create([
+                'id_spj' => $randomId,
+                'id_sj' => $sj->id,
+                'SaldoEtollawal' => null,
+                'SaldoEtollakhir' => null,
+                'PenggunaanToll' => null,
+                'uanglainlain' => null,
+                'uangmakan' => null,
+                'sisabbm' => null,
+                'totalisibbm' => null,
+                'sisasaku' => null,
+                'totalsisa' => null,
+                
             ]);
             // Create a new KonsumBbm record and get its ID
             $konsumBbm = KonsumBbm::create([
-                'idkonsumbbm' => $randomId, 
+                'idkonsumbbm' => $randomId,
+                'id_spj' => $spj->id, 
                 'isiBBM' => null,           
                 'tanggal' => null,
                 'lokasiisi' => null,
                 'totalbayar' => null,
-            ]);
-
-            // Create SPJ and link it to the SJ records
-            SPJ::create([
-                'id_spj' => $randomId,
-                'id_sj' => $sj->id,
-                'SaldoEtollawal' => 0,
-                'SaldoEtollakhir' => 0,
-                'PenggunaanToll' => 0,
-                'uanglainlain' => 0,
-                'uangmakan' => 0,
-                'idkonsumbbm' => $konsumBbm->idkonsumbbm,
-                'sisabbm' => 0,
-                'totalisibbm' => 0,
-                'sisasaku' => 0,
-                'totalsisa' => 0,
-                // 'id_sp' => $order->id 
             ]);
         }
 
@@ -130,34 +130,16 @@ public function detail($id)
 
 public function updateKonsumBbm(Request $request, $id)
 {
-    $request->validate([
-        'isiBBM' => 'required|integer',
-        'tanggal' => 'required|date',
-        'lokasiisi' => 'required|string|max:100',
-        'totalbayar' => 'required|integer',
-    ]);
-
-    $konsumBbm = KonsumBbm::findOrFail($id);
-    $konsumBbm->update($request->only([
-        'isiBBM',
-        'tanggal',
-        'lokasiisi',
-        'totalbayar',
-    ]));
-
+    //
     return redirect()->route('pesanan')->with('success', 'KonsumBBM berhasil diperbarui');
 }
 
 public function destroy($id)
 {
-    // Find the SP record by its id
-    $order = SP::where('id_sp', $id)->firstOrFail();
-    // Attempt to delete the record
-    try {
-        $order->delete();
-        return redirect()->route('pesanan')->with('success', 'Order deleted successfully.');
-    } catch (\Exception $e) {
-        return redirect()->route('pesanan')->with('error', 'Failed to delete order: ' . $e->getMessage());
-    }
+    $sp = SP::where('id_sp', $id)->firstOrFail();
+    $sj = SJ::where('id_sp', $sp->id_sp)->firstOrFail();
+    $sp->delete();
+
+    return redirect()->route('pesanan')->with('success', 'Pesanan berhasil dihapus');
 }
 }

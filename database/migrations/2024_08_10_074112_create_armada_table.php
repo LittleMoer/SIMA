@@ -10,6 +10,12 @@ class CreateArmadaTable extends Migration
     {
         Schema::create('armada', function (Blueprint $table) {
             $table->id('id_armada');
+            $table->unsignedBigInteger('id_akun');
+            $table->foreign('id_akun')->references('id_akun')->on('akun')->onDelete('cascade');
+            $table->unsignedBigInteger('id_unit');
+            $table->foreign('id_unit')->references('id_unit')->on('unit')->onDelete('cascade');
+            $table->string('posisi', 100);
+            $table->integer('status');
         });
     }
 

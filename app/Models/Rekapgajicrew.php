@@ -22,9 +22,10 @@ class RekapGajiCrew extends Model
     protected $fillable = [
         'no_rekap',
         'nama',
-        'crew',
+        'armada',
         'bulan',
         'tanggal',
+        'hari_kerja',
         'pj_rombongan',
         'nilai_kontrak',
         'bbm',

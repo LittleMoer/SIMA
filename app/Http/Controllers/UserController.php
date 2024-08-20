@@ -14,25 +14,42 @@ class UserController extends Controller
         return view('manajemen_akun', compact('users'));
     }
 
-    public function update(Request $request, $username)
+    public function update(Request $request, $id)
     {
-        // Cari user berdasarkan username
-        $user = Akun::where('username', $username)->firstOrFail();
+        // Find the user by id_akun
+        $user = Akun::where('id_akun', $id)->firstOrFail();
     
-        // Validasi dinamis
+        // Validate the incoming request
         $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
+            'username' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) use ($user) {
+                    // Check if the username already exists in another record
+                    if ($value !== $user->username) {
+                        $exists = Akun::where('username', $value)
+                                       ->where('id_akun', '!=', $user->id_akun)
+                                       ->exists();
+                        if ($exists) {
+                            $fail('The username has already been taken.');
+                        }
+                    }
+                }
+            ],
             'email' => [
                 'sometimes',
                 'required',
                 'email',
                 function ($attribute, $value, $fail) use ($user) {
-                    // Validasi untuk domain gmail.com
+                    // Validate email domain
                     if (!str_ends_with($value, '@gmail.com')) {
                         $fail('The email must be a Gmail address.');
                     }
     
-                    // Validasi untuk email yang sudah ada
+                    // Check if the email already exists in another record
                     if ($value !== $user->email) {
                         $exists = Akun::where('email', $value)
                                        ->where('id_akun', '!=', $user->id_akun)
@@ -46,28 +63,26 @@ class UserController extends Controller
             'role_id' => 'sometimes|required|integer',
         ]);
     
-        // Hanya mengisi field yang ada dalam permintaan
-        if ($request->has('email') && $request->input('email') === $user->email) {
-            // Jika email tidak diubah, hapus dari data yang akan diupdate
-            unset($validatedData['email']);
+        // Update the user's data
+        if ($request->has('email') && $request->input('email') !== $user->email) {
+            $user->email = $validatedData['email'];
         }
     
+        // Only update fields that are in the request
         $user->fill($validatedData);
     
-        // Tambahkan log untuk debug
+        // Log the data before saving
         Log::info('User data before save:', $user->toArray());
     
-        // Simpan perubahan
+        // Save the updated user
         $user->save();
     
-        Log::info('User updated successfully.');
-    
         return back()->with('success', 'User updated successfully.');
-    }
+    }    
     
-    public function destroy($username)
+    public function destroy($id)
     {
-        $akun = Akun::where('username', $username)->firstOrFail();
+        $akun = Akun::where('id_akun', $id)->firstOrFail();
         $akun->delete();
     
         return redirect()->route('manajemen_akun');

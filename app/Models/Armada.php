@@ -14,6 +14,9 @@ class Armada extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id_armada',
+        'id_akun',
+        'id_unit',
+        'posisi',
+        'status'
     ];
 }

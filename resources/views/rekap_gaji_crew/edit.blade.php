@@ -1,6 +1,33 @@
 @extends('main_owner')
 
 @section('rekap_gaji_crew')
+<section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
+    <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}"
+        alt="Help center header">
+    <h3 class="text-center">Rekap Gaji Crew</h3>
+    <h5 class="text-center px-3 mb-0">Catatan penghasilan crew perbulan</h5>
+</section>
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <section>
     <h2>Edit Rekap Gaji Crew</h2>
 
@@ -11,8 +38,8 @@
         <label for="tanggal">Tanggal:</label>
         <input type="date" name="tanggal" id="tanggal" value="{{ $rekapGaji->tanggal }}" required>
 
-        <label for="nama_pekerjaan">Nama Pekerjaan:</label>
-        <input type="text" name="nama_pekerjaan" id="nama_pekerjaan" value="{{ $rekapGaji->nama_pekerjaan }}" required>
+        <label for="pj_rombongan">Pj pj_rombongan:</label>
+        <input type="text" name="pj_rombongan" id="pj_rombongan" value="{{ $rekapGaji->pj_rombongan }}" required>
 
         <label for="nilai_kontrak">Nilai Kontrak:</label>
         <input type="number" name="nilai_kontrak" id="nilai_kontrak" value="{{ $rekapGaji->nilai_kontrak }}" required>
