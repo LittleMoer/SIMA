@@ -16,7 +16,7 @@ class CreateKonsumBbmTable extends Migration
             $table->date('tanggal')->nullable();
             $table->string('lokasiisi')->nullable();
             $table->integer('totalbayar')->nullable();
-            $table->binary('foto_struk');
+            $table->binary('foto_struk')->nullable();
             $table->integer('isvalid');
             $table->timestamps();
         });

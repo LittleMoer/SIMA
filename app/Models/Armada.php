@@ -12,6 +12,7 @@ class Armada extends Model
     protected $primaryKey = 'id_armada';
     public $incrementing = false;
     protected $keyType = 'string';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_akun',
@@ -19,4 +20,12 @@ class Armada extends Model
         'posisi',
         'status'
     ];
+    public function akun()
+{
+    return $this->belongsTo(Akun::class, 'id_akun');
+}
+public function unit()
+{
+    return $this->belongsTo(Unit::class, 'id_unit');
+}
 }

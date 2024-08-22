@@ -22,9 +22,8 @@
     </div>
 @endif
 
-<!-- Manajemen Akun: Start -->
+
 <section>
-    <!-- DataTable with Buttons -->
     <div style="padding: 30px 60px">
         <div class="no_print d-flex justify-content mb-4">
             <a href="{{ route('tambah_akun') }}" class="btn btn-primary">
@@ -32,7 +31,7 @@
             </a>
         </div>
 
-        <table id="accountTable" class="row-border">
+        <table id="accountTable" class="datatables-basic table border-top">
             <thead>
                 <tr>
                     <th>NO</th>
@@ -49,7 +48,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->username }}</td>
-                        <td class="role-id">{{ $user->role_id }}</td>
+                        <td class="role_id"name="role_id" id="role_id">{{ $user->role_id }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
                             <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-id="{{ $user->id_akun }}" data-name="{{ $user->name }}" data-username="{{ $user->username }}" data-email="{{ $user->email }}" data-role="{{ $user->role_id }}">Edit</button>
@@ -68,16 +67,22 @@
 </section>
 <!-- Manajemen Akun: End -->
 
+<!-- CSS for print -->
 <style type="text/css" media="print"> 
     div.no_print {display: none;} 
 </style>
 
+<!-- DataTables CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.2/css/dataTables.dataTables.css">
+
+<!-- jQuery and DataTables JS -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
+<!-- Script for DataTables and Role Mapping -->
 <script>
     $(document).ready(function() {
+        // Initialize DataTable
         $('#accountTable').DataTable({
             language: {
                 info: 'Halaman _PAGE_ dari _PAGES_',
@@ -88,15 +93,15 @@
             }
         });
 
-        // Map role_id to role_name
+        // Role ID to Role Name mapping
         const roleMap = {
             1: 'Admin',
             2: 'Crew',
             3: 'Viewer'
         };
 
-        // Change role_id to role_name
-        $('.role-id').each(function() {
+        // Apply role name mapping to the role_id elements
+        $('.role_id').each(function() {
             const roleId = $(this).text().trim();
             const roleName = roleMap[roleId] || 'Unknown';
             $(this).text(roleName);

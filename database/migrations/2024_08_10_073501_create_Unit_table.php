@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('Unit', function (Blueprint $table) {
             $table->id('id_unit');
-            $table->string('nama_unit', 50);
+            $table->string('nama_unit',50);
+            $table->integer('seri_unit');
         });
-    }
-
+    }                       
     /**
      * Reverse the migrations.
      */

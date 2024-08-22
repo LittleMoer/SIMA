@@ -30,7 +30,7 @@ class RekapGajiCrewController extends Controller
     
         // Fetch the accounts (akun) associated with the selected Armada
         $akun = Akun::where('id_akun', $armada->id_akun)->get();
-    
+        $nama = $akun->pluck('name');
         // Fetch Rekap Gaji Crew based on the driver and codriver's names in the retrieved accounts
         $rekapGaji = RekapGajiCrew::whereIn('nama', $akun->pluck('name'))->get();
     

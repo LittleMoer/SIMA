@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RekapGajiCrewController;
-use App\Http\Controllers\ManajemenArmadaController;
+use App\Http\Controllers\ArmadaController;
 
 Route::get('/', function () {
     return view('homepage');
@@ -62,9 +62,13 @@ Route::post('/manajemen_akun/{id}', [UserController::class, 'update'])->name('us
 Route::delete('/manajemen_akun/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 
-//MAnajemen Armada
-Route::get('/manajemen_armada', function () {
-    return view('manajemen_armada');
-});
-Route::get('/manajemen_armada', [ManajemenArmadaController::class, 'index'])->name('manajemen_armada.index');
-Route::get('/manajemen_armada', [ManajemenArmadaController::class, 'show'])->name('manajemen_armada.show');
+//Manajemen Armada
+Route::get('/manajemen_armada', [ArmadaController::class, 'index'])->name('manajemen_armada.index');
+Route::get('/manajemen_armada/create', [ArmadaController::class, 'create'])->name('manajemen_armada.create');
+Route::post('/manajemen_armada', [ArmadaController::class, 'store'])->name('manajemen_armada.store');
+Route::get('/manajemen_armada/{id_armada}/edit', [ArmadaController::class, 'edit'])->name('manajemen_armada.edit');
+Route::post('/manajemen_armada/{id_armada}', [ArmadaController::class, 'update'])->name('manajemen_armada.update');
+Route::delete('/manajemen_armada/{id_armada}', [ArmadaController::class, 'destroy'])->name('manajemen_armada.destroy');
+
+
+
