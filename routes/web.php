@@ -77,4 +77,16 @@ Route::delete('/unit/{id_unit}', [UnitController::class, 'destroy'])->name('unit
 
 
 
-
+//Bus
+Route::get('/bus/big_bus', function () {
+    return view('/bus/big_bus');
+});
+Route::get('/bus/micro_bus', function () {
+    return view('/bus/micro_bus');
+});
+Route::get('/bus/medium_bus', function () {
+    return view('/bus/medium_bus');
+});
+Route::get('/bus/mediumSE_bus', function () {
+    return view('/bus/mediumSE_bus');
+});

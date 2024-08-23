@@ -71,7 +71,7 @@ window.addEventListener('scroll', function() {
 @section('menu')
   <ul class="navbar-nav me-auto">
     <li class="nav-item">
-      <a class="nav-link fw-medium" aria-current="page" href="#landingHero">Home</a>
+      <a class="nav-link fw-medium" aria-current="page" href="#landing">Home</a>
     </li>
     <li class="nav-item">
       <a class="nav-link fw-medium" href="#landingFeatures">Tentang</a>
@@ -79,9 +79,20 @@ window.addEventListener('scroll', function() {
     <li class="nav-item">
       <a class="nav-link fw-medium" href="#landingJadwal">Jadwal</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link fw-medium" href="#landingTeam">Bus</a>
+    <li class="nav-item dropdown">
+      <a class="nav-link fw-medium dropdown-toggle" href="#landingBus" id="busDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Bus
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="busDropdown">
+        <li><a class="dropdown-item" href="{{ url('/bus/micro_bus') }}">Micro Bus</a></li>
+        <li><a class="dropdown-item" href="{{ url('/bus/medium_bus') }}"> Medium Bus</a></li>
+        <li><a class="dropdown-item" href="{{ url('/bus/mediumSE_bus') }}">Medium Bus SE</a></li>
+        <li><a class="dropdown-item" href="{{ url('/bus/big_bus') }}"> Big Bus</a></li>
+      </ul>
     </li>
+    
+  
+    
     <li class="nav-item">
       <a class="nav-link fw-medium" href="#landingFAQ">Pertanyaan</a>
     </li>
@@ -120,14 +131,13 @@ window.addEventListener('scroll', function() {
 <div data-bs-spy="scroll" class="scrollspy-example">
   <!-- Hero: Start -->
   <section id="hero-animation">
-    <div id="landingHero" class="section-py landing-hero position-relative">
+    <div id="landing" class="section-py landing-hero position-relative">
       <img src="{{ asset('sneat/assets/img/sima/hero-bg.png')}}" alt="hero background" class="position-absolute top-0 start-50 translate-middle-x object-fit-contain w-100 h-100" data-speed="1" />
       <div class="container">
         <div class=" text-center">
-          <h1 class="text-primary hero-title display-4 fw-bold">Sewa Bus Pariwisata<br> Nyaman, Aman, Berkesan </h1>
+          <h1 class="text-primary hero-title display-4 fw-bold">Sima Perkasya<br> Ndolanmu Mberkahi </h1>
           {{-- <br class="d-none d-lg-block" /> --}}
-          <h2 class="hero-sub-title h6 mb-4 pb-1">
-            Bus pariwisata terpercaya <br>Sima Perkasya siap menemani perjalananmu
+          <h2 class="hero-sub-title h6 mb-4 pb-1">Sima Perkasya siap menemani perjalananmu
           </h2>
           <div class="landing-hero-btn d-inline-block position-relative">
             <span class="hero-btn-item position-absolute d-none d-md-flex text-heading">Lihat Jadwal
@@ -217,7 +227,7 @@ window.addEventListener('scroll', function() {
   <!-- Useful features: End -->
 
   <!-- Unit Bus: Start -->
-  <section id="landingTeam" class="section-py landing-team">
+  <section id="landingBus" class="section-py landing-team">
     <div class="container">
       <div class="text-center mb-3 pb-1">
         <span class="badge bg-label-primary">Bus</span>
@@ -225,52 +235,63 @@ window.addEventListener('scroll', function() {
       <h3 class="text-center mb-1">Jenis bus </h3>
       <p class="text-center mb-md-5 pb-3">Kebutuhan perjalananmu 🚎</p>
       <div class="row gy-5 mt-2">
-        
         <div class="col-lg-3 col-sm-6">
-          <div class="card mt-3 mt-lg-0 shadow-none">
-            <div class="bg-label-info position-relative team-image-box">
-              <img src="{{ asset('sneat/assets/img/sima/bus-hd.png')}}" alt="hero dashboard" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" />
+          <a href="{{ url('/bus/micro_bus') }}" class="text-decoration-none">
+            <div class="card mt-3 mt-lg-0 shadow-none">
+              <div class="bg-label-info position-relative team-image-box">
+                <img src="{{ asset('sneat/assets/img/sima/microbus.png')}}" alt="hero dashboard" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" />
+              </div>
+              <div class="card-body border border-top-0 border-label-info text-center">
+                <h5 class="card-title mb-0">Micro Bus</h5>
+                <p class="text-muted mb-0">17 Seat</p>
+              </div>
             </div>
-            <div class="card-body border border-top-0 border-label-info text-center">
-              <h5 class="card-title mb-0">Micro Bus</h5>
-              <p class="text-muted mb-0">17 Seat</p>
-            </div>
-          </div>
+          </a>
         </div>
+      
         <div class="col-lg-3 col-sm-6">
-          <div class="card mt-3 mt-lg-0 shadow-none">
-            <div class="bg-label-danger position-relative team-image-box">
-              <img src="{{ asset('sneat/assets/img/sima/bus-hd.png')}}" alt="hero dashboard" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" />
+          <a href="{{ url('/bus/medium_bus') }}" class="text-decoration-none">
+            <div class="card mt-3 mt-lg-0 shadow-none">
+              <div class="bg-label-danger position-relative team-image-box">
+                <img src="{{ asset('sneat/assets/img/sima/mediumbus.png')}}" alt="hero dashboard" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" />
+              </div>
+              <div class="card-body border border-top-0 border-label-danger text-center">
+                <h5 class="card-title mb-0">Medium Bus</h5>
+                <p class="text-muted mb-0">33 Seat</p>
+              </div>
             </div>
-            <div class="card-body border border-top-0 border-label-danger text-center">
-              <h5 class="card-title mb-0">Medium Bus</h5>
-              <p class="text-muted mb-0">33 Seat</p>
-            </div>
-          </div>
+          </a>
         </div>
+      
         <div class="col-lg-3 col-sm-6">
-          <div class="card mt-3 mt-lg-0 shadow-none">
-            <div class="bg-label-success position-relative team-image-box">
-              <img src="{{ asset('sneat/assets/img/sima/bus-hd.png')}}" alt="hero dashboard" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" />
+          <a href="{{ url('/bus/mediumSE_bus') }}" class="text-decoration-none">
+            <div class="card mt-3 mt-lg-0 shadow-none">
+              <div class="bg-label-success position-relative team-image-box">
+                <img src="{{ asset('sneat/assets/img/sima/SE.png')}}" alt="hero dashboard" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" />
+              </div>
+              <div class="card-body border border-top-0 border-label-success text-center">
+                <h5 class="card-title mb-0">Medium Bus SE</h5>
+                <p class="text-muted mb-0">22 Seat</p>
+              </div>
             </div>
-            <div class="card-body border border-top-0 border-label-success text-center">
-              <h5 class="card-title mb-0">Medium Bus SE</h5>
-              <p class="text-muted mb-0">22 Seat</p>
-            </div>
-          </div>
+          </a>
         </div>
+      
         <div class="col-lg-3 col-sm-6">
-          <div class="card mt-3 mt-lg-0 shadow-none">
-            <div class="bg-label-primary position-relative team-image-box">
-              <img src="{{ asset('sneat/assets/img/sima/bus-hd.png')}}" alt="hero dashboard" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" />
+          <a href="{{ url('/bus/big_bus') }}" class="text-decoration-none">
+            <div class="card mt-3 mt-lg-0 shadow-none">
+              <div class="bg-label-primary position-relative team-image-box">
+                <img src="{{ asset('sneat/assets/img/sima/big-bus.png')}}" alt="hero dashboard" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" />
+              </div>
+              <div class="card-body border border-top-0 border-label-primary text-center">
+                <h5 class="card-title mb-0">Big Bus</h5>
+                <p class="text-muted mb-0">50 Seat</p>
+              </div>
             </div>
-            <div class="card-body border border-top-0 border-label-primary text-center">
-              <h5 class="card-title mb-0">Big Bus</h5>
-              <p class="text-muted mb-0">50 Seat</p>
-            </div>
-          </div>
+          </a>
         </div>
       </div>
+      
     </div>
   </section>
   <!-- Unit Bus: End -->
@@ -479,7 +500,7 @@ window.addEventListener('scroll', function() {
                     <div>
                       <p class="mb-0">Email</p>
                       <h5 class="mb-0">
-                        <a href="mailto:example@gmail.com" class="text-heading">example@gmail.com</a>
+                        <a href="mailto:jagadsimaperkasya22@gmail.com" class="text-heading">jagadsimaperkasya22@gmail.com</a>
                       </h5>
                     </div>
                   </div>
