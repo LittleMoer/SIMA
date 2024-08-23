@@ -11,6 +11,7 @@ class Unit extends Model
     protected $fillable = [
         'id_unit'
         ,'nama_unit'
+        ,'seri_unit'
     ];
     public $timestamps = false;
 

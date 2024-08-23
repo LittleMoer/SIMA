@@ -58,7 +58,7 @@
             <a class="nav-link fw-medium" href="{{ url('/manajemen_armada') }}">Manajemen Armada</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="{{ url('/Unit') }}">Unit Kendaraan</a>
+            <a class="nav-link fw-medium" href="{{ url('/unit') }}">Unit Kendaraan</a>
           </li>
         </ul
 

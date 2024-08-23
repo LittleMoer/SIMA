@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RekapGajiCrewController;
 use App\Http\Controllers\ArmadaController;
+use App\Http\Controllers\UnitController;
 
 Route::get('/', function () {
     return view('homepage');
@@ -50,10 +51,7 @@ Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'gener
 Route::get('rekap-gaji-crew/edit/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
 Route::put('rekap-gaji-crew/update/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update');
 
-
-
-
-
+//manajemen akun
 Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
 Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
@@ -69,6 +67,14 @@ Route::post('/manajemen_armada', [ArmadaController::class, 'store'])->name('mana
 Route::get('/manajemen_armada/{id_armada}/edit', [ArmadaController::class, 'edit'])->name('manajemen_armada.edit');
 Route::post('/manajemen_armada/{id_armada}', [ArmadaController::class, 'update'])->name('manajemen_armada.update');
 Route::delete('/manajemen_armada/{id_armada}', [ArmadaController::class, 'destroy'])->name('manajemen_armada.destroy');
+
+//unit kendaraan
+Route::get('/unit', [UnitController::class, 'index'])->name('unit.index');
+Route::post('/unit', [UnitController::class, 'store'])->name('unit.store');
+Route::put('/unit/{id_unit}', [UnitController::class, 'update'])->name('unit.update');
+Route::delete('/unit/{id_unit}', [UnitController::class, 'destroy'])->name('unit.destroy');
+
+
 
 
 
