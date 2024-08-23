@@ -1,5 +1,7 @@
 @section('unit')
 
+
+
 <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
     <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}"
         alt="Help center header">
@@ -29,10 +31,10 @@
 
         <!-- Add Unit Button -->
         <a href="{{ route('unit.store') }}" class="btn btn-primary mb-3" data-bs-toggle="modal"
-            data-bs-target="#modalCentercreate">Tambah Unit</a>
+            data-bs-target="#modalCentercreate"><i class='bx bx-bus' ></i>Tambah Unit</a>
 
         @if($units->count())
-            <table class="datatables-basic table border-top">
+            <table class="datatables-basic table border-top" id="myTable">
                 <thead>
                     <tr>
                         <th>Nama Unit</th>
@@ -75,6 +77,15 @@
 </section>
 
 @include('main_owner')
+<link href="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.css" rel="stylesheet">
+ 
+<script src="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+
+</script>
 
 <!-- Modal Edit -->
 <div class="modal fade" id="modalCenteredit" tabindex="-1" aria-hidden="true">
@@ -128,7 +139,7 @@
                         <div class="col mb-6">
                             <label for="nama_unit" class="form-label">Nama Unit</label>
                             <input type="text" id="nama_unit" name="nama_unit" class="form-control"
-                                   placeholder="Masukkan Nama Unit" required>
+                                placeholder="Masukkan Nama Unit" required>
                         </div>
                     </div>
                     <div class="row">
@@ -136,7 +147,7 @@
                             <label for="seri_unit" class="form-label">Seri Unit</label>
                             <select id="seri_unit" name="seri_unit" class="form-control" required>
                                 <option value="" disabled selected>Pilih Seri Unit</option>
-                                @for ($i = 1; $i <= 3; $i++)
+                                @for($i = 1; $i <= 3; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
                             </select>
@@ -156,24 +167,26 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const editButtons = document.querySelectorAll('.btn-primary[data-bs-target="#modalCenteredit"]');
-    const modalEdit = document.getElementById('modalCenteredit');
-    const formEdit = modalEdit.querySelector('form');
+    document.addEventListener('DOMContentLoaded', function () {
+        const editButtons = document.querySelectorAll('.btn-primary[data-bs-target="#modalCenteredit"]');
+        const modalEdit = document.getElementById('modalCenteredit');
+        const formEdit = modalEdit.querySelector('form');
 
-    editButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const namaUnit = this.getAttribute('data-nama');
-            const seriUnit = this.getAttribute('data-seri');
-            const id = this.getAttribute('data-id');
+        editButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const namaUnit = this.getAttribute('data-nama');
+                const seriUnit = this.getAttribute('data-seri');
+                const id = this.getAttribute('data-id');
 
-            modalEdit.querySelector('#nama_unit').value = namaUnit;
-            modalEdit.querySelector('#seri_unit').value = seriUnit;
+                modalEdit.querySelector('#nama_unit').value = namaUnit;
+                modalEdit.querySelector('#seri_unit').value = seriUnit;
 
-            formEdit.action = `{{ route('unit.update', ':id') }}`.replace(':id', id);
+                formEdit.action =
+                    `{{ route('unit.update', ':id') }}`
+                    .replace(':id', id);
+            });
         });
     });
-});
 
     const createButton = document.querySelector('.create-btn');
     const modalCreate = document.getElementById('modalCentercreate');

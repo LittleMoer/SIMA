@@ -56,9 +56,9 @@
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="navs-justified-akun" role="tabpanel">
-                        <div class="card-datatable table-responsive">
-                            <table id="accountTable" class="datatables-basic table border-top">
+                    <div class="tab-pane fade show active " id="navs-justified-akun" role="tabpanel">
+                        <div class="card-datatable table-responsive ">
+                            <table id="myTable" class="datatables-basic table border-top ">
                                 <thead>
                                     <tr>
                                         <th>Id Pesanan</th>
@@ -379,3 +379,29 @@
 @endsection
 
 @include('main_owner')
+
+<!-- CSS for print -->
+<style type="text/css" media="print"> 
+    div.no_print {display: none;} 
+</style>
+
+<link href="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.css" rel="stylesheet">
+ 
+<script src="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.js"></script>
+
+<!-- Script for DataTables and Role Mapping -->
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable
+        $('#myTable').DataTable({
+            language: {
+                info: 'Halaman _PAGE_ dari _PAGES_',
+                infoEmpty: 'Data tidak ditemukan',
+                infoFiltered: '(filter dari _MAX_ total data)',
+                lengthMenu: 'Filter _MENU_ data per halaman',
+                zeroRecords: 'Tidak ditemukan'
+            }
+        });
+    });
+
+</script>

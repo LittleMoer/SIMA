@@ -6,6 +6,8 @@
   <!-- build:js assets/vendor/js/core.js -->
   <script src="{{ asset('sneat/assets/vendor/libs/popper/popper') }}""></script>
   <script src="{{ asset('sneat/assets/vendor/js/bootstrap') }}""></script>
+  <!-- Data Table -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
   
   <!-- endbuild -->
 
@@ -40,4 +42,6 @@
  <!-- ?PROD Only: Google Tag Manager (noscript) (Default ThemeSelection: GTM-5DDHKGP, PixInvent: GTM-5J3LMKC) -->
  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5DDHKGP" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
  <!-- End Google Tag Manager (noscript) -->
+
+
  

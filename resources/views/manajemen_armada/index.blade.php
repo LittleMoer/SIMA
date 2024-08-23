@@ -20,10 +20,10 @@
         </form>
 
         <!-- Add Armada Button -->
-        <a href="{{ route('manajemen_armada.create') }}" class="btn btn-primary mb-3">Tambah Armada</a>
+        <a href="{{ route('manajemen_armada.create') }}" class="btn btn-primary mb-3"><i class='bx bx-user-plus'></i>Tambah Armada</a>
 
         @if($armadas->count())
-            <table class="datatables-basic table border-top">
+            <table class="datatables-basic table border-top" id="myTable">
                 <thead>
                     <tr>
                         <th>Nama Crew</th>
@@ -64,6 +64,32 @@
 </section>
 
 @include('main_owner')
+
+<!-- CSS for print -->
+<style type="text/css" media="print"> 
+    div.no_print {display: none;} 
+</style>
+
+<link href="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.css" rel="stylesheet">
+ 
+<script src="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.js"></script>
+
+<!-- Script for DataTables and Role Mapping -->
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable
+        $('#myTable').DataTable({
+            language: {
+                info: 'Halaman _PAGE_ dari _PAGES_',
+                infoEmpty: 'Data tidak ditemukan',
+                infoFiltered: '(filter dari _MAX_ total data)',
+                lengthMenu: 'Filter _MENU_ data per halaman',
+                zeroRecords: 'Tidak ditemukan'
+            }
+        });
+    });
+
+</script>
 
   
 

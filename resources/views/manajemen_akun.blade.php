@@ -31,7 +31,7 @@
             </a>
         </div>
 
-        <table id="accountTable" class="datatables-basic table border-top">
+        <table id="myTable" class="datatables-basic table border-top">
             <thead>
                 <tr>
                     <th>NO</th>
@@ -67,23 +67,23 @@
 </section>
 <!-- Manajemen Akun: End -->
 
+@endsection
+
+@include('main_owner')
 <!-- CSS for print -->
 <style type="text/css" media="print"> 
     div.no_print {display: none;} 
 </style>
 
-<!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.2/css/dataTables.dataTables.css">
-
-<!-- jQuery and DataTables JS -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.css" rel="stylesheet">
+ 
+<script src="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.js"></script>
 
 <!-- Script for DataTables and Role Mapping -->
 <script>
     $(document).ready(function() {
         // Initialize DataTable
-        $('#accountTable').DataTable({
+        $('#myTable').DataTable({
             language: {
                 info: 'Halaman _PAGE_ dari _PAGES_',
                 infoEmpty: 'Data tidak ditemukan',
@@ -107,10 +107,8 @@
             $(this).text(roleName);
         });
     });
-</script>
-@endsection
 
-@include('main_owner')
+</script>
 
 <!-- Offcanvas Edit Form -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBackdrop" aria-labelledby="offcanvasBackdropLabel">
