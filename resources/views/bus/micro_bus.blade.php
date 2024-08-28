@@ -79,7 +79,8 @@
                 background-repeat: no-repeat; background-position: bottom; background-size: cover;"></div>
           <div class="container d-flex justify-content-center position-relative" style="position: relative; z-index: 2; ">
             
-            <img src="{{ asset('sneat/assets/img/sima/microbus.png')}}" alt="hero dashboard" style="max-width: 66%; height: auto; margin-top:40px; cursor: pointer;" onclick="showImageModal()" />
+            <img src="{{ asset('sneat/assets/img/sima/microbus.png')}}" alt="hero dashboard" style="max-width: 66%; height: auto; margin-top:40px;"
+             />
             
           </div>
           <div class=" text-center">
@@ -87,6 +88,9 @@
             {{-- <br class="d-none d-lg-block" /> --}}
             <h2 class="hero-sub-title h6 pb-1">Siap menemani perjalananmu
             </h2>
+            <div class="landing-hero-btn d-inline-block position-relative">
+              <button class="btn btn-primary" onclick="showImageModal()"> Denah seat</button>
+            </div>
           </div>
         </div>
         <div class="container" style="margin-bottom: 40px" >
@@ -215,7 +219,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center">
-        <img src="{{ asset('sneat/assets/img/sima/Microbus/DENAH SEAT JSP-101.jpg')}}" alt="denah seat" class="img-fluid" style="max-width: 66%; height: auto;"/>
+        <img src="{{ asset('sneat/assets/img/sima/Microbus/DENAH SEAT JSP-101.jpg')}}" alt="denah seat" class="img-fluid" style="max-width: 70%; height: auto;"/>
       </div>
     </div>
   </div>
