@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RekapGajiCrewController;
 use App\Http\Controllers\ArmadaController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\HomepageController;
 
 Route::get('/', function () {
     return view('homepage');

@@ -8,7 +8,7 @@
           <div class="col-lg-3">
             <a href="#" class="app-brand-link mb-4">
               <span class="app-brand-logo demo">
-                <img src="{{ asset('sneat/assets/img/sima/sima.png') }}"  class="d-inline-block align-top mr-2" style="max-width: 50%; height: auto;" alt="logo" />
+                <img src="{{ asset('sneat/assets/img/sima/simadolan.png') }}"  class="d-inline-block align-top mr-2" style="max-width: 40%; height: auto;" alt="logo" />
   
   </span>
             </a>

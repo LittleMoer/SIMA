@@ -34,7 +34,7 @@
         Welcome to Sima Perkasya! 
         <i
           class="bx bx-bus bx-tada"
-          style="color:#54de1c; color:#009a44; font-size: 1.5em;"
+          style="color:#54de1c; font-size: 1.5em;"
         ></i>
       </h4>
       <p class="mb-4">PT. Jagad Sima Perkasya Group</p>
@@ -78,12 +78,28 @@
               placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
               aria-describedby="password"
             />
-            <span class="input-group-text cursor-pointer">
+            <span class="input-group-text cursor-pointer" id="togglePassword">
               <i class="bx bx-hide"></i>
             </span>
           </div>
+          
+          <script>
+            const togglePassword = document.querySelector('#togglePassword');
+            const password = document.querySelector('#password');
+          
+            togglePassword.addEventListener('click', function (e) {
+              // Toggle the type attribute
+              const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+              password.setAttribute('type', type);
+          
+              // Toggle the eye icon
+              this.querySelector('i').classList.toggle('bx-hide');
+              this.querySelector('i').classList.toggle('bx-show');
+            });
+          </script>
+          
         </div>
-        <div class="mb-3">
+        {{-- <div class="mb-3">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="remember-me" />
             <label class="form-check-label" for="remember-me">
@@ -91,10 +107,10 @@
               Remember Me 
             </label>
           </div>
-        </div>
+        </div> --}}
         
           <button
-            class="btn btn-custom d-grid w-100 btn-not-allowed "
+            class="btn btn-success d-grid w-100 btn-not-allowed "
             style="color:white"
             type="submit"
             id="loginButton"
