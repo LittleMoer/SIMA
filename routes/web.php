@@ -95,3 +95,10 @@ Route::get('/bus/medium_bus', function () {
 Route::get('/bus/mediumSE_bus', function () {
     return view('/bus/mediumSE_bus');
 });
+
+
+//Api Fetch Events
+Route::get('/tes', function () {
+    return view('tes');
+});
+Route::get('/api/events', [HomepageController::class,'index']);
