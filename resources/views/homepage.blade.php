@@ -10,41 +10,11 @@
     <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/pages/front-page-landing.css') }}" />
     <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/pages/auth.css') }}" />
     <script src="{{ asset('sneat/assets/js/front-config.js') }}"></script>
-    <link rel="manifest" href="site.webmanifest">
 <link rel="stylesheet" href="global.css?20231021">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build@3.2.1/event-calendar.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@event-calendar/build@3.2.1/event-calendar.min.js"></script>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript" >
-    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-    ym(75029251, "init", {
-        clickmap:true,
-        trackLinks:true,
-        accurateTrackBounce:true,
-        webvisor:true
-    });
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/75029251" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
-
-<style>
-    .ec-timeline .ec-time, .ec-timeline .ec-line {
-        width: 80px;
-    }
-    .row {
-            flex: 1; /* Mengatur tinggi setiap row agar sama */
-        }
-        .event-title-green {
-            font-weight: bold;
-            color: green;
-            font-size: 16px;
-        }
-        
-</style>
 
     
 <script>
@@ -308,18 +278,26 @@ window.addEventListener('scroll', function() {
       </p>
       <div class="row">
         <!-- Jadwal: Start -->
-        <div >
-          <div class="card " style="display: flex;
->
-            <header class="row">
-
-            </header>
-            <main class="row ">
-                <div id="ec" ></div>
-            </main>
-            
-            <script type="text/javascript">
-                const ec = new EventCalendar(document.getElementById('ec'), {
+        <div class="card" style="display: flex;">
+          <div id="calendar"></div>
+      </div>
+  
+      <script src="https://cdn.jsdelivr.net/npm/@event-calendar/build@3.2.1/event-calendar.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fungsi untuk mengambil data event dari API
+            function createEvents() {
+                return fetch('/api/events')
+                    .then(response => response.json())
+                    .catch(error => {
+                        console.error('Error fetching events:', error);
+                        return []; // Kembalikan array kosong jika terjadi kesalahan
+                    });
+            }
+    
+            // Inisialisasi kalender
+            createEvents().then(events => {
+                new EventCalendar(document.getElementById('calendar'), {
                     view: 'dayGridMonth', // Setel tampilan default ke tampilan bulan
                     headerToolbar: {
                         start: 'prev,next today',
@@ -331,43 +309,19 @@ window.addEventListener('scroll', function() {
                     eventDurationEditable: false, // Nonaktifkan resize pada event
                     droppable: false, // Nonaktifkan kemampuan droppable
                     selectable: false, // Nonaktifkan kemampuan selectable
-                    events: createEvents(),
-                    dayMaxEvents: true,
-                    nowIndicator: true
-                });
-            
-                function createEvents() {
-                    let days = [];
-                    for (let i = 0; i < 30; ++i) {
-                        let day = new Date();
-                        let diff = i - day.getDay();
-                        day.setDate(day.getDate() + diff);
-                        days[i] = day.getFullYear() + "-" + _pad(day.getMonth()+1) + "-" + _pad(day.getDate());
+                    events: events, // Menggunakan event yang diambil dari API
+                    dayMaxEvents: true, // Batasi jumlah event yang ditampilkan per hari
+                    nowIndicator: true, // Tampilkan indikator hari ini
+                    eventContent: function(info) {
+                        return {
+                            html: `<b>${info.event.title}</b>` // Tampilkan title di dalam event
+                        };
                     }
-            
-                    return [
-                        {start: days[0] + " 00:00", end: days[0] + " 09:00", display: "background"},
-                        {start: days[1] + " 12:00", end: days[1] + " 14:00", display: "background"},
-                        {start: days[2] + " 17:00", end: days[2] + " 24:00", display: "background"},
-                        {start: days[0], end: days[0], title: "303", color: "#8BC34A"},
-                        {start: days[1], end: days[2], title: "202", color: "#FFC107"},
-                        {start: days[2] , end: days[2], title: "101", color: "#8BC34A"},
-                        {start: days[3], end: days[3], title: "201", color: "#8BC34A"},
-                        {start: days[3], end: days[3] , title: "301", color: "#FFC107"},
-                        {start: days[5], end: days[5], title: "101", color: "#8BC34A"},
-                        {start: days[5] , end: days[5], title: "301", color: "#8BC34A"},
-                        {start: days[5] , end: days[5]  , title: "201", color: "#FFC107"},
-                        {start: days[1], end: days[3], title: "202", color: "#8BC34A", allDay: true}
-                    ];
-                }
-            
-                function _pad(num) {
-                    let norm = Math.floor(Math.abs(num));
-                    return (norm < 10 ? '0' : '') + norm;
-                }
-            </script>
-          </div>
-        </div>
+                });
+            });
+        });
+    </script>
+    
         <!-- Jadwal: End -->
       </div>
     </div>
@@ -486,7 +440,7 @@ window.addEventListener('scroll', function() {
         <span class="badge bg-label-primary">Kontak</span>
       </div>
       <h3 class="text-center mb-1">Hubungi kami jika ada pertanyaan</h3>
-      <p class="text-center mb-4 mb-lg-5 pb-md-3">Dapat melalui email ataupun WhatsApp</p>
+      <p class="text-center mb-4 mb-lg-5 pb-md-3">Ayo WhatsApp kami!</p>
       <div class="row gy-4">
         <div class="col-lg-5">
           <div class="contact-img-box position-relative border p-2 h-100">
@@ -499,9 +453,9 @@ window.addEventListener('scroll', function() {
                     <div class="badge bg-label-primary rounded p-2 me-2"><i class="bx bx-envelope bx-sm"></i></div>
                     <div>
                       <p class="mb-0">Email</p>
-                      <h5 class="mb-0">
+                      <h6 class="mb-0">
                         <a href="mailto:jagadsimaperkasya22@gmail.com" class="text-heading">jagadsimaperkasya22@gmail.com</a>
-                      </h5>
+                      </h6>
                     </div>
                   </div>
                 </div>
@@ -523,8 +477,8 @@ window.addEventListener('scroll', function() {
         <div class="col-lg-7">
           <div class="card">
             <div class="card-body">
-              <h4 class="mb-1">Kirim Pesan</h4>
-              <p class="mb-4"> Jika Anda ingin mendiskusikan apa pun yang berkaitan dengan pembayaran, pemesanan atau memiliki pertanyaan .
+              <h4 class="mb-1">Kirim Email</h4>
+              <p class="mb-4"> Jika Anda ingin mengirimkan Email khusus untuk kami.
               </p>
               <form>
                 <div class="row g-4">
@@ -582,4 +536,3 @@ window.addEventListener('scroll', function() {
 </body>
 
 </html>
-
