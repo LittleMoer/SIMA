@@ -9,12 +9,8 @@ class UnitController extends Controller
 {
     public function index(Request $request)
     {
-        $query = $request->input('search');
-        $units = Unit::when($query, function($q) use ($query) {
-                $q->where('nama_unit', 'like', "%{$query}%");
-            })
-            ->get();
-        return view('unit.index', compact('units', 'query'));
+        $units = Unit::all();
+        return view('unit.index', compact('units'));
     }
 
 

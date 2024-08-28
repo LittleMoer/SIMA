@@ -11,15 +11,9 @@ class ArmadaController extends Controller
 {
     public function index(Request $request)
 {
-    $query = $request->input('search');
-    $armadas = Armada::with(['akun', 'unit'])
-        ->when($query, function($q) use ($query) {
-            $q->whereHas('akun', function($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%");
-            });
-        })
-        ->get();
-    return view('manajemen_armada.index', compact('armadas', 'query'));
+    $armadas = Armada::all();
+
+    return view('manajemen_armada.index', compact('armadas'));
 }
 
 public function create()

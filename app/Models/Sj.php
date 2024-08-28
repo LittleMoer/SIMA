@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sj extends Model
 {
+    protected $primaryKey = 'id_sj';
     protected $table = 'sj';
     protected $fillable = [
         'id_sp'
@@ -22,5 +23,13 @@ class Sj extends Model
     public function sp()
     {
         return $this->belongsTo(SP::class);
+    }
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+    public function spj()
+    {
+        return $this->hasOne(Spj::class);
     }
 }

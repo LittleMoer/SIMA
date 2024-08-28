@@ -14,5 +14,8 @@ class Unit extends Model
         ,'seri_unit'
     ];
     public $timestamps = false;
-
+    public function sj()
+    {
+        return $this->hasMany(SJ::class, 'id_unit', 'id_unit');
+    }
 }

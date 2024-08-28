@@ -21,14 +21,6 @@
     <div class="container">
         <h2>Daftar Unit Kendaraan</h2>
 
-        <form action="{{ route('unit.index') }}" method="GET" class="mb-4">
-            <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Cari nama unit..."
-                    value="{{ old('search', $query) }}">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
-
         <!-- Add Unit Button -->
         <a href="{{ route('unit.store') }}" class="btn btn-primary mb-3" data-bs-toggle="modal"
             data-bs-target="#modalCentercreate"><i class='bx bx-bus' ></i>Tambah Unit</a>
@@ -77,14 +69,29 @@
 </section>
 
 @include('main_owner')
+<!-- CSS for print -->
+<style type="text/css" media="print"> 
+    div.no_print {display: none;} 
+</style>
+
 <link href="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.css" rel="stylesheet">
  
 <script src="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#myTable').DataTable();
-    });
 
+<!-- Script for DataTables and Role Mapping -->
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable
+        $('#myTable').DataTable({
+            language: {
+                info: 'Halaman _PAGE_ dari _PAGES_',
+                infoEmpty: 'Data tidak ditemukan',
+                infoFiltered: '(filter dari _MAX_ total data)',
+                lengthMenu: 'Filter _MENU_ data per halaman',
+                zeroRecords: 'Tidak ditemukan'
+            }
+        });
+    });
 </script>
 
 <!-- Modal Edit -->

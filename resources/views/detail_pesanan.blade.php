@@ -46,19 +46,12 @@
                     <div class="tab-pane fade show active" id="SuratPesanan" role="tabpanel">
                         <div class="container">
 
-                            <div class="d-flex justify-content-end mb-4">
-                                <a href="{{ route('view',  $order->id_sp) }}"
-                                    class="btn btn-primary">
-                                    <span class="tf-icons bx bx-show me-2"></span>Lihat SP
-                                </a>
-                            </div>
-
                             <h2>Edit Surat Pesanan</h2>
-                            <form action="{{ route('detail_pesanan',  $order->id_sp) }}"
-                                method="POST">
+                            <form action="{{ route('pesanan.updateSP', $sp->id_sp) }}"
+                                method="PUT">
 
                                 @csrf
-                                @method('POST')
+                                @method('PUT')
 
                                 <!-- Nama Pemesan -->
                                 <div class="row mb-3">
@@ -67,7 +60,7 @@
                                     <div class="col-sm-10 ">
                                         <div class="input-group input-group-merge">
                                             <input type="text" class="form-control" name="nama_pemesan"
-                                                value="{{ $order->nama_pemesan }}">
+                                                value="{{ $sp->nama_pemesan }}">
                                         </div>
                                     </div>
                                 </div>
@@ -79,7 +72,7 @@
                                     <div class="col-sm-10 ">
                                         <div class="input-group input-group-merge">
                                             <input type="text" class="form-control" name="no_telppn"
-                                                value="{{ $order->no_telppn }}">
+                                                value="{{ $sp->no_telppn }}">
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +84,7 @@
                                     <div class="col-sm-10 ">
                                         <div class="input-group input-group-merge">
                                             <input type="text" class="form-control" name="pj_rombongan"
-                                                value="{{ $order->pj_rombongan }}">
+                                                value="{{ $sp->pj_rombongan }}">
                                         </div>
                                     </div>
                                 </div>
@@ -103,7 +96,7 @@
                                     <div class="col-sm-10 ">
                                         <div class="input-group input-group-merge">
                                             <input type="text" class="form-control" name="pj_rombongan"
-                                                value="{{ $order->pj_rombongan }}">
+                                                value="{{ $sp->pj_rombongan }}">
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +108,7 @@
                                         <div class="input-group input-group-merge">
                                             <input type="datetime-local" name="tgl_keberangkatan_full"
                                                 id="tgl_keberangkatan" class="form-control"
-                                                value="{{ $order->tgl_keberangkatan . 'T' . $order->jam_keberangkatan }}"
+                                                value="{{ $sp->tgl_keberangkatan . 'T' . $sp->jam_keberangkatan }}"
                                                 aria-describedby="departure-datetime-icon" />
                                         </div>
                                     </div>
@@ -129,7 +122,7 @@
                                         <div class="input-group input-group-merge">
                                             <input type="datetime-local" name="tgl_kepulangan_full" id="tgl_kepulangan"
                                                 class="form-control"
-                                                value="{{ $order->tgl_kepulangan . 'T' . $order->jam_kepulangan }}"
+                                                value="{{ $sp->tgl_kepulangan . 'T' . $sp->jam_kepulangan }}"
                                                 aria-describedby="return-datetime-icon" />
                                         </div>
                                     </div>
@@ -141,7 +134,7 @@
                                     <div class="col-sm-10">
                                         <div class="input-group input-group-merge">
                                             <input type="text" name="tujuan" id="tujuan" class="form-control"
-                                                placeholder="Masukkan tujuan" value="{{ $order->tujuan }}"
+                                                placeholder="Masukkan tujuan" value="{{ $sp->tujuan }}"
                                                 aria-describedby="tujuan" />
                                         </div>
                                     </div>
@@ -157,7 +150,7 @@
                                                     class="bx bx-map"></i></span>
                                             <input type="text" name="alamat_penjemputan" id="alamat_penjemputan"
                                                 class="form-control" placeholder="Masukkan alamat penjemputan"
-                                                value="{{ $order->alamat_penjemputan }}"
+                                                value="{{ $sp->alamat_penjemputan }}"
                                                 aria-describedby="pickup-address-icon" />
                                         </div>
                                     </div>
@@ -169,7 +162,7 @@
                                     <div class="col-sm-10">
                                         <input type="number" name="jumlah_armada" id="jumlah_armada"
                                             class="form-control" placeholder="Masukkan jumlah armada"
-                                            value="{{ $order->jumlah_armada }}" aria-label="Jumlah Armada" />
+                                            value="{{ $sp->jumlah_armada }}" aria-label="Jumlah Armada" />
                                     </div>
                                 </div>
 
@@ -180,7 +173,7 @@
                                     <div class="col-sm-10">
                                         <input type="text" name="nilai_kontrak1" id="nilai_kontrak1"
                                             class="form-control" placeholder="Masukkan nilai kontrak"
-                                            value="{{ $order->nilai_kontrak1 }}" aria-label="Nilai Kontrak" />
+                                            value="{{ $sp->nilai_kontrak1 }}" aria-label="Nilai Kontrak" />
                                     </div>
                                 </div>
 
@@ -189,7 +182,7 @@
                                     <div class="col-sm-10">
                                         <input type="text" name="nilai_kontrak2" id="nilai_kontrak2"
                                             class="form-control" placeholder="Masukkan nilai kontrak"
-                                            value="{{ $order->nilai_kontrak2 }}" aria-label="Nilai Kontrak" />
+                                            value="{{ $sp->nilai_kontrak2 }}" aria-label="Nilai Kontrak" />
                                     </div>
                                 </div>
 
@@ -198,7 +191,7 @@
                                     <div class="col-sm-10">
                                         <input type="text" name="biaya_tambahan" id="biaya_tambahan"
                                             class="form-control" placeholder="Masukkan biaya tambahan"
-                                            value="{{ $order->biaya_tambahan }}" aria-label="Biaya Tambahan" />
+                                            value="{{ $sp->biaya_tambahan }}" aria-label="Biaya Tambahan" />
                                     </div>
                                 </div>
 
@@ -206,7 +199,7 @@
                                     <label class="col-sm-2 form-label" for="total_biaya">Total Biaya</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="total_biaya" id="total_biaya" class="form-control"
-                                            placeholder="Masukkan total biaya" value="{{ $order->total_biaya }}"
+                                            placeholder="Masukkan total biaya" value="{{ $sp->total_biaya }}"
                                             aria-label="Total Biaya" />
                                     </div>
                                 </div>
@@ -215,7 +208,7 @@
                                     <label class="col-sm-2 form-label" for="uang_muka">Uang Muka</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="uang_muka" id="uang_muka" class="form-control"
-                                            placeholder="Masukkan uang muka" value="{{ $order->uang_muka }}"
+                                            placeholder="Masukkan uang muka" value="{{ $sp->uang_muka }}"
                                             aria-label="Uang Muka" />
                                     </div>
                                 </div>
@@ -231,13 +224,13 @@
                                                 id="status_pembayaran" name="status_pembayaran" required>
                                                 <option value="">-- Pilih Status Pembayaran --</option>
                                                 <option value="1"
-                                                    {{ $order->status_pembayaran == 1 ? 'selected' : '' }}>
+                                                    {{ $sp->status_pembayaran == 1 ? 'selected' : '' }}>
                                                     Lunas</option>
                                                 <option value="2"
-                                                    {{ $order->status_pembayaran == 2 ? 'selected' : '' }}>
+                                                    {{ $sp->status_pembayaran == 2 ? 'selected' : '' }}>
                                                     DP</option>
                                                 <option value="3"
-                                                    {{ $order->status_pembayaran == 3 ? 'selected' : '' }}>
+                                                    {{ $sp->status_pembayaran == 3 ? 'selected' : '' }}>
                                                     Belum DP</option>
                                             </select>
                                         </div>
@@ -249,7 +242,7 @@
                                     <div class="col-sm-10">
                                         <input type="text" name="sisa_pembayaran" id="sisa_pembayaran"
                                             class="form-control" placeholder="Sisa pembayaran"
-                                            value="{{ $order->sisa_pembayaran }}" aria-label="Sisa Pembayaran" />
+                                            value="{{ $sp->sisa_pembayaran }}" aria-label="Sisa Pembayaran" />
                                     </div>
                                 </div>
 
@@ -258,13 +251,13 @@
                                     <div class="col-sm-10">
                                         <select name="metode_pembayaran" id="metode_pembayaran" class="form-control">
                                             <option value="cash"
-                                                {{ $order->metode_pembayaran == 'cash' ? 'selected' : '' }}>
+                                                {{ $sp->metode_pembayaran == 'cash' ? 'selected' : '' }}>
                                                 Cash</option>
                                             <option value="transfer"
-                                                {{ $order->metode_pembayaran == 'transfer' ? 'selected' : '' }}>
+                                                {{ $sp->metode_pembayaran == 'transfer' ? 'selected' : '' }}>
                                                 Transfer</option>
                                             <option value="credit_card"
-                                                {{ $order->metode_pembayaran == 'credit_card' ? 'selected' : '' }}>
+                                                {{ $sp->metode_pembayaran == 'credit_card' ? 'selected' : '' }}>
                                                 Kartu Kredit</option>
                                             <!-- Tambahkan opsi lainnya jika diperlukan -->
                                         </select>
@@ -276,7 +269,7 @@
                                     <div class="col-sm-10">
                                         <textarea type="text" name="catatan_pembayaran" id="catatan_pembayaran"
                                             class="form-control" placeholder="Masukkan catatan"
-                                            aria-label="catatan">{{ $order->catatan_pembayaran }}</textarea>
+                                            aria-label="catatan">{{ $sp->catatan_pembayaran }}</textarea>
                                     </div>
                                 </div>
 
@@ -289,20 +282,152 @@
                     </div>
                     <div class="tab-pane fade" id="SuratJalan" role="tabpanel">
                         <div class="container">
+                            <h2>Edit Surat Jalan</h2>
+                            @foreach($sjs as $index => $sj)
+                                <h3>Surat Jalan {{ $index + 1 }}</h3>
+                                <form method="POST"
+                                    action="{{ route('pesanan.updateSJ', $sj->id_sj) }}">
+                                    @csrf
+                                    @method('PUT')
 
+                                    <div class="form-group">
+                                        <label for="nilai_kontrak_{{ $sj->id_sj }}">Nilai Kontrak:</label>
+                                        <input type="text" name="nilai_kontrak" id="nilai_kontrak_{{ $sj->id_sj }}"
+                                            value="{{ old('nilai_kontrak', $sj->nilai_kontrak) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="kmsebelum_{{ $sj->id_sj }}">KM Sebelum:</label>
+                                        <input type="text" name="kmsebelum" id="kmsebelum_{{ $sj->id_sj }}"
+                                            value="{{ old('kmsebelum', $sj->kmsebelum) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="kmtiba_{{ $sj->id_sj }}">KM Tiba:</label>
+                                        <input type="text" name="kmtiba" id="kmtiba_{{ $sj->id_sj }}"
+                                            value="{{ old('kmtiba', $sj->kmtiba) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="kasbonbbm_{{ $sj->id_sj }}">Kasbon BBM:</label>
+                                        <input type="text" name="kasbonbbm" id="kasbonbbm_{{ $sj->id_sj }}"
+                                            value="{{ old('kasbonbbm', $sj->kasbonbbm) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="kasbonmakan_{{ $sj->id_sj }}">Kasbon Makan:</label>
+                                        <input type="text" name="kasbonmakan" id="kasbonmakan_{{ $sj->id_sj }}"
+                                            value="{{ old('kasbonmakan', $sj->kasbonmakan) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="lainlain_{{ $sj->id_sj }}">Lain-lain:</label>
+                                        <input type="text" name="lainlain" id="lainlain_{{ $sj->id_sj }}"
+                                            value="{{ old('lainlain', $sj->lainlain) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </form>
+                                <hr>
+                            @endforeach
                         </div>
                     </div>
                     <div class="tab-pane fade" id="SuratPerintahJalan" role="tabpanel">
                         <div class="container">
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-primary">Konsumsi Bbm</button>
-                            </div>
-                        </div>
+                            <h2>Edit Surat Premi Jalan</h2>
+                            @foreach($spjs as $index => $spj)
+                                <h3>Surat Premi Jalan {{ $index + 1 }}</h3>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary d-flex justify-content-end">Konsumsi
+                                        Bbm</button>
+                                </div>
+                                <form method="POST"
+                                    action="{{ route('pesanan.updateSJ', $spj->id_sj) }}">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="form-group">
+                                        <label for="SaldoEtollawal_{{ $spj->id_sj }}">Saldo E-toll Awal:</label>
+                                        <input type="text" name="SaldoEtollawal" id="SaldoEtollawal_{{ $spj->id_sj }}"
+                                            value="{{ old('SaldoEtollawal', $spj->SaldoEtollawal) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="SaldoEtollakhir_{{ $spj->id_sj }}">Saldo E-toll Akhir:</label>
+                                        <input type="text" name="SaldoEtollakhir"
+                                            id="SaldoEtollakhir_{{ $spj->id_sj }}"
+                                            value="{{ old('SaldoEtollakhir', $spj->SaldoEtollakhir) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="PenggunaanToll_{{ $spj->id_sj }}">Penggunaan Toll:</label>
+                                        <input type="text" name="PenggunaanToll" id="PenggunaanToll_{{ $spj->id_sj }}"
+                                            value="{{ old('PenggunaanToll', $spj->PenggunaanToll) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="uanglainlain_{{ $spj->id_sj }}">Uang Lain-lain:</label>
+                                        <input type="text" name="uanglainlain" id="uanglainlain_{{ $spj->id_sj }}"
+                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="uangmakan_{{ $spj->id_sj }}">Uang Makan:</label>
+                                        <input type="text" name="uangmakan" id="uangmakan_{{ $spj->id_sj }}"
+                                            value="{{ old('uangmakan', $spj->uangmakan) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="sisabbm_{{ $spj->id_sj }}">Sisa BBM:</label>
+                                        <input type="text" name="sisabbm" id="sisabbm_{{ $spj->id_sj }}"
+                                            value="{{ old('sisabbm', $spj->sisabbm) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="totalisibbm_{{ $spj->id_sj }}">Total Isi BBM:</label>
+                                        <input type="text" name="totalisibbm" id="totalisibbm_{{ $spj->id_sj }}"
+                                            value="{{ old('totalisibbm', $spj->totalisibbm) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="sisasaku_{{ $spj->id_sj }}">Sisa Saku:</label>
+                                        <input type="text" name="sisasaku" id="sisasaku_{{ $spj->id_sj }}"
+                                            value="{{ old('sisasaku', $spj->sisasaku) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="totalsisa_{{ $spj->id_sj }}">Total Sisa:</label>
+                                        <input type="text" name="totalsisa" id="totalsisa_{{ $spj->id_sj }}"
+                                            value="{{ old('totalsisa', $spj->totalsisa) }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </form>
+                                <hr>
+                            @endforeach
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 </section>
 

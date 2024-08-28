@@ -16,7 +16,6 @@ class OrderController extends Controller
         $sp = SP::all(); 
         return view('pesanan', compact('sp'));  // Mengirimkan data ke view
     }
-    
     public function store(Request $request)
     {
         // Validate request
@@ -105,7 +104,6 @@ class OrderController extends Controller
 
         return redirect()->route('pesanan')->with('success', 'Pesanan berhasil disimpan');
     }
-// Versi nadi
 public function view($id)
 {
     $sp = SP::where('id_sp', $id)->firstOrFail();
@@ -114,30 +112,138 @@ public function view($id)
 
 public function detail($id)
 {
-    $order = SP::where('id_sp', $id)->firstOrFail();
-    return view('detail_pesanan', compact('order'));
+    // Retrieve the SP record based on id_sp
+    $sp = SP::where('id_sp', $id)->firstOrFail();
+
+    // Retrieve all SJ records related to this SP
+    $sjs = SJ::where('id_sp', $id)->get();
+
+    // Retrieve all SPJ records where id_sj is among the SJ records retrieved
+    $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj'))->get();
+
+    // Pass data to the view
+    return view('detail_pesanan', compact('sp', 'sjs', 'spjs'));
 }
-    // Update data pesanan
-    public function updateSP(Request $request, $id)
-    {
-        $order = SP::where('id_sp', $id)->firstOrFail();
-        $order->update($request->all());
-        return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'Pesanan berhasil diupdate!');
+
+
+
+
+// Update data for SP
+public function updateSP(Request $request, $id)
+{
+    $sp = SP::where('id_sp', $id)->firstOrFail();
+
+    // Validate the request (example validation, you can adjust it)
+    $request->validate([
+        'nama_pemesan' => 'required|string|max:50',
+        'pj_rombongan' => 'required|string|max:50',
+        'no_telppn' => 'required|string|max:12',
+        'no_telpps' => 'required|string|max:12',
+        'tgl_keberangkatan_full' => 'required|date_format:Y-m-d\TH:i',
+        'tgl_kepulangan_full' => 'required|date_format:Y-m-d\TH:i',
+        'tujuan' => 'required|string|max:20',
+        'alamat_penjemputan' => 'required|string|max:100',
+        'jumlah_armada' => 'required|integer',
+        'nilai_kontrak1' => 'required|integer',
+        'nilai_kontrak2' => 'nullable|integer',
+        'biaya_tambahan' => 'nullable|integer',
+        'total_biaya' => 'required|integer',
+        'uang_muka' => 'required|integer',
+        'status_pembayaran' => 'required|integer',
+        'sisa_pembayaran' => 'nullable|integer',
+        'metode_pembayaran' => 'required|string|max:10',
+        'catatan_pembayaran' => 'nullable|string'
+    ]);
+
+    // Update the SP record
+    $sp->update($request->all());
+
+    return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'Pesanan berhasil diupdate!');
+}
+
+// Update data for SJ related to the given SP
+public function updateSJ(Request $request, $id)
+{
+    // Retrieve the SP record along with its related SJ records
+    $sp = SP::with('sj')->where('id_sp', $id)->firstOrFail();
+
+    // Validate the request (example validation, you can adjust it)
+    $request->validate([
+        'nilai_kontrak' => 'required|array',
+        'nilai_kontrak.*' => 'required|integer',
+        'kmsebelum' => 'nullable|array',
+        'kmsebelum.*' => 'nullable|integer',
+        'kmtiba' => 'nullable|array',
+        'kmtiba.*' => 'nullable|integer',
+        'kasbonbbm' => 'nullable|array',
+        'kasbonbbm.*' => 'nullable|integer',
+        'kasbonmakan' => 'nullable|array',
+        'kasbonmakan.*' => 'nullable|integer',
+        'lainlain' => 'nullable|array',
+        'lainlain.*' => 'nullable|string',
+    ]);
+
+    // Update each related SJ record
+    foreach ($sp->sjs as $index => $sj) {
+        $sj->update([
+            'nilai_kontrak' => $request->nilai_kontrak[$index],
+            'kmsebelum' => $request->kmsebelum[$index] ?? null,
+            'kmtiba' => $request->kmtiba[$index] ?? null,
+            'kasbonbbm' => $request->kasbonbbm[$index] ?? null,
+            'kasbonmakan' => $request->kasbonmakan[$index] ?? null,
+            'lainlain' => $request->lainlain[$index] ?? null,
+        ]);
     }
-    
 
+    return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'SJ berhasil diupdate!');
+}
 
+// Update data for SPJ related to the given SP
+public function updateSPJ(Request $request, $id)
+{
+    // Retrieve the SP record along with its related SPJ records
+    $sp = SP::with('spjs')->where('id_sp', $id)->firstOrFail();
 
+    // Validate the request (example validation, you can adjust it)
+    $request->validate([
+        'saldo_etollawal' => 'nullable|array',
+        'saldo_etollawal.*' => 'nullable|integer',
+        'saldo_etollakhir' => 'nullable|array',
+        'saldo_etollakhir.*' => 'nullable|integer',
+        'penggunaan_toll' => 'nullable|array',
+        'penggunaan_toll.*' => 'nullable|integer',
+        'uanglainlain' => 'nullable|array',
+        'uanglainlain.*' => 'nullable|integer',
+        'uangmakan' => 'nullable|array',
+        'uangmakan.*' => 'nullable|integer',
+        // Add other fields validations as needed
+    ]);
+
+    // Update each related SPJ record
+    foreach ($sp->spjs as $index => $spj) {
+        $spj->update([
+            'SaldoEtollawal' => $request->saldo_etollawal[$index] ?? null,
+            'SaldoEtollakhir' => $request->saldo_etollakhir[$index] ?? null,
+            'PenggunaanToll' => $request->penggunaan_toll[$index] ?? null,
+            'uanglainlain' => $request->uanglainlain[$index] ?? null,
+            'uangmakan' => $request->uangmakan[$index] ?? null,
+            // Add other fields to be updated
+        ]);
+    }
+
+    return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'SPJ berhasil diupdate!');
+}
+
+// Update KonsumBbm (if needed, you can add similar logic)
 public function updateKonsumBbm(Request $request, $id)
 {
-    //
+    // Update logic for KonsumBbm (similar to the above methods)
     return redirect()->route('pesanan')->with('success', 'KonsumBBM berhasil diperbarui');
 }
 
 public function destroy($id)
 {
     $sp = SP::where('id_sp', $id)->firstOrFail();
-    $sj = SJ::where('id_sp', $sp->id_sp)->firstOrFail();
     $sp->delete();
 
     return redirect()->route('pesanan')->with('success', 'Pesanan berhasil dihapus');

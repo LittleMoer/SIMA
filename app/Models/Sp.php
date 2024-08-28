@@ -18,6 +18,6 @@ class Sp extends Model
 
     public function sj()
     {
-        return $this->hasMany(SJ::class);
+        return $this->hasMany(SJ::class, 'id_sp', 'id_sp');
     }
 }

@@ -11,14 +11,7 @@
 <section>
     <div class="container">
         <h2>Daftar Armada</h2>
-        
-        <form action="{{ route('manajemen_armada.index') }}" method="GET" class="mb-4">
-            <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Cari nama crew..." value="{{ old('search', $query) }}">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
-
+    
         <!-- Add Armada Button -->
         <a href="{{ route('manajemen_armada.create') }}" class="btn btn-primary mb-3"><i class='bx bx-user-plus'></i>Tambah Armada</a>
 

@@ -33,18 +33,23 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-//order sp
+//order
 Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
 Route::post('/store', [OrderController::class, 'store'])->name('order.store');
-Route::delete('/pesanan', [OrderController::class, 'destroy'])->name('order.destroy');
 //detail pesanan
 Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
-Route::post('/detail_pesanan/{id}', [OrderController::class, 'updateSP'])->name('detail_pesanan');
+
 //view data pesanan
-Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
+// Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
 
-
+//update order
+Route::put('/detail_pesanan/{id}/update-sp', [OrderController::class, 'updateSP'])->name('pesanan.updateSP');
+Route::put('/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');
+Route::put('/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
 Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
+
+
+
 Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'index'])->name('rekap.gaji.index');
 Route::post('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
 Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generatePayrollSummary'])->name('rekap.gaji.generate');
