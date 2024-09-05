@@ -41,7 +41,6 @@
                     </li>
 
                 </ul>
-
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="SuratPesanan" role="tabpanel">
                         <div class="container">
@@ -291,6 +290,17 @@
                                     @method('PUT')
 
                                     <div class="form-group">
+                                        <label for="id_unit_{{ $sj->id_unit }}">Unit :</label>
+                                        <select class="form-select" name="id_unit" id="id_unit" required>
+                                            @foreach($units as $unit)
+                                                <option value="{{ $unit->id_unit }}">
+                                                    {{ $unit->nama_unit }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="nilai_kontrak_{{ $sj->id_sj }}">Nilai Kontrak:</label>
                                         <input type="text" name="nilai_kontrak" id="nilai_kontrak_{{ $sj->id_sj }}"
                                             value="{{ old('nilai_kontrak', $sj->nilai_kontrak) }}"
@@ -343,10 +353,13 @@
                             <h2>Edit Surat Premi Jalan</h2>
                             @foreach($spjs as $index => $spj)
                                 <h3>Surat Premi Jalan {{ $index + 1 }}</h3>
+
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-primary d-flex justify-content-end">Konsumsi
-                                        Bbm</button>
+                                    <a href="{{ route('bbm.index', $spj->id_spj) }}"
+                                        class="btn btn-primary btn-sm">Konsumsi BBM</a>
+
                                 </div>
+
                                 <form method="POST"
                                     action="{{ route('pesanan.updateSJ', $spj->id_sj) }}">
                                     @csrf

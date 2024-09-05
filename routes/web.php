@@ -10,6 +10,8 @@ use App\Http\Controllers\RekapGajiCrewController;
 use App\Http\Controllers\ArmadaController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\BbmController;
+use App\Models\RekapGajiCrew;
 
 Route::get('/', function () {
     return view('homepage');
@@ -44,18 +46,22 @@ Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('de
 // Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
 
 //update order
-Route::put('/detail_pesanan/{id}/update-sp', [OrderController::class, 'updateSP'])->name('pesanan.updateSP');
+Route::post('/detail_pesanan/{id}/update-sp', [OrderController::class, 'updateSP'])->name('pesanan.updateSP');
 Route::put('/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');
 Route::put('/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
 Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
 
+//konsumbbm
+Route::get('/bbm/{id_spj}', [BbmController::class, 'index'])->name('bbm.index');
+Route::delete('/bbm/{id}', [BbmController::class, 'destroy'])->name('bbm.destroy');
 
 
-Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'index'])->name('rekap.gaji.index');
-Route::post('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
-Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generatePayrollSummary'])->name('rekap.gaji.generate');
-Route::get('rekap-gaji-crew/edit/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
-Route::put('rekap-gaji-crew/update/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update');
+
+Route::get('/manajemen_armada/{id_armada}/rekap_gaji', [RekapGajiCrewController::class, 'showRekapGaji'])->name('manajemen_armada.rekap_gaji');
+Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
+Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generate'])->name('rekap.gaji.generate');
+// Route::get('rekap-gaji-crew/edit/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
+// Route::put('rekap-gaji-crew/update/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update');
 
 //manajemen akun
 Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');

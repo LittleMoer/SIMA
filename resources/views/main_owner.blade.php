@@ -113,6 +113,10 @@
 
     @yield('manajemen_armada')
 
+    @yield('bbm')
+
+    @yield('unit')
+
 
     {{-- Hubungi diyan --}}
     @include('layouts.hubungi')

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\SP;
 use App\Models\SPJ;
 use App\Models\SJ;
+use App\Models\Unit;
 
 class OrderController extends Controller
 {
@@ -79,7 +80,7 @@ class OrderController extends Controller
             // Create SPJ and link it to the SJ records
             $spj = SPJ::create([
                 'id_spj' => $randomId,
-                'id_sj' => $sj->id,
+                'id_sj' => $sj->id_sj,
                 'SaldoEtollawal' => null,
                 'SaldoEtollakhir' => null,
                 'PenggunaanToll' => null,
@@ -94,11 +95,13 @@ class OrderController extends Controller
             // Create a new KonsumBbm record and get its ID
             $konsumBbm = KonsumBbm::create([
                 'idkonsumbbm' => $randomId,
-                'id_spj' => $spj->id, 
+                'id_spj' => $spj->id_spj, 
                 'isiBBM' => null,           
                 'tanggal' => null,
                 'lokasiisi' => null,
                 'totalbayar' => null,
+                'foto_struk' => null,
+                'isvalid'=> 0,
             ]);
         }
 
@@ -121,8 +124,12 @@ public function detail($id)
     // Retrieve all SPJ records where id_sj is among the SJ records retrieved
     $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj'))->get();
 
+    $units = Unit::all();
+
+    $bbm = KonsumBbm::where('id_spj', $spjs->pluck('id_spj'))->get();
+
     // Pass data to the view
-    return view('detail_pesanan', compact('sp', 'sjs', 'spjs'));
+    return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units', 'bbm'));
 }
 
 
@@ -234,12 +241,6 @@ public function updateSPJ(Request $request, $id)
     return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'SPJ berhasil diupdate!');
 }
 
-// Update KonsumBbm (if needed, you can add similar logic)
-public function updateKonsumBbm(Request $request, $id)
-{
-    // Update logic for KonsumBbm (similar to the above methods)
-    return redirect()->route('pesanan')->with('success', 'KonsumBBM berhasil diperbarui');
-}
 
 public function destroy($id)
 {

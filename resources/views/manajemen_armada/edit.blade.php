@@ -39,8 +39,7 @@
                 <label for="id_unit">Unit</label>
                 <select class="form-select" name="id_unit" id="id_unit" required>
                     @foreach($units as $unit)
-                        <option value="{{ $unit->id_unit }}"
-                            {{ isset($armada) && $armada->id_unit == $unit->id_unit ? 'selected' : '' }}>
+                        <option value="{{ $unit->id_unit }}">
                             {{ $unit->nama_unit }}
                         </option>
                     @endforeach

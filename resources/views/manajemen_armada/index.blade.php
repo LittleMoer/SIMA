@@ -44,7 +44,7 @@
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this armada?')">Delete</button>
                                 </form>
                                 <!-- Rekap Gaji Armada -->
-                                <button type="button" class="btn btn-sm btn-info">Rekap Gaji</button>
+                                <a href="{{ route('manajemen_armada.rekap_gaji', $armada->id_armada) }}" class="btn btn-sm btn-info">Rekap Gaji</a>
                             </td>
                         </tr>
                     @endforeach

@@ -41,7 +41,7 @@ public function edit($id)
 {
     $armada = Armada::findOrFail($id);
     $akuns = Akun::where('id_akun', $armada->id_akun)->first();
-    $units = Unit::where('id_unit',$armada->id_unit)->get();
+    $units = Unit::all();
     return view('manajemen_armada.edit', compact('armada', 'akuns', 'units'));
 }
 

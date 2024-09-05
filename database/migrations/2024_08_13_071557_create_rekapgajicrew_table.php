@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('rekapgajicrew', function (Blueprint $table) {
             $table->id('id_rekapgajicrew');
+            $table->unsignedBigInteger('id_armada');
+            $table->foreign('id_armada')->references('id_armada')->on('armada')->onDelete('cascade');
             $table->string('nama');
-            $table->integer('armada');
             $table->string('bulan');
             $table->date('tanggal');
             $table->integer('hari_kerja');
