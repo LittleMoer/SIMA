@@ -356,7 +356,7 @@
 
                                 <div class="form-group">
                                     <a href="{{ route('bbm.index', $spj->id_spj) }}"
-                                        class="btn btn-primary btn-sm">Konsumsi BBM</a>
+                                        class="btn btn-primary">Konsumsi BBM</a>
 
                                 </div>
 

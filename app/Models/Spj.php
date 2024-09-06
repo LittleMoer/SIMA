@@ -17,4 +17,8 @@ class Spj extends Model
     {
         return $this->belongsTo(SJ::class);
     }
+    public function konsumbbm()
+    {
+        return $this->hasMany(Konsumbbm::class, 'id_spj', 'id_spj');
+    }
 }

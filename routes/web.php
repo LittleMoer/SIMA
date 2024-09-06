@@ -53,6 +53,8 @@ Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order
 
 //konsumbbm
 Route::get('/bbm/{id_spj}', [BbmController::class, 'index'])->name('bbm.index');
+Route::post('/bbm/{id_spj}', [BbmController::class, 'create'])->name('bbm.create');
+Route::post('/bbm/{idkonsumbbm}/edit', [BbmController::class, 'edit'])->name('bbm.edit');
 Route::delete('/bbm/{id}', [BbmController::class, 'destroy'])->name('bbm.destroy');
 
 
