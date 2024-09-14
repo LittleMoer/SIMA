@@ -45,7 +45,7 @@
             <h2>Konsumsi Bbm</h2>
 
             <!-- Button to Create a New Record -->
-            <a href="{{ route('bbm.create', ['id_spj' => $spj->id_spj]) }}" class="btn btn-primary mb-3">Isi Bensin</a>
+            <a href="{{ route('bbm.create', ['id_spj' => $spj->id_spj]) }}" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalCentercreate">Isi Bensin</a>
 
             @if($bbms->count())
                 <table class="datatables-basic table border-top">
@@ -182,7 +182,7 @@
                 <h5 class="modal-title" id="modalCenterTitle">Edit Unit</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('bbm.edit', ['idkonsumbbm' => $bbm->idkonsumbbm]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('bbm.create', ['id_spj' => $spj->id_spj]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('POST')
                 <div class="modal-body">

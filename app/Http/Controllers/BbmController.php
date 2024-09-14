@@ -7,6 +7,7 @@ use App\Models\Armada;
 use App\Models\Unit;
 use App\Models\Konsumbbm;
 use App\Models\Spj;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -26,21 +27,25 @@ class BbmController extends Controller
         return view('bbm.index', compact('bbms', 'spj'));
     }
     
-    public function create($id_spj)
+    public function create(Request $request, $id_spj)
     {
-            KonsumBbm::create([
-                'idkonsumbbm' => Konsumbbm::count() + 1,
-                'id_spj' => $id_spj,
-                'isiBBM' => null,
-                'tanggal' => null,
-                'lokasiisi' => null,
-                'totalbayar' => null,
-                'foto_struk' => null,
-                'isvalid' => 0
-            ]);
-    
-            return redirect()->route('bbm.index', ['id_spj' => $id_spj])
-                             ->with('success', 'Data Konsumsi BBM baru berhasil dibuat.');
+        $validatedData = $request->validate([
+            'isiBBM' => 'required|numeric',
+            'tanggal' => 'required|date',
+            'lokasiisi' => 'required|string',
+            'totalbayar' => 'required|numeric',
+            'foto_struk' => 'nullable|image',
+            'isvalid' => 'required|boolean',
+        ]);
+
+        $validatedData['id_spj'] = $id_spj;
+
+        if ($request->hasFile('foto_struk')) {
+            $validatedData['foto_struk'] = $request->file('foto_struk')->store('public/bbm');
+        }
+
+        Konsumbbm::create($validatedData);
+        return redirect()->route('bbm.index', ['id_spj' => $id_spj])->with('success', 'Data created successfully.');
     }
     
     public function edit($idkonsumbbm)
