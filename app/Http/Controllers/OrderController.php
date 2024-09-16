@@ -122,17 +122,15 @@ public function detail($id)
     $sjs = SJ::where('id_sp', $id)->get();
 
     // Retrieve all SPJ records where id_sj is among the SJ records retrieved
-    $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj'))->get();
+    $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj')->toArray())->get(); // Ensure pluck returns an array
+    
+    // Make sure id_spj is treated as an array even if it has a single value
+    $bbm = KonsumBbm::whereIn('id_spj', $spjs->pluck('id_spj')->toArray())->get(); // Use whereIn
 
     $units = Unit::all();
-
-    $bbm = KonsumBbm::where('id_spj', $spjs->pluck('id_spj'))->get();
-
     // Pass data to the view
     return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units', 'bbm'));
 }
-
-
 
 
 // Update data for SP

@@ -22,7 +22,6 @@ class BbmController extends Controller
         // Fetch the corresponding SPJ record
         $spj = Spj::where('id_spj', $id_spj)->first();
         
-    
         // Return the view with the BBM and SPJ data
         return view('bbm.index', compact('bbms', 'spj'));
     }

@@ -39,7 +39,7 @@
             <h4> Nama : {{ $armada->akun->name }}</h4>
 
             @if($rekapGajiCrew->count())
-                <table class="table">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
