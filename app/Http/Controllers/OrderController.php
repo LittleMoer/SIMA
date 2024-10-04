@@ -9,6 +9,8 @@ use App\Models\SP;
 use App\Models\SPJ;
 use App\Models\SJ;
 use App\Models\Unit;
+use App\Models\Armada;
+use App\Models\Akun;
 
 class OrderController extends Controller
 {
@@ -46,14 +48,14 @@ class OrderController extends Controller
         $jam_keberangkatan = date('H:i', strtotime($request->tgl_keberangkatan_full));
         $tgl_kepulangan = date('Y-m-d', strtotime($request->tgl_kepulangan_full));
         $jam_kepulangan = date('H:i', strtotime($request->tgl_kepulangan_full));
-
+        
         // Prepare data for SP
         $orderData = $request->except('_token', 'tgl_keberangkatan_full', 'tgl_kepulangan_full');
         $orderData['tgl_keberangkatan'] = $tgl_keberangkatan;
         $orderData['jam_keberangkatan'] = $jam_keberangkatan;
         $orderData['tgl_kepulangan'] = $tgl_kepulangan;
         $orderData['jam_kepulangan'] = $jam_keberangkatan;
-
+        
         // Create the SP record
         $order = SP::create($orderData);
         
@@ -70,6 +72,8 @@ class OrderController extends Controller
                 'id_sj' => $randomId, 
                 'id_sp' => $order->id_sp, 
                 'nilai_kontrak' => $nilaiKontrak,
+                'driver' => null,
+                'codriver' => null,
                 'kmsebelum' => null,
                 'kmtiba' => null,
                 'kasbonbbm' => null,
@@ -115,20 +119,12 @@ public function view($id)
 
 public function detail($id)
 {
-    // Retrieve the SP record based on id_sp
+
     $sp = SP::where('id_sp', $id)->firstOrFail();
-
-    // Retrieve all SJ records related to this SP
     $sjs = SJ::where('id_sp', $id)->get();
-
-    // Retrieve all SPJ records where id_sj is among the SJ records retrieved
-    $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj')->toArray())->get(); // Ensure pluck returns an array
-    
-    // Make sure id_spj is treated as an array even if it has a single value
-    $bbm = KonsumBbm::whereIn('id_spj', $spjs->pluck('id_spj')->toArray())->get(); // Use whereIn
-
+    $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj')->toArray())->get(); 
+    $bbm = KonsumBbm::whereIn('id_spj', $spjs->pluck('id_spj')->toArray())->get(); 
     $units = Unit::all();
-    // Pass data to the view
     return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units', 'bbm'));
 }
 
@@ -137,8 +133,6 @@ public function detail($id)
 public function updateSP(Request $request, $id)
 {
     $sp = SP::where('id_sp', $id)->firstOrFail();
-
-    // Validate the request (example validation, you can adjust it)
     $request->validate([
         'nama_pemesan' => 'required|string|max:50',
         'pj_rombongan' => 'required|string|max:50',
@@ -160,56 +154,60 @@ public function updateSP(Request $request, $id)
         'catatan_pembayaran' => 'nullable|string'
     ]);
 
-    // Update the SP record
+
     $sp->update($request->all());
 
     return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'Pesanan berhasil diupdate!');
 }
 
-// Update data for SJ related to the given SP
-public function updateSJ(Request $request, $id)
+public function updateSJ(Request $request, $id_sj)
 {
-    // Retrieve the SP record along with its related SJ records
-    $sp = SP::with('sj')->where('id_sp', $id)->firstOrFail();
+    $sj = Sj::where('id_sj', $id_sj)->firstOrFail();
 
-    // Validate the request (example validation, you can adjust it)
     $request->validate([
-        'nilai_kontrak' => 'required|array',
-        'nilai_kontrak.*' => 'required|integer',
-        'kmsebelum' => 'nullable|array',
-        'kmsebelum.*' => 'nullable|integer',
-        'kmtiba' => 'nullable|array',
-        'kmtiba.*' => 'nullable|integer',
-        'kasbonbbm' => 'nullable|array',
-        'kasbonbbm.*' => 'nullable|integer',
-        'kasbonmakan' => 'nullable|array',
-        'kasbonmakan.*' => 'nullable|integer',
-        'lainlain' => 'nullable|array',
-        'lainlain.*' => 'nullable|string',
+        'id_unit' => 'required|integer',
+        'driver' => 'nullable|string',
+        'codriver' => 'nullable|string',
+        'kmsebelum' => 'nullable|integer',
+        'kmtiba' => 'nullable|integer',
+        'kasbonbbm' => 'nullable|integer',
+        'kasbonmakan' => 'nullable|integer',
+        'lainlain' => 'nullable|string',
     ]);
 
-    // Update each related SJ record
-    foreach ($sp->sjs as $index => $sj) {
-        $sj->update([
-            'nilai_kontrak' => $request->nilai_kontrak[$index],
-            'kmsebelum' => $request->kmsebelum[$index] ?? null,
-            'kmtiba' => $request->kmtiba[$index] ?? null,
-            'kasbonbbm' => $request->kasbonbbm[$index] ?? null,
-            'kasbonmakan' => $request->kasbonmakan[$index] ?? null,
-            'lainlain' => $request->lainlain[$index] ?? null,
+    $sj->update($request->all());
+
+    return redirect()->route('detail_pesanan', ['id' => $sj->id_sp])->with('success', 'SJ updated successfully!');
+}
+
+
+public function getDriverCoDriver($id_unit)
+{
+    $armada = Armada::where('id_unit', $id_unit)->first();
+
+    if (!$armada) {
+        return response()->json([
+            'driver' => '',
+            'codriver' => ''
         ]);
     }
 
-    return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'SJ berhasil diupdate!');
+    $driver = Akun::where('id_akun', $armada->id_akun and 'Driver',$armada->posisi)->first();
+    $codriver = Akun::where('id_akun', $armada->id_akun)->first();
+
+    return response()->json([
+        'driver' => $driver ? $driver->name : '',
+        'codriver' => $codriver ? $codriver->name : ''
+    ]);
 }
 
-// Update data for SPJ related to the given SP
+
+
 public function updateSPJ(Request $request, $id)
 {
-    // Retrieve the SP record along with its related SPJ records
     $sp = SP::with('spjs')->where('id_sp', $id)->firstOrFail();
 
-    // Validate the request (example validation, you can adjust it)
+
     $request->validate([
         'saldo_etollawal' => 'nullable|array',
         'saldo_etollawal.*' => 'nullable|integer',
@@ -221,7 +219,7 @@ public function updateSPJ(Request $request, $id)
         'uanglainlain.*' => 'nullable|integer',
         'uangmakan' => 'nullable|array',
         'uangmakan.*' => 'nullable|integer',
-        // Add other fields validations as needed
+   
     ]);
 
     // Update each related SPJ record
@@ -232,7 +230,6 @@ public function updateSPJ(Request $request, $id)
             'PenggunaanToll' => $request->penggunaan_toll[$index] ?? null,
             'uanglainlain' => $request->uanglainlain[$index] ?? null,
             'uangmakan' => $request->uangmakan[$index] ?? null,
-            // Add other fields to be updated
         ]);
     }
 

@@ -11,7 +11,6 @@ use App\Http\Controllers\ArmadaController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\BbmController;
-use App\Models\RekapGajiCrew;
 
 Route::get('/', function () {
     return view('homepage');
@@ -46,9 +45,10 @@ Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('de
 // Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
 
 //update order
-Route::post('/detail_pesanan/{id}/update-sp', [OrderController::class, 'updateSP'])->name('pesanan.updateSP');
-Route::put('/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');
-Route::put('/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
+Route::post('/detail_pesanan/{id}/update-sp', [OrderController::class, 'updateSP'])->name('updateSP');
+Route::post('/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('updateSJ');
+Route::get('/get-driver-codriver/{id_unit}', [OrderController::class, 'getDriverCoDriver']);
+Route::post('/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('updateSPJ');
 Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
 
 //konsumbbm

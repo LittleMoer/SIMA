@@ -14,6 +14,15 @@
         {{ session('success') }}
     </div>
     @endif--}}
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="row">
         <div class="col-xl-12">
 
@@ -46,12 +55,8 @@
                         <div class="container">
 
                             <h2>Edit Surat Pesanan</h2>
-                            <form action="{{ route('pesanan.updateSP', $sp->id_sp) }}"
-                                method="PUT">
-
+                            <form action="{{ route('updateSP', $sp->id_sp) }}" method="POST">
                                 @csrf
-                                @method('PUT')
-
                                 <!-- Nama Pemesan -->
                                 <div class="row mb-3">
                                     <label for="nama_pemesan" class="col-sm-2 col-form-label form-label">Nama
@@ -63,7 +68,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- No Telp Pemesan -->
                                 <div class="row mb-3">
                                     <label for="no_telppn" class="col-sm-2 col-form-label form-label">No Telp
@@ -75,19 +79,17 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- PJ Rombongan -->
                                 <div class="row mb-3">
-                                    <label for="no_telppn" class="col-sm-2 col-form-label form-label">PJ
+                                    <label for="no_telpps" class="col-sm-2 col-form-label form-label">PJ
                                         Rombongan</label>
                                     <div class="col-sm-10 ">
                                         <div class="input-group input-group-merge">
-                                            <input type="text" class="form-control" name="pj_rombongan"
-                                                value="{{ $sp->pj_rombongan }}">
+                                            <input type="text" class="form-control" name="no_telpps"
+                                                value="{{ $sp->no_telpps }}">
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- No Telp PJ -->
                                 <div class="row mb-3">
                                     <label for="no_telpps" class="col-sm-2 col-form-label form-label">PJ
@@ -112,7 +114,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Tanggal Waktu Kepulangan -->
                                 <div class="row mb-3">
                                     <label class="col-sm-2 form-label" for="tgl_kepulangan">Tanggal Waktu
@@ -126,7 +127,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Tujuan-->
                                 <div class="row mb-3">
                                     <label class="col-sm-2 form-label" for="tujuan">Tujuan</label>
@@ -138,7 +138,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!--Alamat Penjemputan-->
                                 <div class="row mb-3">
                                     <label class="col-sm-2 form-label" for="alamat_penjemputan">Alamat
@@ -154,7 +153,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!--Jumlah Armada-->
                                 <div class="row mb-3">
                                     <label class="col-sm-2 form-label" for="jumlah_armada">Jumlah Armada</label>
@@ -164,9 +162,7 @@
                                             value="{{ $sp->jumlah_armada }}" aria-label="Jumlah Armada" />
                                     </div>
                                 </div>
-
                                 <!--Nilai Kontrak-->
-
                                 <div class="row mb-3">
                                     <label class="col-sm-2 form-label" for="nilai_kontrak">Nilai Kontrak 1</label>
                                     <div class="col-sm-10">
@@ -175,7 +171,6 @@
                                             value="{{ $sp->nilai_kontrak1 }}" aria-label="Nilai Kontrak" />
                                     </div>
                                 </div>
-
                                 <div class="row mb-3">
                                     <label class="col-sm-2 form-label" for="nilai_kontrak">Nilai Kontrak 2</label>
                                     <div class="col-sm-10">
@@ -184,7 +179,6 @@
                                             value="{{ $sp->nilai_kontrak2 }}" aria-label="Nilai Kontrak" />
                                     </div>
                                 </div>
-
                                 <div class="row mb-3">
                                     <label class="col-sm-2 form-label" for="biaya_tambahan">Biaya Tambahan</label>
                                     <div class="col-sm-10">
@@ -258,7 +252,6 @@
                                             <option value="credit_card"
                                                 {{ $sp->metode_pembayaran == 'credit_card' ? 'selected' : '' }}>
                                                 Kartu Kredit</option>
-                                            <!-- Tambahkan opsi lainnya jika diperlukan -->
                                         </select>
                                     </div>
                                 </div>
@@ -272,7 +265,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Button Submit -->
                                 <div class="d-flex justify-content-end mb-4">
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
@@ -285,26 +277,33 @@
                             @foreach($sjs as $index => $sj)
                                 <h3>Surat Jalan {{ $index + 1 }}</h3>
                                 <form method="POST"
-                                    action="{{ route('pesanan.updateSJ', $sj->id_sj) }}">
+                                    action="{{ route('updateSJ', $sj->id_sj) }}">
                                     @csrf
-                                    @method('PUT')
 
                                     <div class="form-group">
-                                        <label for="id_unit_{{ $sj->id_unit }}">Unit :</label>
-                                        <select class="form-select" name="id_unit" id="id_unit" required>
+                                        <label for="id_unit">Unit:</label>
+                                        <select name="id_unit" id="id_unit" class="form-control" required>
+                                            <option value="">Select Unit</option>
                                             @foreach($units as $unit)
-                                                <option value="{{ $unit->id_unit }}">
-                                                    {{ $unit->nama_unit }}
-                                                </option>
+                                                <option value="{{ $unit->id }}"
+                                                    {{ old('id_unit', $sj->id_unit) == $unit->id ? 'selected' : '' }}>
+                                                    {{ $unit->nama_unit }}</option>
                                             @endforeach
                                         </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="nilai_kontrak_{{ $sj->id_sj }}">Nilai Kontrak:</label>
-                                        <input type="text" name="nilai_kontrak" id="nilai_kontrak_{{ $sj->id_sj }}"
-                                            value="{{ old('nilai_kontrak', $sj->nilai_kontrak) }}"
-                                            class="form-control">
+                                        <label for="driver">Driver:</label>
+                                        <input type="text" name="driver" id="driver"
+                                            value="{{ old('driver', $sj->driver) }}"
+                                            class="form-control" readonly>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="codriver">Co-Driver:</label>
+                                        <input type="text" name="codriver" id="codriver"
+                                            value="{{ old('codriver', $sj->codriver) }}"
+                                            class="form-control" readonly>
                                     </div>
 
                                     <div class="form-group">
@@ -352,6 +351,7 @@
                         <div class="container">
                             <h2>Edit Surat Premi Jalan</h2>
                             @foreach($spjs as $index => $spj)
+                                @csrf
                                 <h3>Surat Premi Jalan {{ $index + 1 }}</h3>
 
                                 <div class="form-group">
@@ -361,9 +361,7 @@
                                 </div>
 
                                 <form method="POST"
-                                    action="{{ route('pesanan.updateSJ', $spj->id_sj) }}">
-                                    @csrf
-                                    @method('PUT')
+                                    action="{{ route('updateSPJ', $spj->id_sj) }}">
 
                                     <div class="form-group">
                                         <label for="SaldoEtollawal_{{ $spj->id_sj }}">Saldo E-toll Awal:</label>
@@ -443,6 +441,26 @@
     </div>
     </div>
 </section>
+<!-- buat otomatis ngisi driver codriver -->
+<script>
+    $('#id_unit').change(function () {
+        var unit_id = $(this).val();
+        if (unit_id) {
+            $.ajax({
+                url: '/get-driver-codriver/' + id_unit,
+                type: 'GET',
+                success: function (data) {
+                    $('#driver').val(data.driver);
+                    $('#codriver').val(data.codriver);
+                }
+            });
+        } else {
+            $('#driver').val('');
+            $('#codriver').val('');
+        }
+    });
+
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
