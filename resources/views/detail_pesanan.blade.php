@@ -281,29 +281,31 @@
                                     @csrf
 
                                     <div class="form-group">
-                                        <label for="id_unit">Unit:</label>
-                                        <select name="id_unit" id="id_unit" class="form-control" required>
+                                        <label for="id_unit_{{ $sj->id_sj }}">Unit:</label>
+                                        <select name="id_unit" id="id_unit_{{ $sj->id_sj }}" class="form-select"
+                                            required>
                                             <option value="">Select Unit</option>
                                             @foreach($units as $unit)
-                                                <option value="{{ $unit->id }}"
-                                                    {{ old('id_unit', $sj->id_unit) == $unit->id ? 'selected' : '' }}>
-                                                    {{ $unit->nama_unit }}</option>
+                                                <option value="{{ $unit->id_unit }}"
+                                                    {{ old('id_unit', $sj->id_unit) == $unit->id_unit ? 'selected' : '' }}>
+                                                    {{ $unit->nama_unit }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="driver">Driver:</label>
-                                        <input type="text" name="driver" id="driver"
+                                        <label for="driver_{{ $sj->id_sj }}">Driver:</label>
+                                        <input type="text" name="driver" id="driver_{{ $sj->id_sj }}"
                                             value="{{ old('driver', $sj->driver) }}"
-                                            class="form-control" readonly>
+                                            class="form-control">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="codriver">Co-Driver:</label>
-                                        <input type="text" name="codriver" id="codriver"
+                                        <label for="codriver_{{ $sj->id_sj }}">Co-Driver:</label>
+                                        <input type="text" name="codriver" id="codriver_{{ $sj->id_sj }}"
                                             value="{{ old('codriver', $sj->codriver) }}"
-                                            class="form-control" readonly>
+                                            class="form-control">
                                     </div>
 
                                     <div class="form-group">
@@ -347,6 +349,7 @@
                             @endforeach
                         </div>
                     </div>
+
                     <div class="tab-pane fade" id="SuratPerintahJalan" role="tabpanel">
                         <div class="container">
                             <h2>Edit Surat Premi Jalan</h2>
@@ -443,24 +446,39 @@
 </section>
 <!-- buat otomatis ngisi driver codriver -->
 <script>
-    $('#id_unit').change(function () {
-        var unit_id = $(this).val();
+$(document).ready(function() {
+    // Listen for changes on the unit select dropdown
+    $('#id_unit_{{ $sj->id_sj }}').on('change', function() {
+        var unit_id = $(this).val(); // Get the selected unit ID
+
         if (unit_id) {
+            // Make an AJAX call to fetch the driver and co-driver
             $.ajax({
-                url: '/get-driver-codriver/' + id_unit,
+                url: '/get-driver-codriver/' + unit_id,
                 type: 'GET',
-                success: function (data) {
-                    $('#driver').val(data.driver);
-                    $('#codriver').val(data.codriver);
+                success: function(data) {
+                    // Update the driver and co-driver fields with new values
+                    $('#driver_{{ $sj->id_sj }}').val(data.driver);
+                    $('#codriver_{{ $sj->id_sj }}').val(data.codriver);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error: ' + error);
                 }
             });
         } else {
-            $('#driver').val('');
-            $('#codriver').val('');
+            // Clear the fields if no unit is selected
+            $('#driver_{{ $sj->id_sj }}').val('');
+            $('#codriver_{{ $sj->id_sj }}').val('');
         }
     });
 
+    // Trigger the change event to auto-load the driver/codriver if unit is pre-selected
+    $('#id_unit_{{ $sj->id_sj }}').trigger('change');
+});
 </script>
+
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

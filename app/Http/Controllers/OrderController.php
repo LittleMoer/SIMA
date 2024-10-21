@@ -121,12 +121,14 @@ public function detail($id)
 {
 
     $sp = SP::where('id_sp', $id)->firstOrFail();
-    $sjs = SJ::where('id_sp', $id)->get();
+    $sjs = SJ::where('id_sp', $sp->id_sp)->get(); 
     $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj')->toArray())->get(); 
     $bbm = KonsumBbm::whereIn('id_spj', $spjs->pluck('id_spj')->toArray())->get(); 
     $units = Unit::all();
+
     return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units', 'bbm'));
 }
+
 
 
 // Update data for SP
@@ -162,42 +164,60 @@ public function updateSP(Request $request, $id)
 
 public function updateSJ(Request $request, $id_sj)
 {
-    $sj = Sj::where('id_sj', $id_sj)->firstOrFail();
+    // Retrieve the SJ record using the provided id
+    $sj = SJ::where('id_sj', $id_sj)->firstOrFail();
 
+    // Validate the incoming request data
     $request->validate([
-        'id_unit' => 'required|integer',
-        'driver' => 'nullable|string',
-        'codriver' => 'nullable|string',
-        'kmsebelum' => 'nullable|integer',
-        'kmtiba' => 'nullable|integer',
-        'kasbonbbm' => 'nullable|integer',
-        'kasbonmakan' => 'nullable|integer',
-        'lainlain' => 'nullable|string',
+        'id_unit' => 'required|integer|exists:unit,id_unit',
+        'driver' => 'nullable|string|max:100',
+        'codriver' => 'nullable|string|max:100', 
+        'kmsebelum' => 'required|integer|min:0',
+        'kmtiba' => 'required|integer|min:0',
+        'kasbonbbm' => 'required|integer|min:0',
+        'kasbonmakan' => 'required|integer|min:0',
+        'lainlain' => 'nullable|string|max:255',
     ]);
 
-    $sj->update($request->all());
+    // Update the SJ record with the validated data
+    $sj->update([
+        'id_unit' => $request->input('id_unit'),
+        'driver' => $request->input('driver'),
+        'codriver' => $request->input('codriver'),
+        'kmsebelum' => $request->input('kmsebelum'),
+        'kmtiba' => $request->input('kmtiba'),
+        'kasbonbbm' => $request->input('kasbonbbm'),
+        'kasbonmakan' => $request->input('kasbonmakan'),
+        'lainlain' => $request->input('lainlain'),
+    ]);
 
-    return redirect()->route('detail_pesanan', ['id' => $sj->id_sp])->with('success', 'SJ updated successfully!');
+    // Redirect to a detail page with a success message
+    return redirect()->route('detail_pesanan', ['id' => $sj->id_sp]) // Assuming id_sp links to a specific SP order
+        ->with('success', 'Surat Jalan berhasil diupdate!');
 }
+
+
 
 
 public function getDriverCoDriver($id_unit)
 {
-    $armada = Armada::where('id_unit', $id_unit)->first();
+    $armada = Armada::where('id_unit', $id_unit)->get();
 
-    if (!$armada) {
+    if ($armada->isEmpty()) {
         return response()->json([
-            'driver' => '',
-            'codriver' => ''
+            'driver' => 'No Driver Assigned',
+            'codriver' => 'No Co-Driver Assigned'
         ]);
     }
 
-    $driver = Akun::where('id_akun', $armada->id_akun and 'Driver',$armada->posisi)->first();
-    $codriver = Akun::where('id_akun', $armada->id_akun)->first();
+    $driver = $armada->where('posisi', 'Driver')->first();
+    $codriver = $armada->where('posisi', 'Co-Driver')->first();
+    $driverName = $driver ? $driver->akun->name : 'No Driver Assigned';
+    $codriverName = $codriver ? $codriver->akun->name : 'No Co-Driver Assigned';
 
     return response()->json([
-        'driver' => $driver ? $driver->name : '',
-        'codriver' => $codriver ? $codriver->name : ''
+        'driver' => $driverName,
+        'codriver' => $codriverName
     ]);
 }
 

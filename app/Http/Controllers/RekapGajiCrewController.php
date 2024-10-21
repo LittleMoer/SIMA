@@ -9,6 +9,7 @@ use App\Models\Armada;
 use App\Models\SP;
 use App\Models\SJ;
 use App\Models\SPJ;
+use App\Models\Unit;
 
 
 class RekapGajiCrewController extends Controller
@@ -69,35 +70,57 @@ class RekapGajiCrewController extends Controller
             'bulan' => 'required|string',
         ]);
     
-        $armada = Armada::findOrFail($request->id_armada);
-        $akun = Akun::where('id_akun', $armada->id_akun)->get();
+
+        $sjRecords = SJ::where('id_unit', $request->id_armada)->get();
         $selectedMonth = $request->input('bulan');
         
-        // Fetch SJ records associated with the selected Armada and month
-        $sjRecords = SJ::where('id_unit', $armada->id_unit)->get();
+        if ($sjRecords->isEmpty()) {
+            return redirect()->back()->withErrors('No SJ records found for the selected Armada.');
+        }
     
-        // Clear existing records if needed
-        RekapGajiCrew::where('id_armada', $armada->id_armada)
+
+        RekapGajiCrew::where('id_armada', $request->id_armada)
             ->where('bulan', $selectedMonth)
             ->delete();
     
         foreach ($sjRecords as $sj) {
-            // Retrieve the related SP record
+
             $sp = SP::where('id_sp', $sj->id_sp)->first();
-    
+            
+
+            $unit = Unit::where('id_unit', $sj->id_unit)->first();
+            $seri = $unit->seri; 
+            $akun = Akun::where('id_akun', $sj->driver)->get();
+            $spj = SPJ::where('id_sj', $sj->id_sj)->first();
+            $nilaiKontrak = $sj->nilai_kontrak ?? 0;
+            $totalOperasional = $spj ? $spj->total_operasional : 0;
+            $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
+            $totalGaji = $nilaiKontrak; 
+            
+
             foreach ($akun as $user) {
-                $spj = SPJ::where('id_sj', $sj->id_sj)->first();
-                
-                // Calculate or fetch required values
-                $nilaiKontrak = $sj->nilai_kontrak;
-                $totalOperasional = $spj ? $spj->total_operasional : 0;
-                $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional; // Example calculation
-                $totalGaji = $nilaiKontrak; // Modify as per actual calculation
-                
-                // Create a new Rekap Gaji Crew entry
+  
+                $premiPercentage = 0;
+    
+                // Apply the premi based on seri and posisi
+                if ($seri == 1 && $user->posisi == 'Driver') {
+                    // Seri 1: Driver only - cut 21% from total pendapatan
+                    $premiPercentage = 21;
+                } elseif ($seri == 2) {
+                    // Seri 2: Driver gets 14%, Co-Driver gets 7%
+                    $premiPercentage = ($user->posisi == 'Driver') ? 14 : 7;
+                } elseif ($seri == 3) {
+                    // Seri 3: Driver gets 12%, Co-Driver gets 6%
+                    $premiPercentage = ($user->posisi == 'Driver') ? 12 : 6;
+                }
+    
+                // Calculate the premi based on the percentage
+                $premi = ($totalGaji * $premiPercentage) / 100;
+    
+                // Create new Rekap Gaji Crew entry
                 RekapGajiCrew::create([
                     'no_rekap' => RekapGajiCrew::count() + 1,
-                    'id_armada' => $armada->id_armada,
+                    'id_armada' => $sj->id_unit,
                     'nama' => $user->name,
                     'bulan' => $selectedMonth,
                     'tanggal' => $sj->created_at->format('Y-m-d'),
@@ -111,17 +134,17 @@ class RekapGajiCrewController extends Controller
                     'toll' => $spj->toll ?? null,
                     'total_operasional' => $totalOperasional,
                     'sisa_nilai_kontrak' => $sisaNilaiKontrak,
-                    'premi' => $spj->premi ?? null,
+                    'premi' => $premi,
                     'subsidi' => $spj->subsidi ?? null,
                     'total_gaji' => $totalGaji,
                 ]);
             }
         }
-
-
-        return redirect()->route('manajemen_armada.rekap_gaji', ['id_armada' => $armada->id_armada])
+    
+        return redirect()->route('manajemen_armada.rekap_gaji', ['id_armada' => $request->id_armada])
                          ->with('success', 'Rekap Gaji Crew berhasil di-generate');
     }
+    
     public function edit($no_rekap, $nama)
     {
         $rekapGaji = RekapGajiCrew::where('no_rekap', $no_rekap)
