@@ -36,18 +36,40 @@ Route::middleware(['auth'])->group(function () {
 //order
 Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
 Route::post('/store', [OrderController::class, 'store'])->name('order.store');
+Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
+
+
 //detail pesanan
-Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
+Route::get('/pesanan/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
 
 //view data pesanan
-// Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
+Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
+Route::get('/viewSJ/{id}', [OrderController::class, 'viewSJ'])->name('viewSJ');
+Route::get('/viewSPJ/{id}', [OrderController::class, 'viewSPJ'])->name('viewSPJ');
 
 //update order
+<<<<<<< Updated upstream
 Route::put('/detail_pesanan/{id}/update-sp', [OrderController::class, 'updateSP'])->name('pesanan.updateSP');
 Route::put('/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');
 Route::put('/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
 Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
 
+=======
+Route::post('/pesanan/detail_pesanan/{id}', [OrderController::class, 'updateSP'])->name('detail_pesanan');
+Route::put('/pesanan/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');;
+
+Route::get('/get-driver-codriver/{id_unit}', [OrderController::class, 'getDriverCoDriver']);
+Route::put('/pesanan/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
+
+
+
+//konsumbbm
+Route::get('/bbm/{id_spj}', [BbmController::class, 'index'])->name('bbm.index');
+Route::post('/bbm/{id_spj}', [BbmController::class, 'create'])->name('bbm.create');
+Route::get('/bbm/{idkonsumbbm}/edit-data', [BbmController::class, 'getEditData'])->name('bbm.getEditData');
+Route::post('/bbm/{idkonsumbbm}/edit', [BbmController::class, 'edit'])->name('bbm.edit');
+Route::delete('/bbm/{id}', [BbmController::class, 'destroy'])->name('bbm.destroy');
+>>>>>>> Stashed changes
 
 
 Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'index'])->name('rekap.gaji.index');
