@@ -15,19 +15,11 @@
             </nav>
         </div>
     </section>
-
-<<<<<<< Updated upstream
-                </ul>
-
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="SuratPesanan" role="tabpanel">
-                        <div class="container">
-=======
     <section>
  
         <div class="row">
             <div class="col-xl-12">
->>>>>>> Stashed changes
+
 
                 <div class="nav-align-top">
 
@@ -57,7 +49,7 @@
                     <div class="tab-content">
                         {{-- Tab Surat Pemesanan --}}
                         <div class="tab-pane fade show active" id="SuratPesanan" role="tabpanel">
-                            <div class="container">
+                        <div class="container">
 
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h2>Surat Pemesanan {{ $sp->id_sp }}</h2>
@@ -67,7 +59,6 @@
                                         <span class="tf-icons bx bx-printer me-2"></span> Print SP
                                     </a>
                                 </div>
-
                                 <script>
                                     function printPreview(url) {
                                         var printWindow = window.open(url, 'printWindow', 'width=800,height=600');
@@ -153,7 +144,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- Tanggal Kepulangan -->
                                     <div class="row mb-3">
                                         <label class="col-sm-2 form-label" for="tgl_kepulangan">Tanggal Kepulangan</label>
@@ -284,35 +274,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 form-label" for="sisa_pembayaran">Sisa Pembayaran</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" name="sisa_pembayaran" id="sisa_pembayaran"
-                                                class="form-control" placeholder="Sisa pembayaran"
-                                                value="{{ $sp->sisa_pembayaran }}" aria-label="Sisa Pembayaran" />
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 form-label" for="metode_pembayaran">Metode
-                                            Pembayaran</label>
-                                        <div class="col-sm-10">
-                                            <select name="metode_pembayaran" id="metode_pembayaran" class="form-control">
-                                                <option value="cash"
-                                                    {{ $sp->metode_pembayaran == 'cash' ? 'selected' : '' }}>Cash</option>
-                                                <option value="transfer"
-                                                    {{ $sp->metode_pembayaran == 'transfer' ? 'selected' : '' }}>Transfer
-                                                </option>
-                                                <option value="credit_card"
-                                                    {{ $sp->metode_pembayaran == 'credit_card' ? 'selected' : '' }}>Kartu
-                                                    Kredit</option>
-                                                <!-- Tambahkan opsi lainnya jika diperlukan -->
-                                            </select>
-                                        </div>
-                                    </div>
-
-<<<<<<< Updated upstream
                                 <div class="row mb-3">
                                     <label class="col-sm-2 form-label" for="sisa_pembayaran">Sisa Pembayaran</label>
                                     <div class="col-sm-10">
@@ -335,7 +296,6 @@
                                             <option value="credit_card"
                                                 {{ $sp->metode_pembayaran == 'credit_card' ? 'selected' : '' }}>
                                                 Kartu Kredit</option>
-                                            <!-- Tambahkan opsi lainnya jika diperlukan -->
                                         </select>
                                     </div>
                                 </div>
@@ -349,7 +309,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Button Submit -->
                                 <div class="d-flex justify-content-end mb-4">
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
@@ -362,16 +321,35 @@
                             @foreach($sjs as $index => $sj)
                                 <h3>Surat Jalan {{ $index + 1 }}</h3>
                                 <form method="POST"
-                                    action="{{ route('pesanan.updateSJ', $sj->id_sj) }}">
+                                    action="{{ route('updateSJ', $sj->id_sj) }}">
                                     @csrf
-                                    @method('PUT')
 
                                     <div class="form-group">
-                                        <label for="nilai_kontrak_{{ $sj->id_sj }}">Nilai Kontrak:</label>
-                                        <input type="text" name="nilai_kontrak" id="nilai_kontrak_{{ $sj->id_sj }}"
-                                            value="{{ old('nilai_kontrak', $sj->nilai_kontrak) }}"
+                                        <label for="id_unit_{{ $sj->id_sj }}">Unit:</label>
+                                        <select name="id_unit" id="id_unit_{{ $sj->id_sj }}" class="form-select"
+                                            required>
+                                            <option value="">Select Unit</option>
+                                            @foreach($units as $unit)
+                                                <option value="{{ $unit->id_unit }}"
+                                                    {{ old('id_unit', $sj->id_unit) == $unit->id_unit ? 'selected' : '' }}>
+                                                    {{ $unit->nama_unit }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="driver_{{ $sj->id_sj }}">Driver:</label>
+                                        <input type="text" name="driver" id="driver_{{ $sj->id_sj }}"
+                                            value="{{ old('driver', $sj->driver) }}"
                                             class="form-control">
-=======
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="codriver_{{ $sj->id_sj }}">Co-Driver:</label>
+                                        <input type="text" name="codriver" id="codriver_{{ $sj->id_sj }}"
+                                            value="{{ old('codriver', $sj->codriver) }}"
+                                            class="form-control">
                                     <div class="row mb-3">
                                         <label class="col-sm-2 form-label" for="catatan_pembayaran">Catatan</label>
                                         <div class="col-sm-10">
@@ -383,26 +361,12 @@
                                     <!-- Button Submit -->
                                     <div class="d-flex justify-content-end mb-4">
                                         <button type="submit" class="btn btn-primary">Update</button>
->>>>>>> Stashed changes
                                     </div>
                                 </form>
                             </div>
                         </div>
-<<<<<<< Updated upstream
-                    </div>
-                    <div class="tab-pane fade" id="SuratPerintahJalan" role="tabpanel">
-                        <div class="container">
-                            <h2>Edit Surat Premi Jalan</h2>
-                            @foreach($spjs as $index => $spj)
-                                <h3>Surat Premi Jalan {{ $index + 1 }}</h3>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary d-flex justify-content-end">Konsumsi
-                                        Bbm</button>
-                                </div>
-                                <form method="POST"
-                                    action="{{ route('pesanan.updateSJ', $spj->id_sj) }}">
-=======
 
+                    </div>
                         {{-- Tab Surat Jalan --}}
                         <div class="tab-pane fade" id="SuratJalan" role="tabpanel">
                             <div class="container">
@@ -444,8 +408,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                         <div class="form-group row">
                                             <label for="kmsebelum_{{ $sj->id_sj }}"
                                                 class="col-sm-2 col-form-label form-label">KM Sebelum:</label>
@@ -545,8 +507,7 @@
                         <div class="tab-pane fade" id="SuratPerintahJalan" role="tabpanel">
                             <div class="container">
                                 @foreach ($spjs as $index => $spj)
->>>>>>> Stashed changes
-                                    @csrf
+                                 @csrf
 
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <h2>Surat Premi Jalan {{ $index + 1 }} </h2>
@@ -704,28 +665,42 @@
 
             </div>
         </div>
-       
-    </section>
+    </div>
+    </div>
+    </div>
+</section>
+<!-- buat otomatis ngisi driver codriver -->
+<script>
+$(document).ready(function() {
+    // Listen for changes on the unit select dropdown
+    $('#id_unit_{{ $sj->id_sj }}').on('change', function() {
+        var unit_id = $(this).val(); // Get the selected unit ID
 
-    <!-- buat otomatis ngisi driver codriver -->
-    <script>
-        $('#id_unit').change(function() {
-            var unit_id = $(this).val();
-            if (unit_id) {
-                $.ajax({
-                    url: '/get-driver-codriver/' + id_unit,
-                    type: 'GET',
-                    success: function(data) {
-                        $('#driver').val(data.driver);
-                        $('#codriver').val(data.codriver);
-                    }
-                });
-            } else {
-                $('#driver').val('');
-                $('#codriver').val('');
-            }
-        });
-    </script>
+        if (unit_id) {
+            // Make an AJAX call to fetch the driver and co-driver
+            $.ajax({
+                url: '/get-driver-codriver/' + unit_id,
+                type: 'GET',
+                success: function(data) {
+                    // Update the driver and co-driver fields with new values
+                    $('#driver_{{ $sj->id_sj }}').val(data.driver);
+                    $('#codriver_{{ $sj->id_sj }}').val(data.codriver);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error: ' + error);
+                }
+            });
+        } else {
+            // Clear the fields if no unit is selected
+            $('#driver_{{ $sj->id_sj }}').val('');
+            $('#codriver_{{ $sj->id_sj }}').val('');
+        }
+    });
+
+    // Trigger the change event to auto-load the driver/codriver if unit is pre-selected
+    $('#id_unit_{{ $sj->id_sj }}').trigger('change');
+});
+</script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

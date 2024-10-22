@@ -14,8 +14,8 @@ class KonsumBbm extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'idkonsumbbm',
-        'id_spj',
+        'idkonsumbbm',  
+        'id_spj',       
         'isiBBM',
         'tanggal',
         'lokasiisi',
@@ -23,5 +23,10 @@ class KonsumBbm extends Model
         'foto_struk',
         'isvalid'
     ];
-    
+
+    public function spj()
+    {
+        return $this->belongsTo(Spj::class, 'id_spj', 'id_spj');
+    }
 }
+

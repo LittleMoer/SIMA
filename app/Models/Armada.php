@@ -28,4 +28,8 @@ public function unit()
 {
     return $this->belongsTo(Unit::class, 'id_unit');
 }
+public function rekapGajiCrew()
+{
+    return $this->hasMany(RekapGajiCrew::class, 'id_armada', 'id_armada');
+}
 }

@@ -8,13 +8,11 @@ use Illuminate\Http\Request;
 use App\Models\SP;
 use App\Models\SPJ;
 use App\Models\SJ;
-<<<<<<< Updated upstream
-=======
 use App\Models\Unit;
 use App\Models\Armada;
 use App\Models\Akun;
 
->>>>>>> Stashed changes
+
 
 class OrderController extends Controller
 {
@@ -52,14 +50,14 @@ class OrderController extends Controller
         $jam_keberangkatan = date('H:i', strtotime($request->tgl_keberangkatan_full));
         $tgl_kepulangan = date('Y-m-d', strtotime($request->tgl_kepulangan_full));
         $jam_kepulangan = date('H:i', strtotime($request->tgl_kepulangan_full));
-
+        
         // Prepare data for SP
         $orderData = $request->except('_token', 'tgl_keberangkatan_full', 'tgl_kepulangan_full');
         $orderData['tgl_keberangkatan'] = $tgl_keberangkatan;
         $orderData['jam_keberangkatan'] = $jam_keberangkatan;
         $orderData['tgl_kepulangan'] = $tgl_kepulangan;
         $orderData['jam_kepulangan'] = $jam_keberangkatan;
-
+        
         // Create the SP record
         $order = SP::create($orderData);
         
@@ -76,6 +74,8 @@ class OrderController extends Controller
                 'id_sj' => $randomId, 
                 'id_sp' => $order->id_sp, 
                 'nilai_kontrak' => $nilaiKontrak,
+                'driver' => null,
+                'codriver' => null,
                 'kmsebelum' => null,
                 'kmtiba' => null,
                 'kasbonbbm' => null,
@@ -86,7 +86,7 @@ class OrderController extends Controller
             // Create SPJ and link it to the SJ records
             $spj = SPJ::create([
                 'id_spj' => $randomId,
-                'id_sj' => $sj->id,
+                'id_sj' => $sj->id_sj,
                 'SaldoEtollawal' => null,
                 'SaldoEtollakhir' => null,
                 'PenggunaanToll' => null,
@@ -101,11 +101,13 @@ class OrderController extends Controller
             // Create a new KonsumBbm record and get its ID
             $konsumBbm = KonsumBbm::create([
                 'idkonsumbbm' => $randomId,
-                'id_spj' => $spj->id, 
+                'id_spj' => $spj->id_spj, 
                 'isiBBM' => null,           
                 'tanggal' => null,
                 'lokasiisi' => null,
                 'totalbayar' => null,
+                'foto_struk' => null,
+                'isvalid'=> 0,
             ]);
         }
 
@@ -152,32 +154,20 @@ public function viewSPJ($id_spj)
 
 public function detail($id)
 {
-    // Retrieve the SP record based on id_sp
+
     $sp = SP::where('id_sp', $id)->firstOrFail();
+    $sjs = SJ::where('id_sp', $sp->id_sp)->get(); 
+    $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj')->toArray())->get(); 
+    $bbm = KonsumBbm::whereIn('id_spj', $spjs->pluck('id_spj')->toArray())->get(); 
+    $units = Unit::all();
 
-    // Retrieve all SJ records related to this SP
-    $sjs = SJ::where('id_sp', $id)->get();
 
-    // Retrieve all SPJ records where id_sj is among the SJ records retrieved
-    $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj'))->get();
-
-    // Pass data to the view
-<<<<<<< Updated upstream
-    return view('detail_pesanan', compact('sp', 'sjs', 'spjs'));
-=======
-
-    
-    return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units'));
->>>>>>> Stashed changes
+    return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units', 'bbm'));
 }
 
 
 
-
-<<<<<<< Updated upstream
 // Update data for SP
-=======
->>>>>>> Stashed changes
 public function updateSP(Request $request, $id)
 {
     // Validate request
@@ -201,6 +191,7 @@ public function updateSP(Request $request, $id)
         'metode_pembayaran' => 'required',
         'catatan_pembayaran' => 'nullable'
     ]);
+
 
     // Retrieve the SP record
     $sp = SP::findOrFail($id);
@@ -299,8 +290,6 @@ public function updateSJ(Request $request, $id)
     return redirect()->route('detail_pesanan', ['id' => $sj->id_sp])->with('success', 'SJ berhasil diupdate!');
 }
 
-
-
 // Update KonsumBbm (if needed, you can add similar logic)
 public function updateKonsumBbm(Request $request, $id)
 {
@@ -377,7 +366,7 @@ public function updateSPJ(Request $request, $id)
                          ->with('success', 'SPJ berhasil diupdate!');
 }
 
-<<<<<<< Updated upstream
+
 // Update KonsumBbm (if needed, you can add similar logic)
 public function updateKonsumBbm(Request $request, $id)
 {
@@ -385,8 +374,7 @@ public function updateKonsumBbm(Request $request, $id)
     return redirect()->route('pesanan')->with('success', 'KonsumBBM berhasil diperbarui');
 }
 
-=======
->>>>>>> Stashed changes
+
 public function destroy($id)
 {
     $sp = SP::where('id_sp', $id)->firstOrFail();

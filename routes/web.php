@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RekapGajiCrewController;
 use App\Http\Controllers\ArmadaController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\BbmController;
 
 Route::get('/', function () {
     return view('homepage');
@@ -48,16 +50,12 @@ Route::get('/viewSJ/{id}', [OrderController::class, 'viewSJ'])->name('viewSJ');
 Route::get('/viewSPJ/{id}', [OrderController::class, 'viewSPJ'])->name('viewSPJ');
 
 //update order
-<<<<<<< Updated upstream
 Route::put('/detail_pesanan/{id}/update-sp', [OrderController::class, 'updateSP'])->name('pesanan.updateSP');
 Route::put('/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');
 Route::put('/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
 Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
-
-=======
 Route::post('/pesanan/detail_pesanan/{id}', [OrderController::class, 'updateSP'])->name('detail_pesanan');
 Route::put('/pesanan/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');;
-
 Route::get('/get-driver-codriver/{id_unit}', [OrderController::class, 'getDriverCoDriver']);
 Route::put('/pesanan/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
 
@@ -69,14 +67,15 @@ Route::post('/bbm/{id_spj}', [BbmController::class, 'create'])->name('bbm.create
 Route::get('/bbm/{idkonsumbbm}/edit-data', [BbmController::class, 'getEditData'])->name('bbm.getEditData');
 Route::post('/bbm/{idkonsumbbm}/edit', [BbmController::class, 'edit'])->name('bbm.edit');
 Route::delete('/bbm/{id}', [BbmController::class, 'destroy'])->name('bbm.destroy');
->>>>>>> Stashed changes
 
 
-Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'index'])->name('rekap.gaji.index');
-Route::post('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
-Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generatePayrollSummary'])->name('rekap.gaji.generate');
-Route::get('rekap-gaji-crew/edit/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
-Route::put('rekap-gaji-crew/update/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update');
+
+
+Route::get('/manajemen_armada/{id_armada}/rekap_gaji', [RekapGajiCrewController::class, 'showRekapGaji'])->name('manajemen_armada.rekap_gaji');
+Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
+Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generate'])->name('rekap.gaji.generate');
+// Route::get('rekap-gaji-crew/edit/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
+// Route::put('rekap-gaji-crew/update/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update');
 
 //manajemen akun
 Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
@@ -117,3 +116,10 @@ Route::get('/bus/medium_bus', function () {
 Route::get('/bus/mediumSE_bus', function () {
     return view('/bus/mediumSE_bus');
 });
+
+
+//Api Fetch Events
+Route::get('/tes', function () {
+    return view('tes');
+});
+Route::get('/api/events', [HomepageController::class,'index']);

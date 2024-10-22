@@ -85,6 +85,9 @@
             {{-- <br class="d-none d-lg-block" /> --}}
             <h2 class="hero-sub-title h6 pb-1">Siap menemani perjalananmu
             </h2>
+            <div class="landing-hero-btn d-inline-block position-relative">
+              <button class="btn btn-primary" onclick="showImageModal()"> Denah seat</button>
+            </div>
           </div>
         </div>
         <div class="container" style="margin-bottom: 40px" >
@@ -194,7 +197,25 @@
       
       
     </div>
-    
+     <!-- Modal dengan Carousel -->
+     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="imageModalLabel">Denah Seat Medium</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <img id="seatImage" src="{{ asset('sneat/assets/img/sima/Mediumbus/DENAH SEAT MEDIUM 25SEAT.jpg')}}" class="img-fluid" alt="Denah 25 Bus" style="max-width: 70%; height: auto;">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="seat25Button" onclick="showSeat('seat25')">Seat 25</button>
+            <button type="button" class="btn btn-primary" id="seat33Button" onclick="showSeat('seat33')">Seat 33</button>
+            <button type="button" class="btn btn-primary" id="seat35Button" onclick="showSeat('seat35')">Seat 35</button>
+          </div>
+        </div>
+      </div>
+    </div>
       
       <!-- Unit Bus: End -->
       {{-- <Footer> --}} @include('layouts.footer') {{-- <script> --}} @include('layouts.script') <script>
@@ -216,5 +237,60 @@
           passwordInput.addEventListener('input', updateButtonState);
         });
       </script>
+      <script>
+        function showImageModal() {
+            var myModal = new bootstrap.Modal(document.getElementById('imageModal'), {
+                keyboard: false
+            });
+            myModal.show();
+        }
+        </script>
+        <script>
+          function showSeat(seat) {
+              var seatImage = document.getElementById('seatImage');
+              var seat25Button = document.getElementById('seat25Button');
+              var seat33Button = document.getElementById('seat33Button');
+              var seat35Button = document.getElementById('seat35Button');
+      
+              if (seat === 'seat25') {
+                  seatImage.src = "{{ asset('sneat/assets/img/sima/Mediumbus/DENAH SEAT MEDIUM 25SEAT.jpg') }}";
+                  seatImage.alt = "Denah 25 Bus";
+      
+                  seat25Button.classList.remove('btn-primary');
+                  seat25Button.classList.add('btn-secondary');
+      
+                  seat33Button.classList.remove('btn-secondary');
+                  seat33Button.classList.add('btn-primary');
+      
+                  seat35Button.classList.remove('btn-secondary');
+                  seat35Button.classList.add('btn-primary');
+              } else if (seat === 'seat33') {
+                  seatImage.src = "{{ asset('sneat/assets/img/sima/Mediumbus/DENAH SEAT MEDIUM 33SEAT.jpg') }}";
+                  seatImage.alt = "Denah 33 Medium Bus";
+      
+                  seat33Button.classList.remove('btn-primary');
+                  seat33Button.classList.add('btn-secondary');
+      
+                  seat25Button.classList.remove('btn-secondary');
+                  seat25Button.classList.add('btn-primary');
+      
+                  seat35Button.classList.remove('btn-secondary');
+                  seat35Button.classList.add('btn-primary');
+              } else if (seat === 'seat35') {
+                  seatImage.src = "{{ asset('sneat/assets/img/sima/Mediumbus/DENAH SEAT MEDIUM 35SEAT.jpg') }}";
+                  seatImage.alt = "Denah 35 Medium Bus";
+      
+                  seat35Button.classList.remove('btn-primary');
+                  seat35Button.classList.add('btn-secondary');
+      
+                  seat25Button.classList.remove('btn-secondary');
+                  seat25Button.classList.add('btn-primary');
+      
+                  seat33Button.classList.remove('btn-secondary');
+                  seat33Button.classList.add('btn-primary');
+              }
+          }
+      </script>
+      
   </body>
 </html>

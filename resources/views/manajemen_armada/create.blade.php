@@ -54,7 +54,7 @@
                     <option value=0>Tidak Aktif</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary mt-3">Update Armada
+            <button type="submit" class="btn btn-primary mt-3">Create Armada
             </button>
         </form>
     </div>

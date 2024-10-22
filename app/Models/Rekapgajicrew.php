@@ -20,9 +20,8 @@ class RekapGajiCrew extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'no_rekap',
         'nama',
-        'armada',
+        'id_armada',
         'bulan',
         'tanggal',
         'hari_kerja',
@@ -39,4 +38,8 @@ class RekapGajiCrew extends Model
         'subsidi',
         'total_gaji'
     ];
+    public function armada()
+    {
+        return $this->belongsTo(Armada::class, 'id_armada', 'id_armada');
+    }
 }

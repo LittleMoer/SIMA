@@ -43,11 +43,13 @@
     <section>
         <div class="container">
             <h2>Konsumsi Bbm</h2>
+
     
             <!-- Button to Create a New Record -->
             <a href="{{ route('bbm.create', ['id_spj' => $spj->id_spj]) }}" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalCentercreate">Isi Bensin</a>
     
             @if($bbms->count() > 0)  {{-- Pindahkan pengecekan ke sini --}}
+
                 <table class="datatables-basic table border-top">
                     <thead>
                         <tr>
@@ -82,7 +84,23 @@
                                     @endif
                                 </td>
                                 <td>
+
                                     <!-- Tombol aksi -->
+
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" button type="button" class="btn btn-sm btn-primary" 
+                                    data-bs-target="#modalCenteredit"
+                                    href="{{ route('bbm.edit',$bbm->idkonsumbbm) }}"
+                                    data-isibbm="{{ $bbm->isiBBM }}" data-tanggal="{{ $bbm->tanggal }}"
+                                    data-lokasiisi="{{ $bbm->lokasiisi }}" data-totalbayar="{{ $bbm->totalbayar }}" data-fotostruk="{{ $bbm->foto_struk }}" data-isvalid="{{ $bbm->isvalid }}">
+                                        Edit
+                                    </button>
+
+                                    <form action="{{ route('bbm.destroy', $bbm->idkonsumbbm) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('yakin ingin menghapus data ini?')">Delete</button>
+                                    </form>
+
                                 </td>
                             </tr>
                         @endforeach
@@ -103,7 +121,9 @@
 @include('main_owner')
 
 <!-- Modal Edit -->
+
 {{-- <div class="modal fade" id="modalCenteredit" tabindex="-1" aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -161,7 +181,8 @@
             </form>
         </div>
     </div>
-</div>  --}}
+
+</div> 
 <!-- Modal Edit -->
 <div class="modal fade" id="modalCenteredit" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -222,6 +243,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal create -->
 <div class="modal fade" id="modalCentercreate" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -282,8 +304,6 @@
         </div>
     </div>
 </div> 
-
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Tangkap semua tombol edit
@@ -312,5 +332,6 @@
         });
     });
     </script>
+
  </body>
 </html>

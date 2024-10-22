@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Akun;
 use App\Models\Armada;
 use App\Models\Unit;
+
 use App\Models\KonsumBbm;
 use App\Models\Spj;
 use Illuminate\Auth\Events\Validated;
@@ -17,7 +18,9 @@ class BbmController extends Controller
     public function index($id_spj)
     {
         // Fetch the Konsumbbm data based on id_spj
+
         $bbms = KonsumBbm::where('id_spj', $id_spj)->get();
+
         
         // Fetch the corresponding SPJ record
         $spj = Spj::where('id_spj', $id_spj)->first();
@@ -71,17 +74,21 @@ class BbmController extends Controller
 
         return back()->with('success', 'BBM data updated successfully.');
     }
+
     // Di BbmController, tambahkan method untuk mengambil data BBM
 public function getEditData($idkonsumbbm) 
 {
     $bbm = KonsumBbm::findOrFail($idkonsumbbm);
     return response()->json($bbm);
 }
+
     
     public function destroy($id)
     {
         // Find the Konsumbbm data based on the id
+
         $bbm = KonsumBbm::findOrFail($id);
+
 
         // Delete the Konsumbbm data
         $bbm->delete();

@@ -17,10 +17,9 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_unit' => 'required|string|max:50',
+            'nama_unit' => 'required|string|max:50|unique:unit',
             'seri_unit' => 'required|integer',
         ]);
-    
         Unit::create([
             'nama_unit' => $request->nama_unit,
             'seri_unit' => $request->seri_unit,
