@@ -14,7 +14,8 @@ class CreateSjTable extends Migration
             $table->foreign('id_sp')->references('id_sp')->on('sp')->onDelete('cascade');
             $table->unsignedBigInteger('id_unit')->nullable();
             $table->foreign('id_unit')->references('id_unit')->on('Unit')->onDelete('cascade');
-            $table->integer('nilai_kontrak');
+            $table->string('driver', 50)->nullable();
+            $table->string('codriver', 50)->nullable();
             $table->integer('kmsebelum')->nullable();
             $table->integer('kmtiba')->nullable();
             $table->integer('kasbonbbm')->nullable();

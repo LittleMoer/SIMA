@@ -2,49 +2,83 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Unit;
 use Illuminate\Http\Request;
+use App\Models\Unit;
 
 class UnitController extends Controller
 {
-    public function index(Request $request)
+    // Function untuk menampilkan view tambah unit dan daftar unit
+    public function index()
     {
         $units = Unit::all();
         return view('unit.index', compact('units'));
     }
 
-
+    // Function untuk menambahkan unit baru
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'nama_unit' => 'required|string|max:50|unique:units',
-            'seri_unit' => 'required|integer',
+            'seri_unit' => 'required|integer|in:1,2,3',
         ]);
+
+        // Menentukan nama unit baru berdasarkan seri_unit
+        $seri = $request->input('seri_unit');
+        $latestUnit = Unit::where('seri_unit', $seri)->orderBy('nama_unit', 'desc')->first();
+
+        if ($latestUnit) {
+            // Mengambil angka terakhir dari nama_unit dan menambahkannya
+            $lastNumber = intval(substr($latestUnit->nama_unit, 4));
+            $newNumber = $lastNumber + 1;
+        } else {
+            // Jika belum ada unit, mulai dari 101, 201, atau 301
+            $newNumber = $seri * 100 + 1;
+        }
+
+        // Format nama unit (contoh: JSP-101)
+        $nama_unit = 'JSP-' . $newNumber;
+
+        // Simpan unit baru ke database
         Unit::create([
-            'nama_unit' => $request->nama_unit,
-            'seri_unit' => $request->seri_unit,
+            'nama_unit' => $nama_unit,
+            'seri_unit' => $seri,
         ]);
-        return redirect()->route('unit.index')->with('success', 'Unit created successfully.');
+
+        // Redirect kembali ke halaman list unit
+        return redirect()->route('unit.index')->with('success', 'Unit berhasil ditambahkan');
     }
 
+    // Function untuk mengedit unit
+    public function edit($id)
+    {
+        $unit = Unit::find($id);
+        return view('unit.edit', compact('unit'));
+    }
+
+
+
+    // Function untuk mengupdate unit
     public function update(Request $request, $id)
     {
-        $unit = Unit::findOrFail($id);
-    
-        $validatedData = $request->validate([
-            'nama_unit' => 'required|string',
-            'seri_unit' => 'required|integer',
+        $unit = Unit::find($id);
+
+        $request->validate([
+            'nama_unit' => 'required',
+            'seri_unit' => 'required|integer|in:1,2,3',
         ]);
-    
-        $unit->update($validatedData);
-    
-        return redirect()->route('unit.index')->with('success', 'Unit updated successfully.');
+
+        $unit->update([
+            'nama_unit' => $request->input('nama_unit'),
+            'seri_unit' => $request->input('seri_unit'),
+        ]);
+
+        return redirect()->route('unit.index')->with('success', 'Unit berhasil diperbarui');
     }
 
+    // Function untuk menghapus unit
     public function destroy($id)
     {
-        $unit = Unit::findOrFail($id);
-        $unit->delete();
-        return redirect()->route('unit.index')->with('success', 'Unit deleted successfully.');
+        Unit::destroy($id);
+        return redirect()->route('unit.index')->with('success', 'Unit berhasil dihapus');
     }
 }

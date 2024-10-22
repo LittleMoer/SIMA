@@ -12,8 +12,8 @@ class CreateSpTable extends Migration
             $table->id('id_sp');
             $table->string('nama_pemesan', 50);
             $table->string('pj_rombongan', 50);
-            $table->string('no_telppn', 12);
-            $table->string('no_telpps', 12);
+            $table->string('no_telppn', 13);
+            $table->string('no_telpps', 13);
             $table->date('tgl_keberangkatan');
             $table->time('jam_keberangkatan');
             $table->date('tgl_kepulangan');
@@ -23,7 +23,7 @@ class CreateSpTable extends Migration
             $table->integer('jumlah_armada');
             $table->integer('nilai_kontrak1');
             $table->integer('nilai_kontrak2')->nullable();
-            $table->integer('biaya_tambahan');
+            $table->integer('biaya_tambahan')->nullable();
             $table->integer('total_biaya');
             $table->integer('uang_muka');
             $table->integer('status_pembayaran');

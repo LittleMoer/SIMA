@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KonsumBbm extends Model
+class Konsumbbm extends Model
 {
     use HasFactory;
 

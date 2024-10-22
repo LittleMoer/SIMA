@@ -11,7 +11,8 @@ class Sj extends Model
     protected $fillable = [
         'id_sp'
         ,'id_unit'
-        , 'nilai_kontrak'
+        , 'driver'
+        , 'codriver'
         , 'kmsebelum'
         , 'kmtiba'
         , 'kasbonbbm'

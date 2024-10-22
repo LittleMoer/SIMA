@@ -25,6 +25,3 @@
 <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
 <link rel="stylesheet" href="{{ asset('sneat/assets/css/demo.css') }}" />
 <!-- Vendors CSS -->
-
-<link rel="stylesheet" href="{{ asset('sneat/assets/vendor/libs/nouislider/nouislider.css') }}" />
-<link rel="stylesheet" href="{{ asset('sneat/assets/vendor/libs/swiper/swiper.css') }}" />

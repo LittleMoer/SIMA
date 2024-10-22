@@ -9,6 +9,9 @@ use App\Models\SP;
 use App\Models\SPJ;
 use App\Models\SJ;
 use App\Models\Unit;
+use App\Models\Armada;
+use App\Models\Akun;
+
 
 class OrderController extends Controller
 {
@@ -21,24 +24,24 @@ class OrderController extends Controller
     {
         // Validate request
         $request->validate([
-            'nama_pemesan' => 'required|string|max:50',
-            'pj_rombongan' => 'required|string|max:50',
-            'no_telppn' => 'required|string|max:12',
-            'no_telpps' => 'required|string|max:12',
+            'nama_pemesan' => 'required',
+            'pj_rombongan' => 'required',
+            'no_telppn' => 'required',
+            'no_telpps' => 'required',
             'tgl_keberangkatan_full' => 'required|date_format:Y-m-d\TH:i',
             'tgl_kepulangan_full' => 'required|date_format:Y-m-d\TH:i',
-            'tujuan' => 'required|string|max:20',
-            'alamat_penjemputan' => 'required|string|max:100',
-            'jumlah_armada' => 'required|integer',
-            'nilai_kontrak1' => 'required|integer',
-            'nilai_kontrak2' => 'nullable|integer',
-            'biaya_tambahan' => 'nullable|integer',
-            'total_biaya' => 'required|integer',
-            'uang_muka' => 'required|integer',
-            'status_pembayaran' => 'required|integer',
-            'sisa_pembayaran' => 'nullable|integer',
-            'metode_pembayaran' => 'required|string|max:10',
-            'catatan_pembayaran' => 'nullable|string'
+            'tujuan' => 'required',
+            'alamat_penjemputan' => 'required',
+            'jumlah_armada' => 'required',
+            'nilai_kontrak1' => 'required',
+            'nilai_kontrak2' => 'nullable',
+            'biaya_tambahan' => 'nullable',
+            'total_biaya' => 'required',
+            'uang_muka' => 'required',
+            'status_pembayaran' => 'required',
+            'sisa_pembayaran' => 'nullable',
+            'metode_pembayaran' => 'required',
+            'catatan_pembayaran' => 'nullable'
         ]);
 
         // Extract date and time from input
@@ -92,17 +95,17 @@ class OrderController extends Controller
                 'totalsisa' => null,
                 
             ]);
-            // Create a new KonsumBbm record and get its ID
-            $konsumBbm = KonsumBbm::create([
-                'idkonsumbbm' => $randomId,
-                'id_spj' => $spj->id_spj, 
-                'isiBBM' => null,           
-                'tanggal' => null,
-                'lokasiisi' => null,
-                'totalbayar' => null,
-                'foto_struk' => null,
-                'isvalid'=> 0,
-            ]);
+            // // Create a new KonsumBbm record and get its ID
+            // $konsumBbm = KonsumBbm::create([
+            //     'idkonsumbbm' => $randomId,
+            //     'id_spj' => $spj->id_spj, 
+            //     'isiBBM' => null,           
+            //     'tanggal' => null,
+            //     'lokasiisi' => null,
+            //     'totalbayar' => null,
+            //     'foto_struk' => null,
+            //     'isvalid'=> 0,
+            // ]);
         }
 
         return redirect()->route('pesanan')->with('success', 'Pesanan berhasil disimpan');
@@ -113,6 +116,39 @@ public function view($id)
     return view('view', compact('sp'));
 }
 
+
+public function viewSJ($id_sj)
+{
+    $sj = SJ::findOrFail($id_sj);
+    $sp = SP::where('id_sp', $sj->id_sp)->firstOrFail();
+    $unit = Unit::where('id_unit', $sj->id_unit)->firstOrFail();
+    return view('viewSJ', compact('sp', 'sj', 'unit'));
+}
+
+public function viewSPJ($id_spj)
+{
+    // Ambil data SPJ berdasarkan id_spj
+    $spj = SPJ::findOrFail($id_spj);
+    
+    // Ambil data SJ yang terkait dengan SPJ
+    $sj = SJ::where('id_sj', $spj->id_sj)->firstOrFail();
+    
+    // Ambil data SP yang terkait dengan SJ
+    $sp = SP::where('id_sp', $sj->id_sp)->firstOrFail();
+    
+    // Ambil data Unit yang terkait (jika diperlukan)
+    $unit = Unit::where('id_unit', $sj->id_unit)->firstOrFail();
+
+    //Ambil data bbm
+    $bbms = Konsumbbm::where('id_spj', $id_spj)->get();
+        
+
+    // Kirim data ke view 'viewSPJ'
+    return view('viewSPJ', compact('spj', 'sj', 'sp', 'unit', 'bbms'));
+}
+
+
+
 public function detail($id)
 {
     // Retrieve the SP record based on id_sp
@@ -122,123 +158,174 @@ public function detail($id)
     $sjs = SJ::where('id_sp', $id)->get();
 
     // Retrieve all SPJ records where id_sj is among the SJ records retrieved
-    $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj')->toArray())->get(); // Ensure pluck returns an array
-    
-    // Make sure id_spj is treated as an array even if it has a single value
-    $bbm = KonsumBbm::whereIn('id_spj', $spjs->pluck('id_spj')->toArray())->get(); // Use whereIn
+    $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj'))->get();
 
     $units = Unit::all();
     // Pass data to the view
-    return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units', 'bbm'));
+    $units = Unit::orderBy('seri_unit')->get();
+
+
+    
+    return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units'));
 }
 
 
-// Update data for SP
+
+
 public function updateSP(Request $request, $id)
 {
-    $sp = SP::where('id_sp', $id)->firstOrFail();
-
-    // Validate the request (example validation, you can adjust it)
-    $request->validate([
-        'nama_pemesan' => 'required|string|max:50',
-        'pj_rombongan' => 'required|string|max:50',
-        'no_telppn' => 'required|string|max:12',
-        'no_telpps' => 'required|string|max:12',
+    // Validate request
+    $validatedData = $request->validate([
+        'nama_pemesan' => 'required',
+        'pj_rombongan' => 'required',
+        'no_telppn' => 'required',
+        'no_telpps' => 'required',
         'tgl_keberangkatan_full' => 'required|date_format:Y-m-d\TH:i',
         'tgl_kepulangan_full' => 'required|date_format:Y-m-d\TH:i',
-        'tujuan' => 'required|string|max:20',
-        'alamat_penjemputan' => 'required|string|max:100',
+        'tujuan' => 'required',
+        'alamat_penjemputan' => 'required',
         'jumlah_armada' => 'required|integer',
-        'nilai_kontrak1' => 'required|integer',
-        'nilai_kontrak2' => 'nullable|integer',
-        'biaya_tambahan' => 'nullable|integer',
-        'total_biaya' => 'required|integer',
-        'uang_muka' => 'required|integer',
-        'status_pembayaran' => 'required|integer',
-        'sisa_pembayaran' => 'nullable|integer',
-        'metode_pembayaran' => 'required|string|max:10',
-        'catatan_pembayaran' => 'nullable|string'
+        'nilai_kontrak1' => 'required|numeric',
+        'nilai_kontrak2' => 'nullable|numeric',
+        'biaya_tambahan' => 'nullable|numeric',
+        'total_biaya' => 'required|numeric',
+        'uang_muka' => 'required|numeric',
+        'status_pembayaran' => 'required',
+        'sisa_pembayaran' => 'nullable|numeric',
+        'metode_pembayaran' => 'required',
+        'catatan_pembayaran' => 'nullable'
     ]);
 
-    // Update the SP record
-    $sp->update($request->all());
+    // Retrieve the SP record
+    $sp = SP::findOrFail($id);
 
-    return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'Pesanan berhasil diupdate!');
+    // Update all validated fields
+    $sp->fill($validatedData);
+
+    // Handle jumlah_armada changes
+    $newJumlahArmada = $validatedData['jumlah_armada'];
+    $currentSJs = SJ::where('id_sp', $sp->id_sp)->get();
+
+    if ($newJumlahArmada < $currentSJs->count()) {
+        // Delete excess SJs and related records
+        $sjsToDelete = $currentSJs->slice($newJumlahArmada);
+        foreach ($sjsToDelete as $sj) {
+            // Delete related KonsumBbm records first
+            $spj = SPJ::where('id_sj', $sj->id_sj)->first();
+            if ($spj) {
+                KonsumBbm::where('id_spj', $spj->id_spj)->delete();
+                $spj->delete();
+            }
+            $sj->delete();
+        }
+    } elseif ($newJumlahArmada > $currentSJs->count()) {
+        // Create new SJs and related records
+        for ($i = $currentSJs->count(); $i < $newJumlahArmada; $i++) {
+            // Generate random ID for all related records
+            $randomId = mt_rand(1000, 9999);
+            
+            // Create new SJ
+            $sj = SJ::create([
+                'id_sj' => $randomId,
+                'id_sp' => $sp->id_sp,
+                'nilai_kontrak' => null,
+                'kmsebelum' => null,
+                'kmtiba' => null,
+                'kasbonbbm' => null,
+                'kasbonmakan' => null,
+                'lainlain' => null
+            ]);
+
+            // Create corresponding SPJ
+            $spj = SPJ::create([
+                'id_spj' => $randomId,
+                'id_sj' => $sj->id_sj,
+                'SaldoEtollawal' => null,
+                'SaldoEtollakhir' => null,
+                'PenggunaanToll' => null,
+                'uanglainlain' => null,
+                'uangmakan' => null,
+                'sisabbm' => null,
+                'totalisibbm' => null,
+                'sisasaku' => null,
+                'totalsisa' => null
+            ]);
+
+            // // Create corresponding KonsumBbm
+            // KonsumBbm::create([
+            //     'idkonsumbbm' => $randomId,
+            //     'id_spj' => $spj->id_spj,
+            //     'isiBBM' => null,
+            //     'tanggal' => null,
+            //     'lokasiisi' => null,
+            //     'totalbayar' => null,
+            //     'foto_struk' => null,
+            //     'isvalid' => 0
+            // ]);
+        }
+    }
+
+    // Save the updated SP
+    $sp->save();
+
+    return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'Surat Pemesanan berhasil diupdate!');
 }
+
 
 // Update data for SJ related to the given SP
 public function updateSJ(Request $request, $id)
 {
-    // Retrieve the SP record along with its related SJ records
-    $sp = SP::with('sj')->where('id_sp', $id)->firstOrFail();
+    // Temukan SJ yang akan diupdate
+    $sj = SJ::findOrFail($id);
 
-    // Validate the request (example validation, you can adjust it)
+    // Validasi input
     $request->validate([
-        'nilai_kontrak' => 'required|array',
-        'nilai_kontrak.*' => 'required|integer',
-        'kmsebelum' => 'nullable|array',
-        'kmsebelum.*' => 'nullable|integer',
-        'kmtiba' => 'nullable|array',
-        'kmtiba.*' => 'nullable|integer',
-        'kasbonbbm' => 'nullable|array',
-        'kasbonbbm.*' => 'nullable|integer',
-        'kasbonmakan' => 'nullable|array',
-        'kasbonmakan.*' => 'nullable|integer',
-        'lainlain' => 'nullable|array',
-        'lainlain.*' => 'nullable|string',
+        'id_unit' => 'required',
+        'driver' => 'nullable',
+        'codriver' => 'nullable',
+        'kmsebelum' => 'nullable',
+        'kmtiba' => 'nullable',
+        'kasbonbbm' => 'nullable',
+        'kasbonmakan' => 'nullable',
+        'lainlain' => 'nullable',
     ]);
-
-    // Update each related SJ record
-    foreach ($sp->sjs as $index => $sj) {
-        $sj->update([
-            'nilai_kontrak' => $request->nilai_kontrak[$index],
-            'kmsebelum' => $request->kmsebelum[$index] ?? null,
-            'kmtiba' => $request->kmtiba[$index] ?? null,
-            'kasbonbbm' => $request->kasbonbbm[$index] ?? null,
-            'kasbonmakan' => $request->kasbonmakan[$index] ?? null,
-            'lainlain' => $request->lainlain[$index] ?? null,
-        ]);
-    }
-
-    return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'SJ berhasil diupdate!');
+    $sj->update($request->all());
+    return redirect()->route('detail_pesanan', ['id' => $sj->id_sp])->with('success', 'SJ berhasil diupdate!');
 }
 
-// Update data for SPJ related to the given SP
+
+
 public function updateSPJ(Request $request, $id)
 {
-    // Retrieve the SP record along with its related SPJ records
-    $sp = SP::with('spjs')->where('id_sp', $id)->firstOrFail();
+    // Temukan SJ yang akan diupdate
+    $spj = SPJ::findOrFail($id);
 
-    // Validate the request (example validation, you can adjust it)
+    // Validasi input
     $request->validate([
-        'saldo_etollawal' => 'nullable|array',
-        'saldo_etollawal.*' => 'nullable|integer',
-        'saldo_etollakhir' => 'nullable|array',
-        'saldo_etollakhir.*' => 'nullable|integer',
-        'penggunaan_toll' => 'nullable|array',
-        'penggunaan_toll.*' => 'nullable|integer',
-        'uanglainlain' => 'nullable|array',
-        'uanglainlain.*' => 'nullable|integer',
-        'uangmakan' => 'nullable|array',
-        'uangmakan.*' => 'nullable|integer',
-        // Add other fields validations as needed
+        'saldo_etollawal' => 'nullable',
+        'saldo_etollakhir' => 'nullable',
+        'penggunaan_toll' => 'nullable',
+        'uanglainlain' => 'nullable',
+        'uangmakan' => 'nullable',
     ]);
-
-    // Update each related SPJ record
-    foreach ($sp->spjs as $index => $spj) {
-        $spj->update([
-            'SaldoEtollawal' => $request->saldo_etollawal[$index] ?? null,
-            'SaldoEtollakhir' => $request->saldo_etollakhir[$index] ?? null,
-            'PenggunaanToll' => $request->penggunaan_toll[$index] ?? null,
-            'uanglainlain' => $request->uanglainlain[$index] ?? null,
-            'uangmakan' => $request->uangmakan[$index] ?? null,
-            // Add other fields to be updated
-        ]);
-    }
-
-    return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'SPJ berhasil diupdate!');
+    $spj->update($request->all());
+    
+//  dump([
+//         'request_method' => $request->method(),
+//         'request_all' => $request->all(),
+//         'id' => $id,
+//         'url' => $request->url(),
+//         'route' => $request->route()->getName(),
+//         'headers' => $request->headers->all(),
+//     ]);
+        // Get the SJ record to find id_sp
+        $sj = SJ::findOrFail($spj->id_sj);
+        $id_sp = $sj->id_sp;
+    
+        // Redirect to detail_pesanan page with the specific tab
+        return redirect()->route('detail_pesanan', ['id' => $id_sp])
+                         ->with('success', 'SPJ berhasil diupdate!');
 }
-
 
 public function destroy($id)
 {
@@ -246,5 +333,25 @@ public function destroy($id)
     $sp->delete();
 
     return redirect()->route('pesanan')->with('success', 'Pesanan berhasil dihapus');
+}
+
+public function getDriverCoDriver($id_unit)
+{
+    $armada = Armada::where('id_unit', $id_unit)->first();
+
+    if (!$armada) {
+        return response()->json([
+            'driver' => '',
+            'codriver' => ''
+        ]);
+    }
+
+    $driver = Akun::where('id_akun', $armada->id_akun and 'Driver',$armada->posisi)->first();
+    $codriver = Akun::where('id_akun', $armada->id_akun)->first();
+
+    return response()->json([
+        'driver' => $driver ? $driver->name : '',
+        'codriver' => $codriver ? $codriver->name : ''
+    ]);
 }
 }
