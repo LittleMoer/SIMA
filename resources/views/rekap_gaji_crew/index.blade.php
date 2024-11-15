@@ -11,7 +11,7 @@
         <nav aria-label="breadcrumb" style="border-bottom: 1px solid #94acc6;">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item ">
-                    <a href="{{ url('/pesanan') }}">Rekap Gaji Crew</a>
+                    <a href="{{ url()->previous() }}">Rekap Gaji Crew</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <a href="javascript:void(0);">Rekap gaji Karyawan dan Crew</a>
