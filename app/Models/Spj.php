@@ -8,8 +8,16 @@ class Spj extends Model
     protected $primaryKey = 'id_spj';
     protected $table = 'spj';
     protected $fillable = [
-        'id_sj', 'SaldoEtollawal', 'SaldoEtollakhir', 'PenggunaanToll', 'uanglainlain', 
-        'uangmakan', 'sisabbm', 'totalisibbm', 'sisasaku', 'totalsisa'
+        'id_sj',
+         'SaldoEtollawal',
+          'SaldoEtollakhir',
+           'PenggunaanToll',
+            'uanglainlain',
+        'uangmakan',
+         'sisabbm',
+          'totalisibbm',
+           'sisasaku',
+            'totalsisa'
     ];
     public $timestamps = true;
 

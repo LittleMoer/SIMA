@@ -337,21 +337,31 @@ public function destroy($id)
 
 public function getDriverCoDriver($id_unit)
 {
-    $armada = Armada::where('id_unit', $id_unit)->first();
+    // Retrieve all records from Armada where 'id_unit' matches the input
+    $armada = Armada::where('id_unit', $id_unit)->get();
 
-    if (!$armada) {
+    // Check if any armada records are found for the given id_unit
+    if ($armada->isEmpty()) {
         return response()->json([
             'driver' => '',
             'codriver' => ''
         ]);
     }
 
-    $driver = Akun::where('id_akun', $armada->id_akun and 'Driver',$armada->posisi)->first();
-    $codriver = Akun::where('id_akun', $armada->id_akun)->first();
+    // Find the driver by checking the 'posisi' field
+    $driver = $armada->where('posisi', 'Driver')->first();
 
+    // Find the co-driver by checking the 'posisi' field
+    $codriver = $armada->where('posisi', 'Co-Driver')->first();
+
+    // Initialize variables to store the names
+    $driverName = $driver ? $driver->akun->name : '';
+    $codriverName = $codriver ? $codriver->akun->name : '';
+
+    // Return the names in JSON format
     return response()->json([
-        'driver' => $driver ? $driver->name : '',
-        'codriver' => $codriver ? $codriver->name : ''
+        'driver' => $driverName,
+        'codriver' => $codriverName
     ]);
 }
 }

@@ -3,17 +3,17 @@
   
 <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
   <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}" alt="Help center header">
-  <h3 class="text-center">Manajemen Armada </h3>
-  <h5 class="text-center px-3 mb-0">Pemantauan, pembuatan, manajemen armada</h5>
+  <h3 class="text-center">Manajemen Crew </h3>
+  <h5 class="text-center px-3 mb-0">Pemantauan, pembuatan, manajemen Crew</h5>
 </section>
 
 <!-- Manajemen Armada: Start -->
 <section>
     <div class="container">
-        <h2>Daftar Armada</h2>
+        <h2>Daftar Crew</h2>
     
         <!-- Add Armada Button -->
-        <a href="{{ route('manajemen_armada.create') }}" class="btn btn-primary mb-3"><i class='bx bx-user-plus'></i>Tambah Armada</a>
+        <a href="{{ route('manajemen_armada.create') }}" class="btn btn-primary mb-3"><i class='bx bx-user-plus'></i>Tambah Crew</a>
 
         @if($armadas->count())
             <table class="datatables-basic table border-top" id="myTable">
@@ -51,7 +51,7 @@
                 </tbody>
             </table>
         @else
-            <p class="text-muted">Tidak ada armada yang ditemukan.</p>
+            <p class="text-muted">Tidak ada Crew yang ditemukan.</p>
         @endif
     </div>
 </section>

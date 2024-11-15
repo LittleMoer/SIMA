@@ -3,8 +3,8 @@
 <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
     <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}"
         alt="Help center header">
-    <h3 class="text-center">Manajemen Armada </h3>
-    <h5 class="text-center px-3 mb-0">Pemantauan, pembuatan, manajemen armada</h5>
+        <h3 class="text-center">Manajemen Crew </h3>
+        <h5 class="text-center px-3 mb-0">Pemantauan, pembuatan, manajemen Crew</h5>
 </section>
 @if($errors->any())
     <div class="alert alert-danger">

@@ -3,28 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Akun;
-use Illuminate\Http\Request;
-use App\Models\RekapGajiCrew;
+use App\Models\Rekapgajicrew;
 use App\Models\Armada;
 use App\Models\SP;
 use App\Models\SJ;
 use App\Models\SPJ;
 use App\Models\Unit;
-
+use Illuminate\Http\Request;
 
 class RekapGajiCrewController extends Controller
 {
     public function showRekapGaji($id_armada)
     {
-        // Fetch the armada by ID
+        // Fetch the armada by ID with related akun and unit
         $armada = Armada::with('akun', 'unit')->findOrFail($id_armada);
+    
+        // Fetch the rekap gaji crew related to this armada using the correct property
+        $rekapGajiCrew = Rekapgajicrew::where('id_armada', $id_armada)->get();
+        // dd($armada, $rekapGajiCrew);
+
+        $totalpremi = Rekapgajicrew::where('id_armada', $id_armada)->sum('premi');
+        $totalharikerja = Rekapgajicrew::where('id_armada', $id_armada)->sum('hari_kerja');
+        $insentif = 0;
+        $totalbulanan = Rekapgajicrew::where('id_armada', $id_armada)->sum('total_gaji') + $insentif;
         
-        // Fetch the rekap gaji crew related to this armada
-        $rekapGajiCrew = RekapGajiCrew::where('id_armada', $id_armada)->get();
-        
-        return view('rekap_gaji_crew.index', compact('armada', 'rekapGajiCrew'));
+        return view('rekap_gaji_crew.index', compact('armada', 'rekapGajiCrew', 'totalbulanan', 'totalpremi', 'totalharikerja', 'insentif'));
     }
     
+
     public function countWorkDays($startDate, $endDate)
     {
         $start = new \DateTime($startDate);
@@ -37,7 +43,7 @@ class RekapGajiCrewController extends Controller
         $workdays = 0;
 
         foreach ($period as $dt) {
-            if ($dt->format('N') < 6) {
+            if ($dt->format('N') < 6) { 
                 $workdays++;
             }
         }
@@ -45,143 +51,147 @@ class RekapGajiCrewController extends Controller
         return $workdays;
     }
 
-    public function show(Request $request)
-    {
-        $request->validate([
-            'id_armada' => 'required|string',
-        ]);
-    
-        // Fetch the selected Armada
-        $armada = Armada::findOrFail($request->id_armada);
-    
-        // Fetch the accounts (akun) associated with the selected Armada
-        $akun = Akun::where('id_akun', $armada->id_akun)->get();
-        $nama = $akun->pluck('name');
-        // Fetch Rekap Gaji Crew based on the driver and codriver's names in the retrieved accounts
-        $rekapGaji = RekapGajiCrew::whereIn('nama', $akun->pluck('name'))->get();
-    
-        return view('rekap_gaji_crew.index', compact('rekapGaji', 'armada', 'akun'));
-    }
-    
-    public function generate(Request $request)
-    {
-        $request->validate([
-            'id_armada' => 'required|string',
-            'bulan' => 'required|string',
-        ]);
-    
+    public function calculatePremiPercentage($seri, $posisi)
+{
+    $premiPercentage = 0;
 
-        $sjRecords = SJ::where('id_unit', $request->id_armada)->get();
-        $selectedMonth = $request->input('bulan');
-        
-        if ($sjRecords->isEmpty()) {
-            return redirect()->back()->withErrors('No SJ records found for the selected Armada.');
-        }
-    
+    switch ($seri) {
+        case 1:
+            if ($posisi === 'Driver') {
+                $premiPercentage = 21; 
+            }
+            break;
+        case 2:
+            if ($posisi === 'Driver') {
+                $premiPercentage = 14; 
+            } elseif ($posisi === 'Co-Driver') {
+                $premiPercentage = 7; 
+            }
+            break;
+        case 3:
+            if ($posisi === 'Driver') {
+                $premiPercentage = 12; 
+            } elseif ($posisi === 'Co-Driver') {
+                $premiPercentage = 6;
+            }
+            break;
+    }
+
+    return $premiPercentage; 
+}
+
+public function generate(Request $request)
+{
+    // Validate incoming request data
+    $request->validate([
+        'id_armada' => 'required|string',
+        'bulan' => 'required|string',
+        'tahun' => 'required|integer',
+    ]);
+
+    // Fetch selected month and year from the request
+    $selectedMonth = $request->input('bulan');
+    $selectedYear = $request->input('tahun');
+
+    // Retrieve the armada including akun
+    $armada = Armada::with('akun')->findOrFail($request->id_armada);
+    $posisi = Armada::find($armada->id_armada)->posisi;
+
+    // Get the id_akun from the armada
+    $idAkun = $armada->id_akun; 
+    $namauser = Akun::where('id_akun', $idAkun)->get();
+    $nama = $namauser->pluck('name')->toArray(); 
+
+    // Fetch SJ records for the given armada filtered by month, year, and driver/codriver names
+    $sjRecords = SJ::where('id_unit', $armada->id_unit)
+        ->whereMonth('created_at', $selectedMonth)
+        ->whereYear('created_at', $selectedYear)
+        ->where(function($query) use ($nama) {
+            $query->whereIn('driver', $nama)
+                  ->orWhereIn('codriver', $nama);
+        })
+        ->get();
 
         RekapGajiCrew::where('id_armada', $request->id_armada)
-            ->where('bulan', $selectedMonth)
-            ->delete();
-    
+        ->where('bulan', $selectedMonth)
+        ->whereYear('tanggal', $selectedYear)
+        ->delete();
+
+    if ($sjRecords->isEmpty()) {
+        return redirect()->back()->withErrors('No SJ records found for the selected month, year, and drivers.');
+    } else {
+        // Initialize an array to store the rekap gaji crew records
+        $rekapGajiCrewRecords = [];
+
+        // Loop through the SJ records
         foreach ($sjRecords as $sj) {
-
-            $sp = SP::where('id_sp', $sj->id_sp)->first();
-            
-
-            $unit = Unit::where('id_unit', $sj->id_unit)->first();
-            $seri = $unit->seri; 
-            $akun = Akun::where('id_akun', $sj->driver)->get();
+            // Fetch the SP associated with SJ
+            $sp = SP::find($sj->id_sp); 
             $spj = SPJ::where('id_sj', $sj->id_sj)->first();
-            $nilaiKontrak = $sj->nilai_kontrak ?? 0;
-            $totalOperasional = $spj ? $spj->total_operasional : 0;
-            $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
-            $totalGaji = $nilaiKontrak; 
+            $unit = Unit::where('id_unit', $armada->id_unit)->first();
+            $seri = $unit->seri_unit;
             
 
-            foreach ($akun as $user) {
-  
-                $premiPercentage = 0;
-    
-                // Apply the premi based on seri and posisi
-                if ($seri == 1 && $user->posisi == 'Driver') {
-                    // Seri 1: Driver only - cut 21% from total pendapatan
-                    $premiPercentage = 21;
-                } elseif ($seri == 2) {
-                    // Seri 2: Driver gets 14%, Co-Driver gets 7%
-                    $premiPercentage = ($user->posisi == 'Driver') ? 14 : 7;
-                } elseif ($seri == 3) {
-                    // Seri 3: Driver gets 12%, Co-Driver gets 6%
-                    $premiPercentage = ($user->posisi == 'Driver') ? 12 : 6;
+            if (!$sp) {
+                return redirect()->back()->withErrors('SP not found for SJ with ID: '.$sj->id_sj);
+            }
+
+            $jumlahArmada = $sp->jumlah_armada;
+
+            if ($jumlahArmada < 1) {
+                $nilaiKontrak = $sp->nilai_kontrak1; 
+            } else {
+                $sjcompare = SJ::where('id_sp', $sp->id_sp)
+                    ->where('id_unit', $armada->id_unit)
+                    ->where('id_sj', '!=', $sj->id_sj)
+                    ->first();
+                if ($sjcompare > $sj->id_sj) {
+                    $nilaiKontrak = $sp->nilai_kontrak2;
+                } else {
+                    $nilaiKontrak = $sp->nilai_kontrak1;
                 }
-    
-                // Calculate the premi based on the percentage
+            }
+
+            $totalOperasional = $spj->totalisibbm + $spj->uangmakan + $spj->PenggunaanToll;
+            $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
+            $totalGaji = $nilaiKontrak;
+
+            foreach ($namauser as $user) {
+                $premiPercentage = $this->calculatePremiPercentage($seri, $posisi);
                 $premi = ($totalGaji * $premiPercentage) / 100;
-    
-                // Create new Rekap Gaji Crew entry
-                RekapGajiCrew::create([
-                    'no_rekap' => RekapGajiCrew::count() + 1,
-                    'id_armada' => $sj->id_unit,
+
+                // Prepare data to create
+                $dataToCreate = [
+                    'id_armada' => $armada->id_armada,
                     'nama' => $user->name,
                     'bulan' => $selectedMonth,
-                    'tanggal' => $sj->created_at->format('Y-m-d'),
+                    'tanggal' => $sp->tgl_keberangkatan,
                     'hari_kerja' => $this->countWorkDays($sp->tgl_keberangkatan, $sp->tgl_kepulangan),
-                    'pj_rombongan' => $sp->pj_rombongan ?? 'Unknown',
+                    'nama_pemesanan' => $sp->nama_pemesan ?? 'Unknown',
                     'nilai_kontrak' => $nilaiKontrak,
-                    'bbm' => $spj->bbm ?? null,
-                    'uang_makan' => $spj->uang_makan ?? null,
-                    'parkir' => $spj->parkir ?? null,
-                    'cuci' => $spj->cuci ?? null,
-                    'toll' => $spj->toll ?? null,
+                    'bbm' => $spj->totalisibbm,
+                    'uang_makan' => $spj->uangmakan,
+                    'parkir' => null,
+                    'cuci' => null,
+                    'toll' => $spj->PenggunaanToll,
                     'total_operasional' => $totalOperasional,
                     'sisa_nilai_kontrak' => $sisaNilaiKontrak,
                     'premi' => $premi,
-                    'subsidi' => $spj->subsidi ?? null,
-                    'total_gaji' => $totalGaji,
-                ]);
+                    'subsidi' => null, 
+                    'total_gaji' => $premi,
+                ];
+
+                try {
+                    RekapGajiCrew::create($dataToCreate);
+                } catch (\Exception $e) {
+                    return redirect()->back()->withErrors('Error creating Rekap Gaji Crew entry: ' . $e->getMessage());
+                }
             }
         }
-    
-        return redirect()->route('manajemen_armada.rekap_gaji', ['id_armada' => $request->id_armada])
-                         ->with('success', 'Rekap Gaji Crew berhasil di-generate');
-    }
-    
-    public function edit($no_rekap, $nama)
-    {
-        $rekapGaji = RekapGajiCrew::where('no_rekap', $no_rekap)
-            ->where('nama', $nama)
-            ->firstOrFail();
-    
-        return view('rekap_gaji_crew.edit', compact('rekapGaji'));
     }
 
-    public function update(Request $request, $no_rekap, $nama)
-    {
-        $validatedData = $request->validate([
-            'tanggal' => 'required|date',
-            'pj_rombongan' => 'required|string|max:255',
-            'nilai_kontrak' => 'required|integer',
-            'bbm' => 'nullable|integer',
-            'uang_makan' => 'nullable|integer',
-            'parkir' => 'nullable|integer',
-            'cuci' => 'nullable|integer',
-            'toll' => 'nullable|integer',
-            'total_operasional' => 'nullable|integer',
-            'sisa_nilai_kontrak' => 'nullable|integer',
-            'premi' => 'nullable|integer',
-            'subsidi' => 'nullable|integer',
-            'total_gaji' => 'nullable|integer',
-        ]);
-    
-        // Find the record based on 'no' (no_rekap) and 'nama'
-        $rekapGaji = RekapGajiCrew::where('no_rekap', $no_rekap)
-            ->where('nama', $nama)
-            ->firstOrFail();
-    
-        // Update the record with validated data
-        $rekapGaji->update($validatedData);
-    
-        return redirect()->route('rekap.gaji.show', ['id_armada' => $rekapGaji->crew])
-            ->with('success', 'Rekap Gaji Crew berhasil diperbarui');
-    }    
+    return redirect()->route('manajemen_armada.rekap_gaji', ['id_armada' => $request->id_armada])
+                     ->with('success', 'Rekap Gaji Crew berhasil di-generate');
+}
 }
 

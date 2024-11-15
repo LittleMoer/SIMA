@@ -31,6 +31,7 @@ return new class extends Migration
             $table->integer('premi')->nullable();
             $table->integer('subsidi')->nullable();
             $table->integer('total_gaji')->nullable();
+            $table->timestamps();
         });
     }
 

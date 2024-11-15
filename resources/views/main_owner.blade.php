@@ -70,7 +70,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link fw-medium"
-                                href="{{ url('/manajemen_armada') }}">Manajemen Armada</a>
+                                href="{{ url('/manajemen_armada') }}">Manajemen Crew</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link fw-medium" href="{{ url('/unit') }}">Unit
