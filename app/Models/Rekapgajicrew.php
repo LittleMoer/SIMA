@@ -5,7 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class RekapGajiCrew extends Model
 {
-    protected $table = 'rekapgajicrew'; // Explicitly define the table if it differs from model name
+    protected $table = 'rekapgajicrew';
+    protected $primaryKey = 'id_rekapgajicrew'; 
     protected $fillable = [
         'id_armada', 
         'nama', 

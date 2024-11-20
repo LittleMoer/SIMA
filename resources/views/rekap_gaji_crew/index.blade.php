@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary mt-4">Generate Rekap Gaji</button> <!-- Added margin-top -->
+                        <button type="submit" class="btn btn-primary mt-4">Generate Rekap Gaji</button>
                     </div>
                 </div>
             </form>
@@ -124,7 +124,7 @@
                         </tr>
                         <tr>
                             <th colspan="4">Insentif:</th>
-                            <td colspan="2">{{ number_format($insentif, 0, ',', '.') }}</td> <!-- Placeholder for calculation -->
+                            <td colspan="2">{{ number_format($insentif, 0, ',', '.') }}</td> 
                             <th colspan="4">Total Pendapatan:</th>
                             <td colspan="2">{{ number_format($rekapGajiCrew->sum('total_gaji'), 0, ',', '.') }}</td>
                         </tr>
@@ -134,8 +134,14 @@
             @else
                 <p class="text-muted">Tidak ada data rekap gaji untuk armada ini.</p>
             @endif
-
-            <a href="{{ route('manajemen_armada.index') }}" class="btn btn-secondary">Kembali</a>
+            <div class="form-group row mb-3">
+            <div class = "col-md-1">
+            <a class="btn btn-primary mt-2 " href="{{ route('rekap.gaji.edit', $armada->id_armada) }}" >Edit</a>
+            </div>
+            <div class = "col-md-1">
+            <a class="btn btn-primary mt-2 " href="{{ route('manajemen_armada.index') }}" >Kembali</a>
+            </div>
+            </div>
         </div>
     </section>
 </body>

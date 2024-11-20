@@ -20,7 +20,6 @@ class RekapGajiCrewController extends Controller
     
         // Fetch the rekap gaji crew related to this armada using the correct property
         $rekapGajiCrew = Rekapgajicrew::where('id_armada', $id_armada)->get();
-        // dd($armada, $rekapGajiCrew);
 
         $totalpremi = Rekapgajicrew::where('id_armada', $id_armada)->sum('premi');
         $totalharikerja = Rekapgajicrew::where('id_armada', $id_armada)->sum('hari_kerja');
@@ -193,5 +192,89 @@ public function generate(Request $request)
     return redirect()->route('manajemen_armada.rekap_gaji', ['id_armada' => $request->id_armada])
                      ->with('success', 'Rekap Gaji Crew berhasil di-generate');
 }
+
+public function edit($id_armada)
+{
+    // Fetch the armada by ID with related akun and unit
+    $armada = Armada::with('akun', 'unit')->findOrFail($id_armada);
+
+    // Fetch the rekap gaji crew related to this armada using the correct property
+    $rekapGajiCrew = Rekapgajicrew::where('id_armada', $id_armada)->get();
+
+    $totalpremi = Rekapgajicrew::where('id_armada', $id_armada)->sum('premi');
+    $totalharikerja = Rekapgajicrew::where('id_armada', $id_armada)->sum('hari_kerja');
+    $insentif = 0;
+    $totalbulanan = Rekapgajicrew::where('id_armada', $id_armada)->sum('total_gaji') + $insentif;
+    
+    return view('rekap_gaji_crew.edit', compact('armada', 'rekapGajiCrew', 'totalbulanan', 'totalpremi', 'totalharikerja', 'insentif'));
+}
+
+public function update(Request $request)
+{
+    // Validate incoming request data
+    $request->validate([
+        'id_armada' => 'required|string',
+        'data' => 'required|array',
+        'data.*.id_rekapgajicrew' => 'required|integer', // Each record must have an ID
+        'data.*.tanggal' => 'required|date',
+        'data.*.hari_kerja' => 'required|integer',
+        'data.*.pj_rombongan' => 'nullable|string',
+        'data.*.nilai_kontrak' => 'nullable|integer',
+        'data.*.bbm' => 'nullable|integer',
+        'data.*.uang_makan' => 'nullable|integer',
+        'data.*.parkir' => 'nullable|integer',
+        'data.*.cuci' => 'nullable|integer',
+        'data.*.toll' => 'nullable|integer',
+        'data.*.total_operasional' => 'nullable|integer',
+        'data.*.sisa_nilai_kontrak' => 'nullable|integer',
+        'data.*.premi' => 'nullable|integer',
+        'data.*.subsidi' => 'nullable|integer',
+        'data.*.total_gaji' => 'nullable|integer',
+    ]);
+    
+    // Retrieve insentif input
+
+
+    // Loop through the submitted data to update each record
+    foreach ($request->data as $rekapData) {
+        // Find the record based on 'id_rekapgajicrew'
+        $rekapGaji = RekapGajiCrew::findOrFail($rekapData['id_rekapgajicrew']);
+        
+        // Update existing fields
+        $rekapGaji->update($rekapData); // First, update the basic fields
+
+        // Retrieve the corresponding SP record to get required fields for calculations
+        $sp = SP::find($rekapGaji->id_sp); // Make sure to have a valid SP association
+
+        if (!$sp) {
+            // Log warning, or handle as necessary if SP is not found
+            \Log::warning('SP not found for Rekap Gaji ID: '.$rekapData['id_rekapgajicrew']);
+            continue; // Skip to the next record if SP is not found
+        }
+
+        // You might need to retrieve SPJ here if required for calculations
+        $spj = SPJ::where('id_sj', $rekapGaji->id_sj)->first();
+
+        // Automatic calculations
+        $totalOperasional = ($spj->totalisibbm ?? 0) + ($spj->uangmakan ?? 0) + ($spj->PenggunaanToll ?? 0);
+        $sisaNilaiKontrak = $rekapGaji->nilai_kontrak - $totalOperasional; // Ensure nilai_kontrak is correctly accessed
+        $premiPercentage = $this->calculatePremiPercentage($sp->seri, $rekapGaji->pj_rombongan); // Adjust based on how you identify position
+        $premi = ($rekapGaji->total_gaji * $premiPercentage) / 100; // Calculate based on total_gaji
+
+        // Update the calculated fields
+        $rekapGaji->update([
+            'sisa_nilai_kontrak' => $sisaNilaiKontrak,
+            'total_operasional' => $totalOperasional,
+            'premi' => $premi,
+            'subsidi' => $rekapData['subsidi'] ?? $rekapGaji->subsidi, // Use new value or keep existing
+            'total_gaji' => $rekapData['total_gaji'] ?? $rekapGaji->total_gaji, // Update if provided
+        ]);
+    }
+
+    // Redirect back with a success message
+    return redirect()->route('manajemen_armada.rekap_gaji', ['id_armada' => $request->id_armada])
+                     ->with('success', 'Rekap Gaji Crew successfully updated.');
+}
+
 }
 

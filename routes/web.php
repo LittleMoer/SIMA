@@ -71,8 +71,9 @@ Route::delete('/bbm/{id}', [BbmController::class, 'destroy'])->name('bbm.destroy
 Route::get('/manajemen_armada/{id_armada}/rekap_gaji', [RekapGajiCrewController::class, 'showRekapGaji'])->name('manajemen_armada.rekap_gaji');
 Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
 Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generate'])->name('rekap.gaji.generate');
-// Route::get('rekap-gaji-crew/edit/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
-// Route::put('rekap-gaji-crew/update/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update');
+Route::get('/rekap-gaji/edit/{id_armada}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
+Route::post('/rekap-gaji/update', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update'); // Change to POST without {id}
+
 
 //manajemen akun
 Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
