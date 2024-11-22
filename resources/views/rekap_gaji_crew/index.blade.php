@@ -21,51 +21,53 @@
     </div>
 </section>
 
+<div class="container mb-3 mt-4">
     <section>
-        <div class="container mb-3 mt-4">
+        <form action="{{ route('rekap.gaji.generate') }}" method="POST">
+            @csrf
+            <input type="hidden" name="id_armada" value="{{ $armada->id_armada }}">
+
+            @php
+                $currentMonth = date('m');
+                $earliestYear = \App\Models\SP::min(\DB::raw('YEAR(tgl_keberangkatan)')) ?? date('Y');
+                $currentYear = date('Y');
+            @endphp
+
+            <div class="form-group row mb-3">
+                <div class="col-md-4">
+                    <label for="bulan">Pilih Bulan:</label>
+                    <select name="bulan" id="bulan" class="form-control">
+                        @foreach(range(1, 12) as $month)
+                            <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}"
+                                {{ old('bulan', $currentMonth) == str_pad($month, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
+                                {{ DateTime::createFromFormat('!m', $month)->format('F') }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="tahun">Pilih Tahun:</label>
+                    <select name="tahun" id="tahun" class="form-control">
+                         @for($year = $earliestYear; $year <= $currentYear; $year++)
+                            <option value="{{ $year }}"
+                                {{ old('tahun', $currentYear) == $year ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
+                        @endfor
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary mt-4">Generate Rekap Gaji</button>
+                </div>
+            </div>
+        </form>
+</div>
+        <div id="rekapgaji" class="container mb-3 mt-4">
             <h4>Armada: {{ $armada->unit->nama_unit }}</h4>
             <h4>Nama: {{ $armada->akun->name }}</h4>
 
-            <form action="{{ route('rekap.gaji.generate') }}" method="POST">
-                @csrf
-                <input type="hidden" name="id_armada" value="{{ $armada->id_armada }}">
-
-                @php
-                    $currentMonth = date('m');
-                    $earliestYear = \App\Models\SP::min(\DB::raw('YEAR(tgl_keberangkatan)')) ?? date('Y');
-                    $currentYear = date('Y');
-                @endphp
-
-                <div class="form-group row mb-3">
-                    <div class="col-md-4">
-                        <label for="bulan">Pilih Bulan:</label>
-                        <select name="bulan" id="bulan" class="form-control">
-                            @foreach(range(1, 12) as $month)
-                                <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}"
-                                    {{ old('bulan', $currentMonth) == str_pad($month, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                    {{ DateTime::createFromFormat('!m', $month)->format('F') }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="tahun">Pilih Tahun:</label>
-                        <select name="tahun" id="tahun" class="form-control">
-                             @for($year = $earliestYear; $year <= $currentYear; $year++)
-                                <option value="{{ $year }}"
-                                    {{ old('tahun', $currentYear) == $year ? 'selected' : '' }}>
-                                    {{ $year }}
-                                </option>
-                            @endfor
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary mt-4">Generate Rekap Gaji</button>
-                    </div>
-                </div>
-            </form>
 
             @if($rekapGajiCrew->count())
                 <table class="table table-bordered align-items-center">
@@ -118,33 +120,108 @@
                     <tfoot>
                         <tr>
                             <th colspan="4">Jumlah Hari Dalam Satu Bulan:</th>
-                            <td colspan="2">{{ $rekapGajiCrew->sum('hari_kerja') }}</td>
+                            <td colspan="2">{{ $totalharikerja }}</td>
                             <th colspan="4">Total Premi:</th>
-                            <td colspan="2">{{ number_format($rekapGajiCrew->sum('premi'), 0, ',', '.') }}</td>
+                            <td colspan="2">{{ number_format($totalpremi, 0, ',', '.') }}</td>
                         </tr>
                         <tr>
-                            <th colspan="4">Insentif:</th>
-                            <td colspan="2">{{ number_format($insentif, 0, ',', '.') }}</td> 
-                            <th colspan="4">Total Pendapatan:</th>
-                            <td colspan="2">{{ number_format($rekapGajiCrew->sum('total_gaji'), 0, ',', '.') }}</td>
-                        </tr>
+                        <th colspan="4">Insentif:</th>
+                        <td colspan="2">
+                            <input type="number" id="insentif" value="{{ old('insentif', session('insentif', 0)) }}" class="form-control" placeholder="Insentif" oninput="calculateTotalPendapatan()">
+                            <button type="button" id="saveInsentif" class="btn btn-primary btn-sm" onclick="saveInsentif()">Save</button>
+                        </td>
+                        <th colspan="4">Total Pendapatan:</th>
+                        <td colspan="2" id="totalPendapatan">{{ number_format($rekapGajiCrew->sum('total_gaji') + session('insentif', 0), 0, ',', '.') }}</td>
                     </tfoot>
                 </table>
-
             @else
                 <p class="text-muted">Tidak ada data rekap gaji untuk armada ini.</p>
             @endif
-            <div class="form-group row mb-3">
-            <div class = "col-md-1">
-            <a class="btn btn-primary mt-2 " href="{{ route('rekap.gaji.edit', $armada->id_armada) }}" >Edit</a>
-            </div>
-            <div class = "col-md-1">
+        </div>
+        <div class="container mb-3 mt-4">
+        <div class="form-group row mb-3">
+        <div class = "col-md-1">
+        <a class="btn btn-primary mt-2 " href="{{ route('rekap.gaji.edit', $armada->id_armada) }}" >Edit</a>
+        </div>
+        <div class = "col-md-1">
             <a class="btn btn-primary mt-2 " href="{{ route('manajemen_armada.index') }}" >Kembali</a>
-            </div>
-            </div>
+        </div>
+        <div class="col-md-2">
+            <button id="printButton" class="btn btn-primary mt-2">Print Rekap Gaji</button>
+        </div>
+        </div>
         </div>
     </section>
 </body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function calculateTotalPendapatan() {
+        const totalPremi = {{ $totalpremi }};
+        const insentif = parseFloat(document.getElementById('insentif').value) || 0;
+        const totalPendapatan = totalPremi + insentif;
+
+        document.getElementById('totalPendapatan').innerText = totalPendapatan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
+    }
+
+    function saveInsentif() {
+        const insentif = $('#insentif').val();
+        const id_armada = {{ $armada->id_armada }};
+
+        $.ajax({
+            url: '{{ route("rekap.gaji.intensif", ":id") }}'.replace(':id', id_armada), // Use the named route
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}', // Include CSRF token
+                insentif: insentif
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Insentif successfully updated to: ' + response.insentif);
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('An error occurred while saving the insentif.');
+            }
+        });
+    }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('printButton').addEventListener('click', function() {
+        // Get the current insentif value
+        const insentifValue = document.getElementById('insentif').value;
+
+        // Get the table's HTML
+        var printContents = document.getElementById('rekapgaji').outerHTML;
+
+        // Create a new window for printing
+        var win = window.open('', '', 'height=500,width=800');
+        win.document.write('<html><head><title>Print Rekap Gaji</title>');
+        win.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">');
+        win.document.write('<style>');
+        win.document.write('@media print {');
+        win.document.write('table { width: 100%; border-collapse: collapse; }');
+        win.document.write('th, td { border: 1px solid black; padding: 8px; text-align: left; }');
+        win.document.write('th { background-color: #f2f2f2; }');
+        win.document.write('#saveInsentif { display: none; }'); // Hide the save button when printing
+        win.document.write('}');
+        win.document.write('</style>');
+        win.document.write('</head><body>');
+        
+        // Add the insentif value to the print content
+        win.document.write('<h4>Insentif: ' + insentifValue + '</h4>'); // Include the insentif value
+        win.document.write(printContents); // Write the contents of the table
+        win.document.write('</body></html>');
+        win.document.close(); // Close the document
+        win.print(); // Open the print dialog
+    });
+});
+</script>
+
+
 
 @if(session('success'))
     <div id="successToast" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">

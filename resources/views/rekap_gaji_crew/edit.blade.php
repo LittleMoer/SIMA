@@ -41,37 +41,48 @@
                             <th>Parkir</th>
                             <th>Cuci</th>
                             <th>Tol</th>
-                            <th>Total Operasional</th>
-                            <th>Sisa Nilai Kontrak</th>
                             <th>Premi</th>
                             <th>Subsidi</th>
-                            <th>Total Gaji</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($rekapGajiCrew as $gaji)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td><input type="date" name="data[{{ $loop->index }}][tanggal]" value="{{ $gaji->tanggal }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][hari_kerja]" value="{{ $gaji->hari_kerja }}" class="form-control"></td>
-                                <td><input type="text" name="data[{{ $loop->index }}][pj_rombongan]" value="{{ $gaji->pj_rombongan }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][nilai_kontrak]" value="{{ $gaji->nilai_kontrak }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][bbm]" value="{{ $gaji->bbm }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][uang_makan]" value="{{ $gaji->uang_makan }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][parkir]" value="{{ $gaji->parkir }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][cuci]" value="{{ $gaji->cuci }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][toll]" value="{{ $gaji->toll }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][total_operasional]" value="{{ $gaji->total_operasional }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][sisa_nilai_kontrak]" value="{{ $gaji->sisa_nilai_kontrak }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][premi]" value="{{ $gaji->premi }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][subsidi]" value="{{ $gaji->subsidi }}" class="form-control"></td>
-                                <td><input type="number" name="data[{{ $loop->index }}][total_gaji]" value="{{ $gaji->total_gaji }}" class="form-control"></td>
-                                <input type="hidden" name="data[{{ $loop->index }}][id_rekapgajicrew]" value="{{ $gaji->id_rekapgajicrew }}">
-                            </tr>
-                        @endforeach
+                    @foreach($rekapGajiCrew as $gaji)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td><input type="date" name="data[{{ $loop->index }}][tanggal]" value="{{ $gaji->tanggal }}" class="form-control"></td>
+                            <td><input type="number" name="data[{{ $loop->index }}][hari_kerja]" value="{{ $gaji->hari_kerja }}" class="form-control"></td>
+                            <td><input type="text" name="data[{{ $loop->index }}][nama_pemesanan]" value="{{ $gaji->nama_pemesanan }}" class="form-control"></td>
+                            <td><input type="number" name="data[{{ $loop->index }}][nilai_kontrak]" value="{{ $gaji->nilai_kontrak }}" class="form-control"></td>
+                            <td><input type="number" name="data[{{ $loop->index }}][bbm]" value="{{ $gaji->bbm }}" class="form-control"></td>
+                            <td><input type="number" name="data[{{ $loop->index }}][uang_makan]" value="{{ $gaji->uang_makan }}" class="form-control"></td>
+                            <td><input type="number" name="data[{{ $loop->index }}][parkir]" value="{{ $gaji->parkir }}" class="form-control"></td>
+                            <td><input type="number" name="data[{{ $loop->index }}][cuci]" value="{{ $gaji->cuci }}" class="form-control"></td>
+                            <td><input type="number" name="data[{{ $loop->index }}][toll]" value="{{ $gaji->toll }}" class="form-control"></td>
+                            <td>
+                                <select name="data[{{ $loop->index }}][premium_percentage]" class="form-control premium-selection">
+                                    <option value="6" {{ $gaji->premium_percentage == 6 ? 'selected' : '' }}>6%</option>
+                                    <option value="7" {{ $gaji->premium_percentage == 7 ? 'selected' : '' }}>7%</option>
+                                    <option value="10" {{ $gaji->premium_percentage == 10 ? 'selected' : '' }}>10%</option>
+                                    <option value="12" {{ $gaji->premium_percentage == 12 ? 'selected' : '' }}>12%</option>
+                                    <option value="14" {{ $gaji->premium_percentage == 14 ? 'selected' : '' }}>14%</option>
+                                    <option value="21" {{ $gaji->premium_percentage == 21 ? 'selected' : '' }}>21%</option>
+                                    <option value="custom" {{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? 'selected' : '' }}>Custom</option>
+                                </select>
+
+                                <input type="number" name="data[{{ $loop->index }}][custom_premium]" 
+                                    value="{{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? $gaji->premium_percentage : '' }}"
+                                    class="form-control premium-custom" 
+                                    placeholder="Custom %" 
+                                    style="display: {{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? 'block' : 'none' }};">
+                            </td>
+                            <td><input type="number" name="data[{{ $loop->index }}][subsidi]" value="{{ $gaji->subsidi }}" class="form-control"></td>
+
+                            <input type="hidden" name="data[{{ $loop->index }}][id_rekapgajicrew]" value="{{ $gaji->id_rekapgajicrew }}">
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
-                <div class = "col-md-2">
+                <div class="container mb-3 mt-4">
                 <button type="submit" class="btn btn-secondary">Save All Changes</button> <!-- Button to submit all changes -->
                 </div>
             </form>
@@ -80,9 +91,24 @@
             <p class="text-muted">Tidak ada data rekap gaji untuk armada ini.</p>
         @endif
 
-        <a href="{{ url()->previous() }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ url()->previous() }}" class="btn btn-secondary mb-3 mt-4">Kembali</a>
     </div>
 </section>
+
+<script>
+    document.querySelectorAll('.premium-selection').forEach(select => {
+        select.addEventListener('change', function() {
+            const customInput = this.nextElementSibling; // Assumes the next sibling is the input field
+            if (this.value === 'custom') {
+                customInput.style.display = 'block';
+            } else {
+                customInput.style.display = 'none';
+                customInput.value = ''; // Clear custom input when switching back to predefined options
+            }
+        });
+    });
+</script>
+
 
 @if(session('success'))
     <div id="successToast" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">

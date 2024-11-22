@@ -162,6 +162,15 @@
                 </div>
             </div>
             <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="password">Password</label>
+                <div class="col-sm-10">
+                    <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="jhon123" />
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <div class="col-sm-10 offset-sm-2">
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>

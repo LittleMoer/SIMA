@@ -61,11 +61,17 @@ class UserController extends Controller
                 }
             ],
             'role_id' => 'sometimes|required|integer',
+            'password' => 'sometimes|nullable|string|min:8|confirmed', 
         ]);
     
         // Update the user's data
         if ($request->has('email') && $request->input('email') !== $user->email) {
             $user->email = $validatedData['email'];
+        }
+    
+        // Hash the password if it is provided
+        if ($request->filled('password')) {
+            $user->password = bcrypt($validatedData['password']); // Hash the password
         }
     
         // Only update fields that are in the request
@@ -79,7 +85,7 @@ class UserController extends Controller
     
         return back()->with('success', 'User updated successfully.');
     }    
-    
+
     public function destroy($id)
     {
         $akun = Akun::where('id_akun', $id)->firstOrFail();
