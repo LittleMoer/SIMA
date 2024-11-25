@@ -101,7 +101,7 @@
                                                                     name="nama_pemesan" id="nama_pemesan"
                                                                     placeholder="Masukkan Nama Pemesan"
                                                                     value="{{ old('nama_pemesan') }}" required
-                                                                    pattern="[A-Za-z\s']{2,}[0-9]*$"
+                                                                    pattern="[A-Za-z\s'-]{2,}[0-9]*$"
                                                                     title="Harus diawali dengan minimal 2 huruf dan tanda baca yg diperbolehkan hanya berupa '">
                                                             </div>
                                                         </div>
@@ -198,107 +198,54 @@
                                                             <label class="col-sm-4 col-form-label"
                                                                 for="nilai_kontrak1">Nilai Kontrak 1</label>
                                                             <div class="col-sm-8">
-                                                                <input type="number" name="nilai_kontrak1"
-                                                                    id="nilai_kontrak1" class="form-control"
+                                                                {{-- <input type="number" name="nilai_kontrak1"
+                                                                    id="nilai_kontrak1" class="form-control currency-input"
                                                                     placeholder="Masukkan nilai kontrak 1" min="1"
+                                                                    title="Angka tidak boleh negatif."
+                                                                    value="{{ old('nilai_kontrak1') }}" required> --}}
+                                                                <input type="text" id="nilai_kontrak1"
+                                                                    class="form-control currency-input"
+                                                                    placeholder="Masukkan nilai kontrak" required>
+                                                                <input type="hidden" name="nilai_kontrak1"
+                                                                    id="nilai_kontrak1_hidden" min="1"
                                                                     title="Angka tidak boleh negatif."
                                                                     value="{{ old('nilai_kontrak1') }}" required>
                                                             </div>
-                                                        </div>
-                                                        {{-- <div class="row mb-1">
-                                                            <label class="col-sm-4 col-form-label" for="nilai_kontrak1">Nilai Kontrak 1</label>
-                                                            <div class="col-sm-8">
-                                                                <div class="input-group">
-                                                                    <span class="input-group-text">Rp</span>
-                                                                    <input type="number" name="nilai_kontrak1" id="nilai_kontrak1" class="form-control currency-input"
-                                                                        placeholder="Masukkan nilai kontrak 1" min="1" title="Angka tidak boleh negatif."
-                                                                        value="{{ old('nilai_kontrak1') }}" required>
-                                                                </div>
-                                                                <small class="form-text text-muted terbilang" id="terbilang_nilai_kontrak1"></small>
-                                                            </div>
-                                                        </div>
-                                                        <script>
-                                                            // Fungsi untuk mengubah angka menjadi kata-kata
-                                                            function angkaTerbilang(angka) {
-                                                                var bilangan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan', 'sepuluh', 'sebelas'];
-                                                                if (angka < 12) {
-                                                                    return bilangan[angka];
-                                                                } else if (angka < 20) {
-                                                                    return bilangan[angka - 10] + ' belas';
-                                                                } else if (angka < 100) {
-                                                                    return bilangan[Math.floor(angka / 10)] + ' puluh ' + bilangan[angka % 10];
-                                                                } else if (angka < 200) {
-                                                                    return 'seratus ' + angkaTerbilang(angka - 100);
-                                                                } else if (angka < 1000) {
-                                                                    return bilangan[Math.floor(angka / 100)] + ' ratus ' + angkaTerbilang(angka % 100);
-                                                                } else if (angka < 2000) {
-                                                                    return 'seribu ' + angkaTerbilang(angka - 1000);
-                                                                } else if (angka < 1000000) {
-                                                                    return angkaTerbilang(Math.floor(angka / 1000)) + ' ribu ' + angkaTerbilang(angka % 1000);
-                                                                } else if (angka < 1000000000) {
-                                                                    return angkaTerbilang(Math.floor(angka / 1000000)) + ' juta ' + angkaTerbilang(angka % 1000000);
-                                                                } else if (angka < 1000000000000) {
-                                                                    return angkaTerbilang(Math.floor(angka / 1000000000)) + ' milyar ' + angkaTerbilang(angka % 1000000000);
-                                                                } else {
-                                                                    return angkaTerbilang(Math.floor(angka / 1000000000000)) + ' trilyun ' + angkaTerbilang(angka % 1000000000000);
-                                                                }
-                                                            }
-                                                            
-                                                            // Fungsi untuk memformat input dan menampilkan terbilang
-                                                            function formatCurrency(input) {
-                                                                // Hapus semua karakter non-digit
-                                                                var value = input.value.replace(/\D/g, '');
-                                                                
-                                                                // Format angka dengan pemisah ribuan
-                                                                value = new Intl.NumberFormat('id-ID').format(value);
-                                                                
-                                                                // Set nilai yang sudah diformat ke input
-                                                                input.value = value;
-                                                            
-                                                                // Tampilkan terbilang
-                                                                var terbilangElement = document.getElementById('terbilang_' + input.id);
-                                                                if (terbilangElement) {
-                                                                    var angka = parseInt(value.replace(/\D/g, ''));
-                                                                    if (!isNaN(angka) && angka > 0) {
-                                                                        terbilangElement.textContent = angkaTerbilang(angka) + ' rupiah';
-                                                                    } else {
-                                                                        terbilangElement.textContent = '';
-                                                                    }
-                                                                }
-                                                            }
-                                                            
-                                                            // Tambahkan event listener ke semua input currency
-                                                            document.addEventListener('DOMContentLoaded', function() {
-                                                                var currencyInputs = document.querySelectorAll('.currency-input');
-                                                                currencyInputs.forEach(function(input) {
-                                                                    input.addEventListener('input', function() {
-                                                                        formatCurrency(this);
-                                                                    });
-                                                                    // Format nilai awal jika ada
-                                                                    formatCurrency(input);
-                                                                });
-                                                            });
-                                                            </script> --}}
 
+                                                        </div>
 
                                                         <div class="row mb-1">
                                                             <label class="col-sm-4 col-form-label"
                                                                 for="nilai_kontrak2">Nilai Kontrak 2</label>
                                                             <div class="col-sm-8">
-                                                                <input type="number" name="nilai_kontrak2"
+                                                                {{-- <input type="number" name="nilai_kontrak2"
                                                                     id="nilai_kontrak2" class="form-control"
                                                                     placeholder="Masukkan nilai kontrak 2" min="1"
                                                                     title="Angka tidak boleh negatif."
-                                                                    value="{{ old('nilai_kontrak2') }}" disabled>
+                                                                    value="{{ old('nilai_kontrak2') }}" disabled> --}}
+                                                                <input type="text" id="nilai_kontrak2"
+                                                                    class="form-control currency-input"
+                                                                    placeholder="Masukkan nilai kontrak" required>
+                                                                <input type="hidden" name="nilai_kontrak2"
+                                                                    id="nilai_kontrak2_hidden" min="1"
+                                                                    title="Angka tidak boleh negatif."
+                                                                    value="{{ old('nilai_kontrak2') }}">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-1">
                                                             <label class="col-sm-4 col-form-label"
                                                                 for="biaya_tambahan">Biaya Tambahan *</label>
                                                             <div class="col-sm-8">
-                                                                <input type="number" name="biaya_tambahan"
+                                                                {{-- <input type="number" name="biaya_tambahan"
                                                                     id="biaya_tambahan" class="form-control"
                                                                     placeholder="Masukkan biaya tambahan"
+                                                                    title="Angka tidak boleh negatif."
+                                                                    value="{{ old('biaya_tambahan') }}"> --}}
+                                                                <input type="text" id="biaya_tambahan"
+                                                                    class="form-control currency-input"
+                                                                    placeholder="Masukkan biaya tambahan">
+                                                                <input type="hidden" name="biaya_tambahan"
+                                                                    id="biaya_tambahan_hidden"
                                                                     title="Angka tidak boleh negatif."
                                                                     value="{{ old('biaya_tambahan') }}">
                                                             </div>
@@ -307,23 +254,35 @@
                                                             <label class="col-sm-4 col-form-label" for="total_biaya">Total
                                                                 Biaya</label>
                                                             <div class="col-sm-8">
-                                                                <input type="number" name="total_biaya" id="total_biaya"
+                                                                {{-- <input type="number" name="total_biaya" id="total_biaya"
                                                                     class="form-control"
                                                                     placeholder="Masukkan total biaya"
                                                                     value="{{ old('total_biaya') }}" required
                                                                     min="1000"
-                                                                    title="Angka minimal 4 digit dan tidak boleh negatif.">
+                                                                    title="Angka minimal 4 digit dan tidak boleh negatif."> --}}
+                                                                <input type="text" id="total_biaya" class="form-control currency-input"
+                                                                    required>
+                                                                <input type="hidden" name="total_biaya" id="total_biaya_hidden"
+                                                                value="{{ old('total_biaya') }}" required
+                                                                min="1000"
+                                                                title="Angka minimal 4 digit dan tidak boleh negatif.">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-1">
                                                             <label class="col-sm-4 col-form-label" for="uang_muka">Uang
                                                                 Muka</label>
                                                             <div class="col-sm-8">
-                                                                <input type="number" name="uang_muka" id="uang_muka"
+                                                                {{-- <input type="number" name="uang_muka" id="uang_muka"
                                                                     class="form-control" placeholder="Masukkan uang muka"
                                                                     min="1000"
                                                                     title="Angka minimal 4 digit dan tidak boleh negatif."
-                                                                    value="{{ old('uang_muka') }}" required>
+                                                                    value="{{ old('uang_muka') }}" required> --}}
+                                                                <input type="text" id="uang_muka" class="form-control currency-input"
+                                                                    placeholder="Masukkan biaya tambahan" required>
+                                                                <input type="hidden" name="uang_muka" id="uang_muka_hidden"
+                                                                min="1000"
+                                                                title="Angka minimal 4 digit dan tidak boleh negatif."
+                                                                value="{{ old('uang_muka') }}" required>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-1">
@@ -350,10 +309,14 @@
                                                             <label class="col-sm-4 col-form-label"
                                                                 for="sisa_pembayaran">Sisa Pembayaran</label>
                                                             <div class="col-sm-8">
-                                                                <input type="number" name="sisa_pembayaran"
+                                                                {{-- <input type="number" name="sisa_pembayaran"
                                                                     id="sisa_pembayaran" class="form-control"
                                                                     placeholder="Sisa pembayaran"
-                                                                    value="{{ old('sisa_pembayaran') }}">
+                                                                    value="{{ old('sisa_pembayaran') }}"> --}}
+                                                                    <input type="text" id="sisa_pembayaran"
+                                                                    class="form-control currency-input" required>
+                                                                <input type="hidden" name="sisa_pembayaran" id="sisa_pembayaran_hidden"
+                                                                value="{{ old('sisa_pembayaran') }}">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-1">
@@ -405,7 +368,7 @@
                                         <th class="text-center">Keberangkatan</th>
                                         <th class="text-center">Tujuan</th>
                                         <th class="text-center">Alamat Penjemputan</th>
-                                        
+
                                         <th class="text-center">Status Pembayaran</th>
                                         <th class="text-center col-1">Jumlah Armada</th>
                                         <th>Action</th>
@@ -419,8 +382,8 @@
                                             <td class="text-center">{{ $order->nama_pemesan }}</td>
                                             <td class="text-center">{{ $order->pj_rombongan }}</td>
                                             <td class="text-center">{{ $order->tgl_keberangkatan }}</td>
-                                            <td class="text-center">{{ $order->tujuan }}</td>                                            
-                                            <td class="text-center">{{ $order->alamat_penjemputan }}</td>  
+                                            <td class="text-center">{{ $order->tujuan }}</td>
+                                            <td class="text-center">{{ $order->alamat_penjemputan }}</td>
                                             <td class="text-center status-pembayaran">{{ $order->status_pembayaran }}</td>
                                             <td class="text-center col-1">{{ $order->jumlah_armada }}</td>
                                             <td> <a href="{{ route('detail_pesanan', [$order->id_sp]) }}"
@@ -692,65 +655,46 @@
     });
 </script>
 
-{{-- Otomatis total biaya --}}
 {{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const nilaiKontrak1 = document.getElementById('nilai_kontrak1');
-        const nilaiKontrak2 = document.getElementById('nilai_kontrak2');
-        const biayaTambahan = document.getElementById('biaya_tambahan');
-        const totalBiaya = document.getElementById('total_biaya');
-    
-        function calculateTotal() {
-            const kontrak1 = parseFloat(nilaiKontrak1.value) || 0;
-            const kontrak2 = parseFloat(nilaiKontrak2.value) || 0;
-            const tambahan = parseFloat(biayaTambahan.value) || 0;
-            
-            totalBiaya.value = kontrak1 + kontrak2 + tambahan;
-        }
-    
-        nilaiKontrak1.addEventListener('input', calculateTotal);
-        nilaiKontrak2.addEventListener('input', calculateTotal);
-        biayaTambahan.addEventListener('input', calculateTotal);
-    });
-    </script>
-     --}}
-
-{{-- Otomatis total biaya dan sisa pembayaran --}}
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const nilaiKontrak1 = document.getElementById('nilai_kontrak1');
-        const nilaiKontrak2 = document.getElementById('nilai_kontrak2');
-        const biayaTambahan = document.getElementById('biaya_tambahan');
-        const totalBiaya = document.getElementById('total_biaya');
-        const uangMuka = document.getElementById('uang_muka');
-        const sisaPembayaran = document.getElementById('sisa_pembayaran');
-
-        function calculateTotal() {
-            const kontrak1 = parseFloat(nilaiKontrak1.value) || 0;
-            const kontrak2 = parseFloat(nilaiKontrak2.value) || 0;
-            const tambahan = parseFloat(biayaTambahan.value) || 0;
-
-            const total = kontrak1 + kontrak2 + tambahan;
-            totalBiaya.value = total;
-
-            calculateSisa(total);
-        }
-
-        function calculateSisa(total) {
-            const uangMukaValue = parseFloat(uangMuka.value) || 0;
-            sisaPembayaran.value = total - uangMukaValue;
-        }
-
-        // Event listeners
-        nilaiKontrak1.addEventListener('input', calculateTotal);
-        nilaiKontrak2.addEventListener('input', calculateTotal);
-        biayaTambahan.addEventListener('input', calculateTotal);
-        uangMuka.addEventListener('input', function() {
-            const total = parseFloat(totalBiaya.value) || 0;
-            calculateSisa(total);
+    // Fungsi untuk Memformat Input sebagai Rupiah
+    function formatRupiahInput(inputElement, hiddenElement) {
+        inputElement.addEventListener('input', function () {
+            const formattedValue = formatToRupiah(this.value);
+            hiddenElement.value = formattedValue.replace(/[^\d]/g, ''); // Set hidden input to numeric value only
+            inputElement.value = formattedValue;
         });
+
+        // Set nilai awal jika ada
+        const initialValue = hiddenElement.value;
+        if (initialValue) {
+            inputElement.value = formatToRupiah(initialValue);
+        }
+    }
+
+    // Fungsi untuk Mengubah Angka Menjadi Format Rupiah
+    function formatToRupiah(angka) {
+        let numberString = angka.replace(/[^\d]/g, '').toString();
+        let sisa = numberString.length % 3;
+        let rupiah = numberString.substr(0, sisa);
+        let ribuan = numberString.substr(sisa).match(/\d{3}/g);
+
+        if (ribuan) {
+            rupiah += (sisa ? '.' : '') + ribuan.join('.');
+        }
+
+        return 'Rp ' + rupiah;
+    }
+
+    // Inisialisasi Semua Input dengan Kelas "currency-input"
+    document.querySelectorAll('.currency-input').forEach(input => {
+        const hiddenInputId = input.id + '_hidden';
+        const hiddenInput = document.getElementById(hiddenInputId);
+        if (hiddenInput) {
+            formatRupiahInput(input, hiddenInput);
+        }
     });
-</script> --}}
+</script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -821,4 +765,132 @@
     });
 </script>
 
+ --}}
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const jumlahArmadaInput = document.getElementById('jumlah_armada');
+        const nilaiKontrak1 = document.getElementById('nilai_kontrak1');
+        const nilaiKontrak2 = document.getElementById('nilai_kontrak2');
+        const nilaiKontrak2v = document.getElementById('nilai_kontrak2');
+        const biayaTambahan = document.getElementById('biaya_tambahan');
+        const totalBiaya = document.getElementById('total_biaya');
+        const totalBiayaHidden = document.getElementById('total_biaya_hidden');
+        const uangMuka = document.getElementById('uang_muka');
+        const sisaPembayaran = document.getElementById('sisa_pembayaran');
+        const sisaPembayaranHidden = document.getElementById('sisa_pembayaran_hidden');
+
+        // Function to update nilaiKontrak2 state
+        function updateNilaiKontrak2State(jumlahArmada) {
+            if (jumlahArmada == 1) {
+                nilaiKontrak2v.value = 0;
+                nilaiKontrak2v.disabled = true;
+                nilaiKontrak2v.required = false;
+                localStorage.setItem('nilaiKontrak2Disabled', 'true');
+                localStorage.setItem('jumlahArmada', '1');
+            } else if (jumlahArmada == 2) {
+                nilaiKontrak2v.disabled = false;
+                nilaiKontrak2v.required = true;
+                localStorage.setItem('nilaiKontrak2Disabled', 'false');
+                localStorage.setItem('jumlahArmada', '2');
+            }
+            nilaiKontrak2.dispatchEvent(new Event('input'));
+        }
+
+        // Check localStorage on page load and set initial state
+        const savedJumlahArmada = localStorage.getItem('jumlahArmada');
+        if (savedJumlahArmada) {
+            jumlahArmadaInput.value = savedJumlahArmada;
+            updateNilaiKontrak2State(savedJumlahArmada);
+        }
+
+        // Event listener for jumlah_armada changes
+        jumlahArmadaInput.addEventListener('input', function() {
+            updateNilaiKontrak2State(this.value);
+        });
+
+        function calculateTotal() {
+            const kontrak1 = parseFloat(nilaiKontrak1.value.replace(/[^\d]/g, '')) || 0;
+            const kontrak2 = parseFloat(nilaiKontrak2.value.replace(/[^\d]/g, '')) || 0;
+            const tambahan = parseFloat(biayaTambahan.value.replace(/[^\d]/g, '')) || 0;
+
+            const total = kontrak1 + kontrak2 + tambahan;
+            totalBiaya.value = formatToRupiah(total.toString());
+            totalBiayaHidden.value = total;
+
+            calculateSisa(total);
+        }
+
+        function calculateSisa(total) {
+            const uangMukaValue = parseFloat(uangMuka.value.replace(/[^\d]/g, '')) || 0;
+            const sisa = total - uangMukaValue;
+
+            // Set nilai dengan format Rupiah, dan gunakan hidden input untuk nilai asli
+            sisaPembayaran.value = formatToRupiah(sisa.toString());
+            sisaPembayaranHidden.value = sisa; // Nilai asli yang bisa negatif
+        }
+
+        function formatToRupiah(angka) {
+            const isNegative = parseFloat(angka) < 0; // Cek apakah nilai negatif
+            let numberString = angka.replace(/[^\d]/g, '').toString();
+            let sisa = numberString.length % 3;
+            let rupiah = numberString.substr(0, sisa);
+            let ribuan = numberString.substr(sisa).match(/\d{3}/g);
+
+            if (ribuan) {
+                rupiah += (sisa ? '.' : '') + ribuan.join('.');
+            }
+
+            return (isNegative ? '-Rp ' : 'Rp ') + rupiah;
+        }
+
+        // Event listeners for calculation
+        [nilaiKontrak1, nilaiKontrak2, biayaTambahan, uangMuka].forEach(input => {
+            input.addEventListener('input', calculateTotal);
+        });
+
+        // Initial calculation on load
+        calculateTotal();
+    });
+</script>
+
+<script>
+    // Fungsi untuk Memformat Input sebagai Rupiah
+    function formatRupiahInput(inputElement, hiddenElement) {
+        inputElement.addEventListener('input', function() {
+            const formattedValue = formatToRupiah(this.value);
+            hiddenElement.value = formattedValue.replace(/[^\d]/g,
+                ''); // Set hidden input to numeric value only
+            inputElement.value = formattedValue;
+        });
+
+        // Set nilai awal jika ada
+        const initialValue = hiddenElement.value;
+        if (initialValue) {
+            inputElement.value = formatToRupiah(initialValue);
+        }
+    }
+
+    // Fungsi untuk Mengubah Angka Menjadi Format Rupiah
+    function formatToRupiah(angka) {
+        let numberString = angka.replace(/[^\d]/g, '').toString();
+        let sisa = numberString.length % 3;
+        let rupiah = numberString.substr(0, sisa);
+        let ribuan = numberString.substr(sisa).match(/\d{3}/g);
+
+        if (ribuan) {
+            rupiah += (sisa ? '.' : '') + ribuan.join('.');
+        }
+
+        return 'Rp ' + rupiah;
+    }
+
+    // Inisialisasi Semua Input dengan Kelas "currency-input"
+    document.querySelectorAll('.currency-input').forEach(input => {
+        const hiddenInputId = input.id + '_hidden';
+        const hiddenInput = document.getElementById(hiddenInputId);
+        if (hiddenInput) {
+            formatRupiahInput(input, hiddenInput);
+        }
+    });
+</script>

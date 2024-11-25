@@ -45,7 +45,7 @@
                   <span class="d-block mb-1">Tanggal hari ini</span>
                   
 
-                  <h3 class="card-title text-nowrap mb-2" id="current-date"></h3>
+                  <h5 class="card-title text-nowrap mb-2" id="current-date"></h5>
                 </div>
             </div>
           </div>
@@ -134,4 +134,4 @@
  
 @endsection
 
-@include('main_owner')
+@include('main_crew')

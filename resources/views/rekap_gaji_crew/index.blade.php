@@ -210,9 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
         win.document.write('}');
         win.document.write('</style>');
         win.document.write('</head><body>');
-        
-        // Add the insentif value to the print content
-        win.document.write('<h4>Insentif: ' + insentifValue + '</h4>'); // Include the insentif value
         win.document.write(printContents); // Write the contents of the table
         win.document.write('</body></html>');
         win.document.close(); // Close the document

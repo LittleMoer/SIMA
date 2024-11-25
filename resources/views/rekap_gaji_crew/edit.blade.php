@@ -71,7 +71,7 @@
 
                                 <input type="number" name="data[{{ $loop->index }}][custom_premium]" 
                                     value="{{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? $gaji->premium_percentage : '' }}"
-                                    class="form-control premium-custom" 
+                                    class="form-control premium-custom" step="1"
                                     placeholder="Custom %" 
                                     style="display: {{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? 'block' : 'none' }};">
                             </td>

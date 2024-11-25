@@ -14,7 +14,7 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('/homepage');
     }
 
     public function login(Request $request)
@@ -34,7 +34,9 @@ class AuthController extends Controller
             if ($role == 1) {
                 return redirect()->intended('admin/dashboard');
             } elseif ($role == 2) {
-                return redirect()->intended('user/dashboard');
+                return redirect()->intended('crew/dashboard');
+            } elseif ($role == 3) {
+                return redirect()->intended('viewer/dashboard');
             }
 
             return redirect('/');
@@ -44,7 +46,7 @@ class AuthController extends Controller
             'username' => 'The provided credentials do not match our records.',
         ]);
     }
-
+    
     public function logout(Request $request)
     {
         Auth::logout();

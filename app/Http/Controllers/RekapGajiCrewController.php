@@ -25,7 +25,7 @@ class RekapGajiCrewController extends Controller
     $rekapGajiCrew = Rekapgajicrew::where('id_armada', $id_armada)->get();
 
     // Calculate totals
-    $totalpremi = $rekapGajiCrew->sum('premi');
+    $totalpremi = $rekapGajiCrew->sum('total_gaji');
     $totalharikerja = $rekapGajiCrew->sum('hari_kerja');
 
     // Get insentif from session or default to 0
@@ -257,8 +257,7 @@ public function update(Request $request)
         $rekapGaji = RekapGajiCrew::findOrFail($rekapData['id_rekapgajicrew']);
 
         // Calculate total operational costs
-        $totalOperasional = ($rekapData->bbm ?? 0) + ($rekapData->uang_makan ?? 0) + ($rekapData->toll ?? 0);
-        
+        $totalOperasional = ($rekapData['bbm']) + ($rekapData['uang_makan']) + ($rekapData['cuci']) + ($rekapData['toll']) + ($rekapData['parkir']);
         // Determine nilai kontrak from the record
         $sisaNilaiKontrak = $rekapData['nilai_kontrak'] - $totalOperasional;
 

@@ -76,7 +76,7 @@
                             <a class="nav-link fw-medium" href="{{ url('/unit') }}">Unit
                                 Kendaraan</a>
                         </li>
-                    </ul <!-- Menu wrapper: End -->
+                    </ul Menu wrapper: End -->
                     <!-- Toolbar: Start -->
                     <ul class="navbar-nav flex-row align-items-center ms-auto">
                         <!-- navbar button: Start -->
