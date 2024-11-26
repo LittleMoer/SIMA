@@ -234,20 +234,19 @@ public function update(Request $request)
 {
     // Validate incoming request data
     $request->validate([
-        'id_armada' => 'required|string',
+        'id_armada' => 'required|integer',
         'data' => 'required|array',
         'data.*.id_rekapgajicrew' => 'required|integer',
         'data.*.tanggal' => 'required|date',
         'data.*.hari_kerja' => 'required|integer',
-        'data.*.nama_pemesanan' => 'nullable|string',
-        'data.*.nilai_kontrak' => 'nullable|integer',
+        'data.*.nama_pemesanan' => 'required|string|max:255',
+        'data.*.nilai_kontrak' => 'required|numeric|min:0', // Ensure it's a number and not negative
         'data.*.bbm' => 'nullable|integer',
         'data.*.uang_makan' => 'nullable|integer',
         'data.*.parkir' => 'nullable|integer',
         'data.*.cuci' => 'nullable|integer',
         'data.*.toll' => 'nullable|integer',
-        'data.*.premium_percentage' => 'nullable|integer', 
-        'data.*.custom_premium' => 'nullable|integer', 
+        'data.*.premium_percentage' => 'nullable|integer',
         'data.*.subsidi' => 'nullable|integer',
     ]);
 

@@ -44,7 +44,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($rekapGajiCrew  as $index => $gaji)
+                @foreach($rekapGajiCrew as $index => $gaji)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td><input type="date" name="data[{{ $index }}][tanggal]" value="{{ $gaji->tanggal }}" class="form-control" required></td>
@@ -60,16 +60,17 @@
                         </td>
                         <td>
                             <input type="text" 
-                                id="nilai_kontrak" 
+                                id="nilai_kontrak_{{ $index }}" 
                                 name="data[{{ $index }}][nilai_kontrak]" 
-                                value="{{ $gaji->nilai_kontrak }}" 
+                                value="{{ number_format($gaji->nilai_kontrak, 0, ',', '.') }}" 
                                 class="form-control" 
                                 required 
-                                placeholder="Nilai Kontrak">
+                                placeholder="Nilai Kontrak" 
+                                data-total-operasional="{{ $gaji->total_operasional }}">
                         </td>
                         <td>
                             <input type="text" 
-                                id="bbm" 
+                                id="bbm_{{ $index }}" 
                                 name="data[{{ $index }}][bbm]" 
                                 value="{{ $gaji->bbm }}" 
                                 class="form-control" 
@@ -78,7 +79,7 @@
                         </td>
                         <td>
                             <input type="text" 
-                                id="uang_makan" 
+                                id="uang_makan_{{ $index }}" 
                                 name="data[{{ $index }}][uang_makan]" 
                                 value="{{ $gaji->uang_makan }}" 
                                 class="form-control" 
@@ -87,7 +88,7 @@
                         </td>
                         <td>
                             <input type="text" 
-                                id="parkir" 
+                                id="parkir_{{ $index }}" 
                                 name="data[{{ $index }}][parkir]" 
                                 value="{{ $gaji->parkir }}" 
                                 class="form-control" 
@@ -96,7 +97,7 @@
                         </td>
                         <td>
                             <input type="text" 
-                                id="cuci" 
+                                id="cuci_{{ $index }}" 
                                 name="data[{{ $index }}][cuci]" 
                                 value="{{ $gaji->cuci }}" 
                                 class="form-control" 
@@ -105,7 +106,7 @@
                         </td>
                         <td>
                             <input type="text" 
-                                id="toll" 
+                                id="toll_{{ $index }}" 
                                 name="data[{{ $index }}][toll]" 
                                 value="{{ $gaji->toll }}" 
                                 class="form-control" 
@@ -157,7 +158,6 @@
         });
     });
 </script>
-
 <script>
     function formatRupiah(value) {
         const numberString = value.replace(/[^0-9]/g, '');
@@ -171,36 +171,76 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const nilai_Kontrak = document.getElementById('nilai_kontrak');
-        const bbm = document.getElementById('bbm');
-        const uang_makan = document.getElementById('uang_makan');
-        const parkir = document.getElementById('parkir');
-        const cuci = document.getElementById('cuci');
-        const toll = document.getElementById('toll');
+        const form = document.querySelector('form'); // Adjust the selector to your form
+        const inputs = document.querySelectorAll('input[id^="nilai_kontrak_"], input[id^="bbm_"], input[id^="uang_makan_"], input[id^="parkir_"], input[id^="cuci_"], input[id^="toll_"]');
 
-        function formatInputAsRupiah(input) {
+        inputs.forEach(input => {
             input.addEventListener('input', function() {
+                // Format the input value as Rupiah
                 this.value = formatRupiah(this.value);
             });
-        }
+        });
 
-        formatInputAsRupiah(nilai_Kontrak);
-        formatInputAsRupiah(bbm);
-        formatInputAsRupiah(uang_makan);
-        formatInputAsRupiah(parkir);
-        formatInputAsRupiah(cuci);
-        formatInputAsRupiah(toll);
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
 
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const inputs = [nilai_Kontrak, bbm, uang_makan, parkir, cuci, toll];
+            let isValid = true;
 
             inputs.forEach(input => {
-                input.value = input.value.replace(/[^0-9]/g, '');
+                // Clean the input value before submission
+                const cleanedValue = input.value.replace(/[^0-9]/g, '');
+                input.value = cleanedValue; // Set the cleaned value back
+
+                // Check if the cleaned value is a valid integer
+                if (isNaN(cleanedValue) || cleanedValue === '') {
+                    isValid = false;
+                    alert(input.name + ' must be a valid integer.');
+                    input.focus();
+                    return; // Exit the loop
+                }
+
+                // Additional validation for nilai_kontrak against total_operasional
+                if (input.name.includes('nilai_kontrak')) {
+                    const totalOperasional = parseFloat(input.dataset.totalOperasional);
+                    const nilaiKontrak = parseFloat(cleanedValue);
+
+                    if (nilaiKontrak < totalOperasional) {
+                        isValid = false;
+                        alert('Nilai Kontrak tidak boleh kurang dari Total Operasional (' + totalOperasional + ').');
+                        input.focus();
+                        return; // Exit the loop
+                    }
+                }
             });
+
+            if (isValid) {
+                // If all validations pass, submit the form via AJAX
+                const formData = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Data submitted successfully!');
+                        // Optionally, you can redirect or update the UI
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting the form.');
+                });
+            }
         });
     });
 </script>
-
 
 @if(session('success'))
     <div id="successToast" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
