@@ -16,7 +16,7 @@ class isCrew
     public function handle(Request $request, Closure $next)
     {
         // Check if the user is authenticated and is an admin
-        if (Auth::check() && Auth::user()->role_id == 2 ) {
+        if (Auth::check() && Auth::user()->role_id <= 2 ) {
             return $next($request);
         }
 

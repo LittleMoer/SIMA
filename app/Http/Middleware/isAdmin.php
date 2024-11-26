@@ -18,7 +18,7 @@ class isAdmin
     public function handle(Request $request, Closure $next)
     {
         // Check if the user is authenticated and is an admin
-        if (Auth::check() && Auth::user()->role_id == 1 ) {
+        if (Auth::check() && Auth::user()->role_id <= 1 ) {
             return $next($request); // Allow access to the next request
         }
 

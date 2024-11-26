@@ -23,70 +23,71 @@
         <h4>Nama: {{ $armada->akun->name }}</h4>
 
         @if($rekapGajiCrew->count())
-            <form action="{{ route('rekap.gaji.update') }}" method="POST"> <!-- Action points to the update route -->
-                @csrf
-                <input type="hidden" name="id_armada" value="{{ $armada->id_armada }}">
-                <input type="hidden" name="insentif" value="{{ old('insentif', $insentif) }}"> <!-- Include insentif -->
-
-                <table class="v-table v-theme--light v-table--density-compact align-items-center">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Jumlah Hari</th>
-                            <th>Nama Pekerjaan</th>
-                            <th>Nilai Kontrak</th>
-                            <th>BBM</th>
-                            <th>Uang Makan</th>
-                            <th>Parkir</th>
-                            <th>Cuci</th>
-                            <th>Tol</th>
-                            <th>Premi</th>
-                            <th>Subsidi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($rekapGajiCrew as $gaji)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td><input type="date" name="data[{{ $loop->index }}][tanggal]" value="{{ $gaji->tanggal }}" class="form-control"></td>
-                            <td><input type="number" name="data[{{ $loop->index }}][hari_kerja]" value="{{ $gaji->hari_kerja }}" class="form-control"></td>
-                            <td><input type="text" name="data[{{ $loop->index }}][nama_pemesanan]" value="{{ $gaji->nama_pemesanan }}" class="form-control"></td>
-                            <td><input type="number" name="data[{{ $loop->index }}][nilai_kontrak]" value="{{ $gaji->nilai_kontrak }}" class="form-control"></td>
-                            <td><input type="number" name="data[{{ $loop->index }}][bbm]" value="{{ $gaji->bbm }}" class="form-control"></td>
-                            <td><input type="number" name="data[{{ $loop->index }}][uang_makan]" value="{{ $gaji->uang_makan }}" class="form-control"></td>
-                            <td><input type="number" name="data[{{ $loop->index }}][parkir]" value="{{ $gaji->parkir }}" class="form-control"></td>
-                            <td><input type="number" name="data[{{ $loop->index }}][cuci]" value="{{ $gaji->cuci }}" class="form-control"></td>
-                            <td><input type="number" name="data[{{ $loop->index }}][toll]" value="{{ $gaji->toll }}" class="form-control"></td>
-                            <td>
-                                <select name="data[{{ $loop->index }}][premium_percentage]" class="form-control premium-selection">
-                                    <option value="6" {{ $gaji->premium_percentage == 6 ? 'selected' : '' }}>6%</option>
-                                    <option value="7" {{ $gaji->premium_percentage == 7 ? 'selected' : '' }}>7%</option>
-                                    <option value="10" {{ $gaji->premium_percentage == 10 ? 'selected' : '' }}>10%</option>
-                                    <option value="12" {{ $gaji->premium_percentage == 12 ? 'selected' : '' }}>12%</option>
-                                    <option value="14" {{ $gaji->premium_percentage == 14 ? 'selected' : '' }}>14%</option>
-                                    <option value="21" {{ $gaji->premium_percentage == 21 ? 'selected' : '' }}>21%</option>
-                                    <option value="custom" {{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? 'selected' : '' }}>Custom</option>
-                                </select>
-
-                                <input type="number" name="data[{{ $loop->index }}][custom_premium]" 
-                                    value="{{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? $gaji->premium_percentage : '' }}"
-                                    class="form-control premium-custom" step="1"
-                                    placeholder="Custom %" 
-                                    style="display: {{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? 'block' : 'none' }};">
-                            </td>
-                            <td><input type="number" name="data[{{ $loop->index }}][subsidi]" value="{{ $gaji->subsidi }}" class="form-control"></td>
-
-                            <input type="hidden" name="data[{{ $loop->index }}][id_rekapgajicrew]" value="{{ $gaji->id_rekapgajicrew }}">
-                        </tr>
+        <form action="{{ route('rekap.gaji.update') }}" method="POST">
+            @csrf
+            <input type="hidden" name="id_armada" value="{{ $armada->id_armada }}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Hari Kerja</th>
+                        <th>Nama Pemesanan</th>
+                        <th>Nilai Kontrak</th>
+                        <th>BBM</th>
+                        <th>Uang Makan</th>
+                        <th>Parkir</th>
+                        <th>Cuci</th>
+                        <th>Toll</th>
+                        <th>Premium Percentage</th>
+                        <th>Subsidi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($rekapGajiCrew  as $index => $gaji)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td><input type="date" name="data[{{ $index }}][tanggal]" value="{{ $gaji->tanggal }}" class="form-control" required></td>
+                        <td><input type="number" name="data[{{ $index }}][hari_kerja]" value="{{ $gaji->hari_kerja }}" class="form-control" required></td>
+                        <td>
+                            <input type="text" 
+                                name="data[{{ $index }}][nama_pemesanan]" 
+                                value="{{ $gaji->nama_pemesanan }}" 
+                                class="form-control" 
+                                required 
+                                oninvalid="this.setCustomValidity('Nama Pemesanan is required.')" 
+                                oninput="this.setCustomValidity('')">
+                        </td>
+                        <td><input type="number" id="nilai_kontrak" name="data[{{ $index }}][nilai_kontrak]" value="{{ $gaji->nilai_kontrak }}" class="form-control" required></td>
+                        <td><input type="number" id="bbm" name="data[{{ $index }}][bbm]" value="{{ $gaji->bbm }}" class="form-control" required></td>
+                        <td><input type="number" id="uang_makan" name="data[{{ $index }}][uang_makan]" value="{{ $gaji->uang_makan }}" class="form-control" required></td>
+                        <td><input type="number" id="parkir" name="data[{{ $index }}][parkir]" value="{{ $gaji->parkir }}" class="form-control" required></td>
+                        <td><input type="number" id="cuci" name="data[{{ $index }}][cuci]" value="{{ $gaji->cuci }}" class="form-control" required></td>
+                        <td><input type="number" id="toll" name="data[{{ $index }}][toll]" value="{{ $gaji->toll }}" class="form-control" required></td>
+                        <td>
+                            <input type="text" name="data[{{ $index }}][premium_percentage]" 
+                                list="premium-options" 
+                                value="{{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? $gaji->premium_percentage : '' }}"
+                                class="form-control premium-input" 
+                                placeholder="Select or enter custom %" 
+                                required>
+                            <datalist id="premium-options">
+                                <option value="6">6%</option>
+                                <option value="7">7%</option>
+                                <option value="10">10%</option>
+                                <option value="12">12%</option>
+                                <option value="14">14%</option>
+                                <option value="21">21%</option>
+                            </datalist>
+                        </td>
+                        <td><input type="number" name="data[{{ $index }}][subsidi]" value="{{ $gaji->subsidi }}" class="form-control" required></td>
+                        <input type="hidden" name="data[{{ $index }}][id_rekapgajicrew]" value="{{ $gaji->id_rekapgajicrew }}">
+                    </tr>
                     @endforeach
-                    </tbody>
-                </table>
-                <div class="container mb-3 mt-4">
-                <button type="submit" class="btn btn-secondary">Save All Changes</button> <!-- Button to submit all changes -->
-                </div>
-            </form>
-
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
         @else
             <p class="text-muted">Tidak ada data rekap gaji untuk armada ini.</p>
         @endif
@@ -98,13 +99,56 @@
 <script>
     document.querySelectorAll('.premium-selection').forEach(select => {
         select.addEventListener('change', function() {
-            const customInput = this.nextElementSibling; // Assumes the next sibling is the input field
+            const customInput = this.closest('td').querySelector('.premium-custom');
             if (this.value === 'custom') {
                 customInput.style.display = 'block';
+                customInput.value = ''; // Clear the value if custom is selected
             } else {
                 customInput.style.display = 'none';
-                customInput.value = ''; // Clear custom input when switching back to predefined options
             }
+        });
+    });
+</script>
+
+<script>
+    function formatRupiah(value) {
+        const numberString = value.replace(/[^0-9]/g, '');
+        const number = parseInt(numberString, 10);
+        
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+        }).format(number);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const nilai_Kontrak = document.getElementById('nilai_kontrak');
+        const bbm = document.getElementById('bbm');
+        const uang_makan = document.getElementById('uang_makan');
+        const parkir = document.getElementById('parkir');
+        const cuci = document.getElementById('cuci');
+        const toll = document.getElementById('toll');
+
+        function formatInputAsRupiah(input) {
+            input.addEventListener('input', function() {
+                this.value = formatRupiah(this.value);
+            });
+        }
+
+        formatInputAsRupiah(nilai_Kontrak);
+        formatInputAsRupiah(bbm);
+        formatInputAsRupiah(uang_makan);
+        formatInputAsRupiah(parkir);
+        formatInputAsRupiah(cuci);
+        formatInputAsRupiah(toll);
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const inputs = [nilai_Kontrak, bbm, uang_makan, parkir, cuci, toll];
+
+            inputs.forEach(input => {
+                input.value = input.value.replace(/[^0-9]/g, '');
+            });
         });
     });
 </script>

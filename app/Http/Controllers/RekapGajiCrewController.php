@@ -261,10 +261,10 @@ public function update(Request $request)
         // Determine nilai kontrak from the record
         $sisaNilaiKontrak = $rekapData['nilai_kontrak'] - $totalOperasional;
 
-        // Determine the correct premium percentage
-        $premiPercentage = ($rekapData['premium_percentage'] === 'custom' && !empty($rekapData['custom_premium']))
-            ? $rekapData['custom_premium'] 
-            : $rekapData['premium_percentage'];
+   $premiPercentage = ($rekapData['premium_percentage'] === 'custom' && !empty($rekapData['custom_premium']))
+            ? (int)$rekapData['custom_premium'] // Ensure custom_premium is treated as an integer
+            : (int)($rekapData['premium_percentage'] ?? 0); // Fallback to 0 if not set
+
 
         // Calculate the premium based on total gaji from the form
         $premi = ($sisaNilaiKontrak * $premiPercentage) / 100; 

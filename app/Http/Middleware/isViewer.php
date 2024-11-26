@@ -16,7 +16,7 @@ class isViewer
     public function handle(Request $request, Closure $next)
     {
         // Check if the user is authenticated and is an admin
-        if (Auth::check() && Auth::user()->role_id == 3 ) {
+        if (Auth::check() && Auth::user()->role_id <= 3 ) {
             return $next($request);
         }
 

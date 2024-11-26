@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Akun;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -63,29 +65,19 @@ class UserController extends Controller
             'role_id' => 'sometimes|required|integer',
             'password' => 'sometimes|nullable|string|min:8|confirmed', 
         ]);
-    
         // Update the user's data
-        if ($request->has('email') && $request->input('email') !== $user->email) {
-            $user->email = $validatedData['email'];
-        }
-    
+        $user->update($request->only(['username', 'name', 'role_id']));
+
         // Hash the password if it is provided
         if ($request->filled('password')) {
-            $user->password = bcrypt($validatedData['password']); // Hash the password
+            $user->password = Hash::make($request->password);
         }
-    
-        // Only update fields that are in the request
-        $user->fill($validatedData);
-    
-        // Log the data before saving
-        Log::info('User data before save:', $user->toArray());
-    
+
         // Save the updated user
         $user->save();
-    
-        return back()->with('success', 'User updated successfully.');
-    }    
 
+        return back()->with('success', 'User updated successfully.');
+    }
     public function destroy($id)
     {
         $akun = Akun::where('id_akun', $id)->firstOrFail();

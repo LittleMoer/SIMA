@@ -12,7 +12,9 @@ class Akun extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = 'akun'; 
-    protected $primaryKey = 'id_akun'; 
+    protected $primaryKey = 'id_akun';
+    public $incrementing = false;
+    protected $keyType = 'string';
     
     protected $fillable = [
         'username'
