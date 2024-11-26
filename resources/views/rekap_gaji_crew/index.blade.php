@@ -94,44 +94,44 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($rekapGajiCrew as $gaji)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $gaji->tanggal }}</td>
-                                <td>{{ $gaji->hari_kerja }}</td>
-                                <td>{{ $gaji->nama_pemesanan }}</td>
-                                <td>{{ number_format($gaji->nilai_kontrak, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->bbm, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->uang_makan, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->parkir, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->cuci, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->toll, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->total_operasional, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->sisa_nilai_kontrak, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->premi, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->subsidi, 0, ',', '.') }}</td>
-                                <td>{{ number_format($gaji->total_gaji, 0, ',', '.') }}</td>
-                            </tr>
-                        @endforeach
+                    @foreach($rekapGajiCrew as $gaji)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $gaji->tanggal }}</td>
+                            <td>{{ $gaji->hari_kerja }}</td>
+                            <td>{{ $gaji->nama_pemesanan }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->nilai_kontrak, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->bbm, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->uang_makan, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->parkir, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->cuci, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->toll, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->total_operasional, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->sisa_nilai_kontrak, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->premi, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->subsidi, 0, ',', '.') }}</td>
+                            <td>{{ 'Rp ' . number_format($gaji->total_gaji, 0, ',', '.') }}</td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
-
                 <table class="table">
                     <tfoot>
                         <tr>
                             <th colspan="4">Jumlah Hari Dalam Satu Bulan:</th>
                             <td colspan="2">{{ $totalharikerja }}</td>
                             <th colspan="4">Total Premi:</th>
-                            <td colspan="2">{{ number_format($totalpremi, 0, ',', '.') }}</td>
+                            <td colspan="2">{{ 'Rp ' . number_format($totalpremi, 0, ',', '.') }}</td>
                         </tr>
                         <tr>
-                        <th colspan="4">Insentif:</th>
-                        <td colspan="2">
-                            <input type="number" id="insentif" value="{{ old('insentif', session('insentif', 0)) }}" class="form-control" placeholder="Insentif" oninput="calculateTotalPendapatan()">
-                            <button type="button" id="saveInsentif" class="btn btn-primary btn-sm" onclick="saveInsentif()">Save</button>
-                        </td>
-                        <th colspan="4">Total Pendapatan:</th>
-                        <td colspan="2" id="totalPendapatan">{{ number_format($rekapGajiCrew->sum('total_gaji') + session('insentif', 0), 0, ',', '.') }}</td>
+                            <th colspan="4">Insentif:</th>
+                            <td colspan="2">
+                                <input type="number" id="insentif" value="{{ old('insentif', session('insentif', 0)) }}" class="form-control" placeholder="Insentif" oninput="calculateTotalPendapatan()">
+                                <button type="button" id="saveInsentif" class="btn btn-primary btn-sm" onclick="saveInsentif()">Save</button>
+                            </td>
+                            <th colspan="4">Total Pendapatan:</th>
+                            <td colspan="2" id="totalPendapatan">{{ 'Rp ' . number_format($rekapGajiCrew->sum('total_gaji') + session('insentif', 0), 0, ',', '.') }}</td>
+                        </tr>
                     </tfoot>
                 </table>
             @else

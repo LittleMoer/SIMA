@@ -58,12 +58,60 @@
                                 oninvalid="this.setCustomValidity('Nama Pemesanan is required.')" 
                                 oninput="this.setCustomValidity('')">
                         </td>
-                        <td><input type="number" id="nilai_kontrak" name="data[{{ $index }}][nilai_kontrak]" value="{{ $gaji->nilai_kontrak }}" class="form-control" required></td>
-                        <td><input type="number" id="bbm" name="data[{{ $index }}][bbm]" value="{{ $gaji->bbm }}" class="form-control" required></td>
-                        <td><input type="number" id="uang_makan" name="data[{{ $index }}][uang_makan]" value="{{ $gaji->uang_makan }}" class="form-control" required></td>
-                        <td><input type="number" id="parkir" name="data[{{ $index }}][parkir]" value="{{ $gaji->parkir }}" class="form-control" required></td>
-                        <td><input type="number" id="cuci" name="data[{{ $index }}][cuci]" value="{{ $gaji->cuci }}" class="form-control" required></td>
-                        <td><input type="number" id="toll" name="data[{{ $index }}][toll]" value="{{ $gaji->toll }}" class="form-control" required></td>
+                        <td>
+                            <input type="text" 
+                                id="nilai_kontrak" 
+                                name="data[{{ $index }}][nilai_kontrak]" 
+                                value="{{ $gaji->nilai_kontrak }}" 
+                                class="form-control" 
+                                required 
+                                placeholder="Nilai Kontrak">
+                        </td>
+                        <td>
+                            <input type="text" 
+                                id="bbm" 
+                                name="data[{{ $index }}][bbm]" 
+                                value="{{ $gaji->bbm }}" 
+                                class="form-control" 
+                                required 
+                                placeholder="BBM">
+                        </td>
+                        <td>
+                            <input type="text" 
+                                id="uang_makan" 
+                                name="data[{{ $index }}][uang_makan]" 
+                                value="{{ $gaji->uang_makan }}" 
+                                class="form-control" 
+                                required 
+                                placeholder="Uang Makan">
+                        </td>
+                        <td>
+                            <input type="text" 
+                                id="parkir" 
+                                name="data[{{ $index }}][parkir]" 
+                                value="{{ $gaji->parkir }}" 
+                                class="form-control" 
+                                required 
+                                placeholder="Parkir">
+                        </td>
+                        <td>
+                            <input type="text" 
+                                id="cuci" 
+                                name="data[{{ $index }}][cuci]" 
+                                value="{{ $gaji->cuci }}" 
+                                class="form-control" 
+                                required 
+                                placeholder="Cuci">
+                        </td>
+                        <td>
+                            <input type="text" 
+                                id="toll" 
+                                name="data[{{ $index }}][toll]" 
+                                value="{{ $gaji->toll }}" 
+                                class="form-control" 
+                                required 
+                                placeholder="Toll">
+                        </td>
                         <td>
                             <input type="text" name="data[{{ $index }}][premium_percentage]" 
                                 list="premium-options" 

@@ -26,6 +26,7 @@ Route::get('/token', function (Request $request) {
 //auth
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::middleware([isAdmin::class])->group(function () {
@@ -65,7 +66,6 @@ Route::middleware([isAdmin::class])->group(function () {
     //manajemen akun
     Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
     Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
     Route::post('/manajemen_akun/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/manajemen_akun/{id}', [UserController::class, 'destroy'])->name('users.destroy');
