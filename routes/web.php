@@ -11,6 +11,7 @@ use App\Http\Controllers\ArmadaController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\BbmController;
+use App\Http\Controllers\PengeluaranController;
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isCrew;
 
@@ -61,7 +62,12 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::post('/rekap-gaji/update', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update'); // Change to POST without {id}
     Route::post('/rekap-gaji/intensif/{id}', [RekapGajiCrewController::class, 'updateint'])->name('rekap.gaji.intensif');
     
-    
+    // pengeluaran
+    Route::get('/pengeluaran/{id_spj}', [PengeluaranController::class, 'index'])->name('pengeluaran.index');
+    Route::post('/pengeluaran/{id_spj}', [PengeluaranController::class, 'store'])->name('pengeluaran.store');
+    Route::get('/pengeluaran/edit/{id_pengeluaran}', [PengeluaranController::class, 'edit'])->name('pengeluaran.edit');
+    Route::put('/pengeluaran/{id_pengeluaran}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
+    Route::delete('/pengeluaran/{id_pengeluaran}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.destroy');
     
     //manajemen akun
     Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');

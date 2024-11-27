@@ -240,14 +240,14 @@ public function update(Request $request)
         'data.*.tanggal' => 'required|date',
         'data.*.hari_kerja' => 'required|integer',
         'data.*.nama_pemesanan' => 'required|string|max:255',
-        'data.*.nilai_kontrak' => 'required|numeric|min:0', // Ensure it's a number and not negative
-        'data.*.bbm' => 'nullable|integer',
-        'data.*.uang_makan' => 'nullable|integer',
-        'data.*.parkir' => 'nullable|integer',
-        'data.*.cuci' => 'nullable|integer',
-        'data.*.toll' => 'nullable|integer',
+        'data.*.nilai_kontrak_hidden' => 'required|numeric|min:0', // Validate the hidden input for nilai_kontrak
+        'data.*.bbm_hidden' => 'nullable|numeric|min:0', // Validate the hidden input for bbm
+        'data.*.uang_makan_hidden' => 'nullable|numeric|min:0', // Validate the hidden input for uang_makan
+        'data.*.parkir_hidden' => 'nullable|numeric|min:0', // Validate the hidden input for parkir
+        'data.*.cuci_hidden' => 'nullable|numeric|min:0', // Validate the hidden input for cuci
+        'data.*.toll_hidden' => 'nullable|numeric|min:0', // Validate the hidden input for toll
+        'data.*.subsidi_hidden' => 'nullable|numeric|min:0', // Validate the hidden input for subsidi
         'data.*.premium_percentage' => 'nullable|integer',
-        'data.*.subsidi' => 'nullable|integer',
     ]);
 
     // Loop through the submitted data to update each record
@@ -255,27 +255,44 @@ public function update(Request $request)
         // Find the record based on 'id_rekapgajicrew'
         $rekapGaji = RekapGajiCrew::findOrFail($rekapData['id_rekapgajicrew']);
 
-        // Calculate total operational costs
-        $totalOperasional = ($rekapData['bbm']) + ($rekapData['uang_makan']) + ($rekapData['cuci']) + ($rekapData['toll']) + ($rekapData['parkir']);
-        // Determine nilai kontrak from the record
-        $sisaNilaiKontrak = $rekapData['nilai_kontrak'] - $totalOperasional;
+        // Calculate total operational costs using hidden values
+        $totalOperasional = ($rekapData['bbm_hidden'] ?? 0) + 
+                            ($rekapData['uang_makan_hidden'] ?? 0) + 
+                            ($rekapData['cuci_hidden'] ?? 0) + 
+                            ($rekapData['toll_hidden'] ?? 0) + 
+                            ($rekapData['parkir_hidden'] ?? 0);
 
-   $premiPercentage = ($rekapData['premium_percentage'] === 'custom' && !empty($rekapData['custom_premium']))
+        // Use the hidden nilai_kontrak value
+        $nilaiKontrak = $rekapData['nilai_kontrak_hidden']; // This should be a numeric value
+
+        // Determine the remaining contract value
+        $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
+
+        // Handle premium percentage
+        $premiPercentage = ($rekapData['premium_percentage'] === 'custom' && !empty($rekapData['custom_premium']))
             ? (int)$rekapData['custom_premium'] // Ensure custom_premium is treated as an integer
             : (int)($rekapData['premium_percentage'] ?? 0); // Fallback to 0 if not set
 
-
         // Calculate the premium based on total gaji from the form
         $premi = ($sisaNilaiKontrak * $premiPercentage) / 100; 
-        $totalGaji = $premi + $rekapData['subsidi']; 
+        $totalGaji = $premi + ($rekapData['subsidi_hidden'] ?? 0); // Use hidden value for subsidi
+
         // Update the record
         $rekapGaji->update(array_merge($rekapData, [
+            'nilai_kontrak' => $nilaiKontrak, // Ensure this is the hidden value
+            'bbm' => $rekapData['bbm_hidden'], // Use the hidden value for bbm
+            'uang_makan' => $rekapData['uang_makan_hidden'], // Use the hidden value for uang_makan
+            'parkir' => $rekapData['parkir_hidden'], // Use the hidden value for parkir
+            'cuci' => $rekapData['cuci_hidden'], // Use the hidden value for cuci
+            'toll' => $rekapData['toll_hidden'], // Use the hidden value for toll
+            'subsidi' => $rekapData['subsidi_hidden'], // Use the hidden value for subsidi
             'total_gaji' => $totalGaji,
             'total_operasional' => $totalOperasional,
             'sisa_nilai_kontrak' => $sisaNilaiKontrak,
             'premi' => $premi,
         ]));
     }
+
     // Redirect back with a success message
     return redirect()->route('manajemen_armada.rekap_gaji', ['id_armada' => $request->id_armada])
                      ->with('success', 'Rekap Gaji Crew successfully updated.');

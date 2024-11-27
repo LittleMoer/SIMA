@@ -1,6 +1,6 @@
 @section('rekap_gaji_crew')
 <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
-<img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}"
+    <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}"
         alt="Help center header" style="position: absolute; top: 0; left: 0; width: 100%; height: auto; z-index: -1;">
     <div class="container">
         <nav aria-label="breadcrumb" style="border-bottom: 1px solid #94acc6;">
@@ -23,120 +23,116 @@
         <h4>Nama: {{ $armada->akun->name }}</h4>
 
         @if($rekapGajiCrew->count())
-        <form action="{{ route('rekap.gaji.update') }}" method="POST">
-            @csrf
-            <input type="hidden" name="id_armada" value="{{ $armada->id_armada }}">
-            <table>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Tanggal</th>
-                        <th>Hari Kerja</th>
-                        <th>Nama Pemesanan</th>
-                        <th>Nilai Kontrak</th>
-                        <th>BBM</th>
-                        <th>Uang Makan</th>
-                        <th>Parkir</th>
-                        <th>Cuci</th>
-                        <th>Toll</th>
-                        <th>Premium Percentage</th>
-                        <th>Subsidi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach($rekapGajiCrew as $index => $gaji)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td><input type="date" name="data[{{ $index }}][tanggal]" value="{{ $gaji->tanggal }}" class="form-control" required></td>
-                        <td><input type="number" name="data[{{ $index }}][hari_kerja]" value="{{ $gaji->hari_kerja }}" class="form-control" required></td>
-                        <td>
-                            <input type="text" 
-                                name="data[{{ $index }}][nama_pemesanan]" 
-                                value="{{ $gaji->nama_pemesanan }}" 
-                                class="form-control" 
-                                required 
-                                oninvalid="this.setCustomValidity('Nama Pemesanan is required.')" 
-                                oninput="this.setCustomValidity('')">
-                        </td>
-                        <td>
-                            <input type="text" 
-                                id="nilai_kontrak_{{ $index }}" 
-                                name="data[{{ $index }}][nilai_kontrak]" 
-                                value="{{ number_format($gaji->nilai_kontrak, 0, ',', '.') }}" 
-                                class="form-control" 
-                                required 
-                                placeholder="Nilai Kontrak" 
-                                data-total-operasional="{{ $gaji->total_operasional }}">
-                        </td>
-                        <td>
-                            <input type="text" 
-                                id="bbm_{{ $index }}" 
-                                name="data[{{ $index }}][bbm]" 
-                                value="{{ $gaji->bbm }}" 
-                                class="form-control" 
-                                required 
-                                placeholder="BBM">
-                        </td>
-                        <td>
-                            <input type="text" 
-                                id="uang_makan_{{ $index }}" 
-                                name="data[{{ $index }}][uang_makan]" 
-                                value="{{ $gaji->uang_makan }}" 
-                                class="form-control" 
-                                required 
-                                placeholder="Uang Makan">
-                        </td>
-                        <td>
-                            <input type="text" 
-                                id="parkir_{{ $index }}" 
-                                name="data[{{ $index }}][parkir]" 
-                                value="{{ $gaji->parkir }}" 
-                                class="form-control" 
-                                required 
-                                placeholder="Parkir">
-                        </td>
-                        <td>
-                            <input type="text" 
-                                id="cuci_{{ $index }}" 
-                                name="data[{{ $index }}][cuci]" 
-                                value="{{ $gaji->cuci }}" 
-                                class="form-control" 
-                                required 
-                                placeholder="Cuci">
-                        </td>
-                        <td>
-                            <input type="text" 
-                                id="toll_{{ $index }}" 
-                                name="data[{{ $index }}][toll]" 
-                                value="{{ $gaji->toll }}" 
-                                class="form-control" 
-                                required 
-                                placeholder="Toll">
-                        </td>
-                        <td>
-                            <input type="text" name="data[{{ $index }}][premium_percentage]" 
-                                list="premium-options" 
-                                value="{{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? $gaji->premium_percentage : '' }}"
-                                class="form-control premium-input" 
-                                placeholder="Select or enter custom %" 
-                                required>
-                            <datalist id="premium-options">
-                                <option value="6">6%</option>
-                                <option value="7">7%</option>
-                                <option value="10">10%</option>
-                                <option value="12">12%</option>
-                                <option value="14">14%</option>
-                                <option value="21">21%</option>
-                            </datalist>
-                        </td>
-                        <td><input type="number" name="data[{{ $index }}][subsidi]" value="{{ $gaji->subsidi }}" class="form-control" required></td>
-                        <input type="hidden" name="data[{{ $index }}][id_rekapgajicrew]" value="{{ $gaji->id_rekapgajicrew }}">
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <button type="submit" class="btn btn-primary">Update</button>
-        </form>
+            <form action="{{ route('rekap.gaji.update') }}" method="POST">
+                @csrf
+                <input type="hidden" name="id_armada" value="{{ $armada->id_armada }}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Hari Kerja</th>
+                            <th>Nama Pemesanan</th>
+                            <th>Nilai Kontrak</th>
+                            <th>BBM</th>
+                            <th>Uang Makan</th>
+                            <th>Parkir</th>
+                            <th>Cuci</th>
+                            <th>Toll</th>
+                            <th>Premium Percentage</th>
+                            <th>Subsidi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($rekapGajiCrew as $index => $gaji)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td><input type="date" name="data[{{ $index }}][tanggal]" value="{{ $gaji->tanggal }}"
+                                        class="form-control" required></td>
+                                <td><input type="number" name="data[{{ $index }}][hari_kerja]"
+                                        value="{{ $gaji->hari_kerja }}" class="form-control" required></td>
+                                <td>
+                                    <input type="text" name="data[{{ $index }}][nama_pemesanan]"
+                                        value="{{ $gaji->nama_pemesanan }}" class="form-control"
+                                        oninvalid="this.setCustomValidity('Nama Pemesanan is required.')"
+                                        oninput="this.setCustomValidity('')">
+                                </td>
+                                <td>
+                                    <input type="text" id="nilai_kontrak_{{ $index }}"
+                                        name="data[{{ $index }}][nilai_kontrak]"
+                                        value="{{ number_format($gaji->nilai_kontrak, 0, ',', '.') }}"
+                                        class="form-control currency-input" required placeholder="Nilai Kontrak"
+                                        data-total-operasional="{{ $gaji->total_operasional }}">
+                                    <input type="hidden" id="nilai_kontrak_{{ $index }}_hidden"
+                                        name="data[{{ $index }}][nilai_kontrak_hidden]"
+                                        value="{{ $gaji->nilai_kontrak }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="bbm_{{ $index }}" name="data[{{ $index }}][bbm]"
+                                        value="{{ number_format($gaji->bbm, 0, ',', '.') }}"
+                                        class="form-control currency-input" required placeholder="BBM">
+                                    <input type="hidden" id="bbm_{{ $index }}_hidden"
+                                        name="data[{{ $index }}][bbm_hidden]" value="{{ $gaji->bbm }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="uang_makan_{{ $index }}"
+                                        name="data[{{ $index }}][uang_makan]"
+                                        value="{{ number_format($gaji->uang_makan, 0, ',', '.') }}"
+                                        class="form-control currency-input" required placeholder="Uang Makan">
+                                    <input type="hidden" id="uang_makan_{{ $index }}_hidden"
+                                        name="data[{{ $index }}][uang_makan_hidden]" value="{{ $gaji->uang_makan }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="parkir_{{ $index }}" name="data[{{ $index }}][parkir]"
+                                        value="{{ number_format($gaji->parkir, 0, ',', '.') }}"
+                                        class="form-control currency-input" required placeholder="Parkir">
+                                    <input type="hidden" id="parkir_{{ $index }}_hidden"
+                                        name="data[{{ $index }}][parkir_hidden]" value="{{ $gaji->parkir }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="cuci_{{ $index }}" name="data[{{ $index }}][cuci]"
+                                        value="{{ number_format($gaji->cuci, 0, ',', '.') }}"
+                                        class="form-control currency-input" required placeholder="Cuci">
+                                    <input type="hidden" id="cuci_{{ $index }}_hidden"
+                                        name="data[{{ $index }}][cuci_hidden]" value="{{ $gaji->cuci }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="toll_{{ $index }}" name="data[{{ $index }}][toll]"
+                                        value="{{ number_format($gaji->toll, 0, ',', '.') }}"
+                                        class="form-control currency-input" required placeholder="Toll">
+                                    <input type="hidden" id="toll_{{ $index }}_hidden"
+                                        name="data[{{ $index }}][toll_hidden]" value="{{ $gaji->toll }}">
+                                </td>
+                                <td>
+                                    <input type="text" name="data[{{ $index }}][premium_percentage]"
+                                        list="premium-options"
+                                        value="{{ !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? $gaji->premium_percentage : '' }}"
+                                        class="form-control premium-input" placeholder="Select or enter custom %"
+                                        required>
+                                    <datalist id="premium-options">
+                                        <option value="6">6%</option>
+                                        <option value="7">7%</option>
+                                        <option value="10">10%</option>
+                                        <option value="12">12%</option>
+                                        <option value="14">14%</option>
+                                        <option value="21">21%</option>
+                                    </datalist>
+                                </td>
+                                <td>
+                                    <input type="text" id="subsidi_{{ $index }}" name="data[{{ $index }}][subsidi]"
+                                        value="{{ number_format($gaji->subsidi, 0, ',', '.') }}"
+                                        class="form-control currency-input" required placeholder="Subsidi">
+                                    <input type="hidden" id="subsidi_{{ $index }}_hidden"
+                                        name="data[{{ $index }}][subsidi_hidden]" value="{{ $gaji->subsidi }}">
+                                </td>
+                                <input type="hidden" name="data[{{ $index }}][id_rekapgajicrew]"
+                                    value="{{ $gaji->id_rekapgajicrew }}">
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
         @else
             <p class="text-muted">Tidak ada data rekap gaji untuk armada ini.</p>
         @endif
@@ -147,7 +143,7 @@
 
 <script>
     document.querySelectorAll('.premium-selection').forEach(select => {
-        select.addEventListener('change', function() {
+        select.addEventListener('change', function () {
             const customInput = this.closest('td').querySelector('.premium-custom');
             if (this.value === 'custom') {
                 customInput.style.display = 'block';
@@ -157,86 +153,74 @@
             }
         });
     });
+
 </script>
 <script>
-    function formatRupiah(value) {
-        const numberString = value.replace(/[^0-9]/g, '');
-        const number = parseInt(numberString, 10);
-        
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0,
-        }).format(number);
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to format numbers to Rupiah
+        function formatToRupiah(angka) {
+            const isNegative = parseFloat(angka) < 0; // Check if the value is negative
+            let numberString = angka.replace(/[^\d]/g, '').toString();
+            let sisa = numberString.length % 3;
+            let rupiah = numberString.substr(0, sisa);
+            let ribuan = numberString.substr(sisa).match(/\d{3}/g);
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form'); // Adjust the selector to your form
-        const inputs = document.querySelectorAll('input[id^="nilai_kontrak_"], input[id^="bbm_"], input[id^="uang_makan_"], input[id^="parkir_"], input[id^="cuci_"], input[id^="toll_"]');
+            if (ribuan) {
+                rupiah += (sisa ? '.' : '') + ribuan.join('.');
+            }
 
-        inputs.forEach(input => {
-            input.addEventListener('input', function() {
-                // Format the input value as Rupiah
-                this.value = formatRupiah(this.value);
-            });
-        });
+            return (isNegative ? '-Rp ' : 'Rp ') + rupiah;
+        }
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent default form submission
+        // Function to handle input formatting
+        function formatRupiahInput(inputElement, hiddenElement) {
+            inputElement.addEventListener('input', function () {
+                const formattedValue = formatToRupiah(this.value);
+                hiddenElement.value = this.value.replace(/[^\d]/g, ''); // Set hidden input to numeric value only
+                inputElement.value = formattedValue; // Set formatted value to input
 
-            let isValid = true;
-
-            inputs.forEach(input => {
-                // Clean the input value before submission
-                const cleanedValue = input.value.replace(/[^0-9]/g, '');
-                input.value = cleanedValue; // Set the cleaned value back
-
-                // Check if the cleaned value is a valid integer
-                if (isNaN(cleanedValue) || cleanedValue === '') {
-                    isValid = false;
-                    alert(input.name + ' must be a valid integer.');
-                    input.focus();
-                    return; // Exit the loop
-                }
-
-                // Additional validation for nilai_kontrak against total_operasional
-                if (input.name.includes('nilai_kontrak')) {
-                    const totalOperasional = parseFloat(input.dataset.totalOperasional);
-                    const nilaiKontrak = parseFloat(cleanedValue);
-
-                    if (nilaiKontrak < totalOperasional) {
-                        isValid = false;
-                        alert('Nilai Kontrak tidak boleh kurang dari Total Operasional (' + totalOperasional + ').');
-                        input.focus();
-                        return; // Exit the loop
-                    }
-                }
+                // Validate nilai_kontrak against total operational costs
+                validateNilaiKontrak(inputElement);
             });
 
-            if (isValid) {
-                // If all validations pass, submit the form via AJAX
-                const formData = new FormData(form);
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Data submitted successfully!');
-                        // Optionally, you can redirect or update the UI
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while submitting the form.');
-                });
+            // Set initial value if available
+            const initialValue = hiddenElement.value;
+            if (initialValue) {
+                inputElement.value = formatToRupiah(initialValue);
+            }
+        }
+
+        // Function to calculate total operational costs
+        function calculateTotalOperational(index) {
+            const bbm = parseInt(document.getElementById('bbm_' + index + '_hidden').value) || 0;
+            const uangMakan = parseInt(document.getElementById('uang_makan_' + index + '_hidden').value) || 0;
+            const parkir = parseInt(document.getElementById('parkir_' + index + '_hidden').value) || 0;
+            const cuci = parseInt(document.getElementById('cuci_' + index + '_hidden').value) || 0;
+            const toll = parseInt(document.getElementById('toll_' + index + '_hidden').value) || 0;
+
+            return bbm + uangMakan + parkir + cuci + toll;
+        }
+
+        // Function to validate nilai_kontrak
+        function validateNilaiKontrak(nilaiKontrakInput) {
+            const index = nilaiKontrakInput.id.split('_')[2]; // Get the index from the ID
+            const totalOperational = calculateTotalOperational(index);
+            const nilaiKontrakValue = parseInt(nilaiKontrakInput.value.replace(/[^\d]/g, '')) || 0;
+
+            // Validate nilai_kontrak against total operational costs
+            if (nilaiKontrakValue < totalOperational) {
+                alert('Nilai Kontrak cannot be lower than the total operational costs (BBM + Uang Makan + Parkir + Cuci + Toll).');
+                nilaiKontrakInput.value = formatToRupiah(totalOperational); // Set to minimum valid value
+                document.getElementById('nilai_kontrak_' + index + '_hidden').value = totalOperational; // Update hidden input
+            }
+        }
+
+        // Initialize all currency inputs
+        document.querySelectorAll('.currency-input').forEach(input => {
+            const hiddenInputId = input.id + '_hidden'; // Create hidden input ID
+            const hiddenInput = document.getElementById(hiddenInputId); // Get the hidden input element
+            if (hiddenInput) {
+                formatRupiahInput(input, hiddenInput); // Connect the function
             }
         });
     });
@@ -255,7 +239,7 @@
     </div>
 
     <!-- Script untuk menghilangkan toast setelah beberapa detik -->
-<script>
+    <script>
         setTimeout(function () {
             var toastElement = document.getElementById('successToast');
             if (toastElement) {
@@ -263,7 +247,7 @@
             }
         }, 2500);
 
-</script>
+    </script>
 @endif
 @if($errors->any())
     <div id="errorToast" style="position: fixed; top: 80px; right: 20px; z-index: 1050;">
@@ -283,14 +267,15 @@
     </div>
 
     <!-- Script to hide error toast after a few seconds -->
-<script>
+    <script>
         setTimeout(function () {
             var toastElement = document.getElementById('errorToast');
             if (toastElement) {
                 toastElement.style.display = 'none'; // Hide error toast
             }
         }, 2500);
-</script>
+
+    </script>
 @endif
 @endsection
 
