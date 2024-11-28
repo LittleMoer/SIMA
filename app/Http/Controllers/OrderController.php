@@ -10,6 +10,7 @@ use App\Models\SPJ;
 use App\Models\SJ;
 use App\Models\Unit;
 use App\Models\Armada;
+use App\Models\PengeluaranUangSaku;
 use App\Models\Akun;
 
 
@@ -141,10 +142,13 @@ public function viewSPJ($id_spj)
 
     //Ambil data bbm
     $bbms = Konsumbbm::where('id_spj', $id_spj)->get();
+
+    $pengeluaran = PengeluaranUangSaku::where('id_spj', $id_spj)->first();
+
         
 
     // Kirim data ke view 'viewSPJ'
-    return view('viewSPJ', compact('spj', 'sj', 'sp', 'unit', 'bbms'));
+    return view('viewSPJ', compact('spj', 'sj', 'sp', 'unit', 'bbms', 'pengeluaran'));
 }
 
 
@@ -156,6 +160,9 @@ public function detail($id)
 
     // Retrieve all SJ records related to this SP
     $sjs = SJ::where('id_sp', $id)->get();
+
+      // Retrieve all SPJ records related to this SP
+    //   $spjs = SPJ::where('id_sj', $id)->get();
 
     // Retrieve all SPJ records where id_sj is among the SJ records retrieved
     $spjs = SPJ::whereIn('id_sj', $sjs->pluck('id_sj'))->get();
@@ -309,16 +316,6 @@ public function updateSPJ(Request $request, $id)
         'uangmakan' => 'nullable',
     ]);
     $spj->update($request->all());
-    
-//  dump([
-//         'request_method' => $request->method(),
-//         'request_all' => $request->all(),
-//         'id' => $id,
-//         'url' => $request->url(),
-//         'route' => $request->route()->getName(),
-//         'headers' => $request->headers->all(),
-//     ]);
-        // Get the SJ record to find id_sp
         $sj = SJ::findOrFail($spj->id_sj);
         $id_sp = $sj->id_sp;
     
@@ -364,4 +361,31 @@ public function getDriverCoDriver($id_unit)
         'codriver' => $codriverName
     ]);
 }
+
+
+public function update(Request $request, $id)
+{
+    $type = $request->input('type'); // Ambil tipe dokumen dari request
+
+    // Proses update sesuai tipe dokumen
+    if ($type === 'SP') {
+        $sp = SP::findOrFail($id);
+        $sp->update($request->all());
+        $html = "<p>Data SP berhasil diupdate!</p>"; 
+    } elseif ($type === 'SJ') {
+        $sj = SJ::findOrFail($id);
+        $sj->update($request->all());
+        $html = "<p>Data SJ berhasil diupdate!</p>";
+    } elseif ($type === 'SPJ') {
+        $spj = SPJ::findOrFail($id);
+        $spj->update($request->all());
+        $html = "<p>Data SPJ berhasil diupdate!</p>";
+    } else {
+        return response()->json(['error' => 'Tipe dokumen tidak valid'], 400);
+    }
+
+    // Kembalikan respons AJAX
+    return response()->json(['html' => $html]);
+}
+
 }

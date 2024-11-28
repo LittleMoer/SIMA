@@ -8,8 +8,7 @@
 </head>
 
 <body>
-    @section('bbm')
-
+    @section('bbm_viewer')
         <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
             <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}" alt="Help center header"
                 style="position: absolute; top: 0; left: 0; width: 100%; height: auto; z-index: -1;">
@@ -17,13 +16,13 @@
                 <nav aria-label="breadcrumb" style="border-bottom: 1px solid #94acc6;">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item ">
-                            <a href="{{ url('/pesanan') }}">Data Pesanan</a>
+                            <a href="{{ url('crew/pesanan') }}">Data Pesanan</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            <a href="{{ url('/pesanan/detail_pesanan/' . $id_sp) }}">Detail Pesanan</a>
+                            <a href="{{ url('crew/pesanan/detail_pesanan/' . $id_sp) }}">Detail Pesanan</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            <a href="{{ url('/pesanan/detail_pesanan/' . $id_sp . '/#SuratPerintahJalan') }}">Surat Perintah Jalan</a>
+                            <a href="{{ url('crew/pesanan/detail_pesanan/' . $id_sp . '/#SuratPerintahJalan') }}">Surat Perintah Jalan</a>
                         </li>
                         <li class="breadcrumb-item active">
                             <a href="javascript:void(0);">Konsum BBM</a>
@@ -87,9 +86,7 @@
                                         <td>{{ $bbm->isiBBM }}</td>
                                         <td>{{ $bbm->tanggal }}</td>
                                         <td>{{ $bbm->lokasiisi }}</td>
-                                        <td>@currency($bbm->totalbayar)</td>
-
-                                        
+                                        <td>{{ $bbm->totalbayar }}</td>
                                         <td>
                                             @if ($bbm->foto_struk)
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
@@ -148,7 +145,7 @@
                     </div>
                     <form id="editForm" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('POST')
+                        @method('PUT')
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col mb-6">
@@ -171,24 +168,13 @@
                             <div class="row">
                                 <div class="col mb-6">
                                     <label for="nameWithTitle" class="form-label">Total Bayar</label>
-                                    <input type="text" id="edit_totalbayar" class="form-control currency-input" required>
-                                    <input type="hidden" name="totalbayar" id="edit_totalbayar_hidden"
-                                        title="Hanya angka yang diperbolehkan">
+                                    <input type="text" id="edit_totalbayar" name="totalbayar" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-6">
                                     <label for="nameWithTitle" class="form-label">Foto Struk</label>
                                     <input type="file" id="edit_foto_struk" name="foto_struk" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col mb-6">
-                                    <label for="nameWithTitle" class="form-label">Status</label>
-                                    <select id="edit_isvalid" name="isvalid" class="form-control">
-                                        <option value=0>Belum Valid</option>
-                                        <option value=1>Sudah Valid</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -208,7 +194,7 @@
                         <h5 class="modal-title" id="modalCenterTitle">Isi Bensin</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="{{ route('bbm.create', ['id_spj' => $spj->id_spj]) }}" method="POST"
+                    <form action="{{ route('crew.bbm.create', ['id_spj' => $spj->id_spj]) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         @method('POST')
@@ -234,9 +220,7 @@
                             <div class="row">
                                 <div class="col mb-6">
                                     <label for="nameWithTitle" class="form-label">Total Bayar</label>
-                                    <input type="text" id="totalbayar" class="form-control currency-input" required>
-                                    <input type="hidden" name="totalbayar" id="totalbayar_hidden"
-                                        title="Hanya angka yang diperbolehkan">
+                                    <input type="text" id="totalbayar" name="totalbayar" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
@@ -245,15 +229,7 @@
                                     <input type="file" id="foto_struk" name="foto_struk" class="form-control">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col mb-6">
-                                    <label for="nameWithTitle" class="form-label">Status</label>
-                                    <select id="isvalid" name="isvalid" class="form-control">
-                                        <option value=0>Belum Valid</option>
-                                        <option value=1>Sudah Valid</option>
-                                    </select>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
@@ -281,7 +257,7 @@
 
     @endsection
 
-    @include('main_owner')
+    @include('main_crew')
 
 
     <script>
@@ -300,7 +276,7 @@
                     const isvalid = this.getAttribute('data-isvalid');
 
                     // Set action URL form
-                    document.getElementById('editForm').action = `/bbm/${idkonsumbbm}/edit`;
+                    document.getElementById('editForm').action = `{{ url('crew/pesanan/detail_pesanan/bbm') }}/${idkonsumbbm}/edit`;
 
                     // Isi form dengan data
                     document.getElementById('edit_isiBBM').value = isibbm;
@@ -322,49 +298,6 @@
             modalImage.src = strukUrl; // Set gambar dengan URL struk
         });
     </script>
-
-<script>
-    // Fungsi untuk Memformat Input sebagai Rupiah
-    function formatRupiahInput(inputElement, hiddenElement) {
-        inputElement.addEventListener('input', function() {
-            const formattedValue = formatToRupiah(this.value);
-            hiddenElement.value = formattedValue.replace(/[^\d]/g,
-                ''); // Set hidden input to numeric value only
-            inputElement.value = formattedValue;
-        });
-
-        // Set nilai awal jika ada
-        const initialValue = hiddenElement.value;
-        if (initialValue) {
-            inputElement.value = formatToRupiah(initialValue);
-        }
-    }
-
-    // Fungsi untuk Mengubah Angka Menjadi Format Rupiah
-    function formatToRupiah(angka) {
-        let numberString = angka.replace(/[^\d]/g, '').toString();
-        let sisa = numberString.length % 3;
-        let rupiah = numberString.substr(0, sisa);
-        let ribuan = numberString.substr(sisa).match(/\d{3}/g);
-
-        if (ribuan) {
-            rupiah += (sisa ? '.' : '') + ribuan.join('.');
-        }
-
-        return 'Rp ' + rupiah;
-    }
-
-    // Inisialisasi Semua Input dengan Kelas "currency-input"
-    document.querySelectorAll('.currency-input').forEach(input => {
-        const hiddenInputId = input.id + '_hidden';
-        const hiddenInput = document.getElementById(hiddenInputId);
-        if (hiddenInput) {
-            formatRupiahInput(input, hiddenInput);
-        }
-    });
-</script>
-
-
 
 
 </body>

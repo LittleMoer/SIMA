@@ -14,6 +14,9 @@ use App\Http\Controllers\BbmController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isCrew;
+use App\Http\Controllers\ViewerController;
+use App\Http\Middleware\isViewer;
+use App\Http\Controllers\CalendarController;
 
 Route::get('/', function () {
     return view('homepage');
@@ -115,19 +118,26 @@ Route::middleware([isCrew::class])->group(function () {
     Route::get('crew/pesanan/detail_pesanan/pengeluaran/edit/{id_pengeluaran}', [CrewController::class, 'pengeluaranedit'])->name('crew.pengeluaran.edit');
     Route::put('crew/pesanan/detail_pesanan/pengeluaran/{id_pengeluaran}', [CrewController::class, 'pengeluaranupdate'])->name('crew.pengeluaran.update');
     Route::delete('crew/pesanan/detail_pesanan/pengeluaran/{id_pengeluaran}', [CrewController::class, 'pengeluarandestroy'])->name('crew.pengeluaran.destroy');
+    //print
     
     // Jadwal
     Route::get('crew/events', [CrewController::class, 'showCalendar'])->name('crew.events');
 });
 
+Route::middleware([isViewer::class])->group(function () {
+// Viewer
+Route::get('viewer/dashboard', [ViewerController::class, 'index'])->name('viewer.dashboard');
+//pesanan
+Route::get('viewer/pesanan', [ViewerController::class, 'pesanan'])->name('viewer.pesanan');
+Route::get('viewer/pesanan/detail_pesanan/{id}', [ViewerController::class, 'detail'])->name('viewer.detail_pesanan');
+Route::get('viewer/calendar', [ViewerController::class, 'showMonthlyCalendar'])->name('viewer.calendar');
+//view data pesanan
+Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
+Route::get('/viewSJ/{id}', [OrderController::class, 'viewSJ'])->name('viewSJ');
+Route::get('/viewSPJ/{id}', [OrderController::class, 'viewSPJ'])->name('viewSPJ');
+});
 
-
-
-
-
-
-
-
+Route::get('/viewSPJ/{id}', [OrderController::class, 'viewSPJ'])->name('viewSPJ');
 //Bus
 Route::get('/bus/big_bus', function () {
     return view('/bus/big_bus');
@@ -142,6 +152,11 @@ Route::get('/bus/mediumSE_bus', function () {
     return view('/bus/mediumSE_bus');
 });
 
+Route::get('/calendar/monthly', [CalendarController::class, 'showMonthlyCalendar'])->name('calendar.month');
+
+Route::post('/calendar/update-availability', [CalendarController::class, 'updateAvailability'])->name('availability.update');
+
+Route::get('/calendar/events', [CalendarController::class, 'showCalendar'])->name('calendar.events');
 
 //Api Fetch Events
 // Route::get('/tes', function () {

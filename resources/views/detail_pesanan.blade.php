@@ -69,7 +69,7 @@
                                     }
                                 </script>
 
-                                <form action="{{ route('detail_pesanan', $sp->id_sp) }}" method="POST">
+                                <form action="{{ route('detail_pesanan', $sp->id_sp) }}" method="POST" data-type="SP" data-id="{{ $sp->id_sp }}" class="form-update">
 
                                     @csrf
                                     @method('POST')
@@ -280,9 +280,6 @@
                                             <div class="row mb-3">
                                                 <label class="col-sm-4 form-label" for="uang_muka">Uang Muka</label>
                                                 <div class="col-sm-8">
-                                                    {{-- <input type="number" name="uang_muka" id="uang_muka" class="form-control currency-input"
-                                                placeholder="Masukkan uang muka" value="{{ $sp->uang_muka }}"
-                                                aria-label="Uang Muka" /> --}}
                                                     <input type="text" id="uang_muka"
                                                         class="form-control currency-input"
                                                         placeholder="Masukkan biaya tambahan" required>
@@ -386,7 +383,7 @@
                                             };
                                         }
                                     </script>
-                                    <form method="POST" action="{{ route('pesanan.updateSJ', $sj->id_sj) }}#SuratJalan">
+                                    <form method="POST" action="{{ route('pesanan.updateSJ', $sj->id_sj) }}#SuratJalan" data-type="SJ" data-id="{{ $sj->id_sj }}" class="form-update">
                                         @csrf
                                         @method('PUT')
                                         <div class="row">
@@ -396,15 +393,16 @@
                                                         class="col-sm-3 col-form-label form-label">Unit:</label>
                                                     <div class="col-sm-9">
                                                         <select class="form-select unit-dropdown" name="id_unit"
-                                                            id="id_unit_{{ $sj->id_sj }}" data-sj-id="{{ $sj->id_sj }}"
+                                                            id="id_unit_{{ $sj->id_sj }}"
+                                                            data-sj-id="{{ $sj->id_sj }}"
                                                             onchange="getDriverCoDriver({{ $sj->id_sj }})">
                                                             <option value="">-- Pilih Armada --</option>
                                                             @foreach ($units as $unit)
                                                                 <option value="{{ $unit->id_unit }}"
                                                                     {{ $unit->id_unit == $sj->id_unit ? 'selected' : '' }}>
                                                                     <blade
-                                                                            if|%20(%24unit-%3Eid_unit%20%3D%3D%20%24sj-%3Eid_unit)%20selected%20%40endif%3E>
-                                                                    {{ $unit->nama_unit }}
+                                                                        if|%20(%24unit-%3Eid_unit%20%3D%3D%20%24sj-%3Eid_unit)%20selected%20%40endif%3E>
+                                                                        {{ $unit->nama_unit }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -464,7 +462,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            {{-- <div class="col-md-6">
 
                                                 <div class="row mb-3">
                                                     <label for="kasbonbbm_{{ $sj->id_sj }}"
@@ -507,7 +505,59 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div> --}}
+                                            <div class="col-md-6">
+
+                                                <!-- Kasbon BBM -->
+                                                <div class="row mb-3">
+                                                    <label for="kasbonbbm_{{ $sj->id_sj }}" class="col-sm-3 col-form-label form-label">Kasbon BBM</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group input-group-merge">
+                                                            <input type="text" class="form-control currency-input" 
+                                                                   id="kasbonbbm_{{ $sj->id_sj }}" 
+                                                                   placeholder="Masukkan jumlah kasbon BBM"
+                                                                   value="{{ old('kasbonbbm', $sj->kasbonbbm) }}">
+                                                            <input type="hidden" name="kasbonbbm" 
+                                                                   id="kasbonbbm_{{ $sj->id_sj }}_hiddens" 
+                                                                   value="{{ old('kasbonbbm', $sj->kasbonbbm) }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <!-- Kasbon Makan -->
+                                                <div class="row mb-3">
+                                                    <label for="kasbonmakan_{{ $sj->id_sj }}" class="col-sm-3 col-form-label form-label">Kasbon Makan</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group input-group-merge">
+                                                            <input type="text" class="form-control currency-input" 
+                                                                   id="kasbonmakan_{{ $sj->id_sj }}" 
+                                                                   placeholder="Masukkan jumlah kasbon makan"
+                                                                   value="{{ old('kasbonmakan', $sj->kasbonmakan) }}">
+                                                            <input type="hidden" name="kasbonmakan" 
+                                                                   id="kasbonmakan_{{ $sj->id_sj }}_hiddens" 
+                                                                   value="{{ old('kasbonmakan', $sj->kasbonmakan) }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <!-- Lain-lain -->
+                                                <div class="row mb-3">
+                                                    <label for="lainlain_{{ $sj->id_sj }}" class="col-sm-3 col-form-label form-label">Lain-lain</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group input-group-merge">
+                                                            <input type="text" class="form-control currency-input" 
+                                                                   id="lainlain_{{ $sj->id_sj }}" 
+                                                                   placeholder="Masukkan jumlah lain-lain"
+                                                                   value="{{ old('lainlain', $sj->lainlain) }}">
+                                                            <input type="hidden" name="lainlain" 
+                                                                   id="lainlain_{{ $sj->id_sj }}_hiddens" 
+                                                                   value="{{ old('lainlain', $sj->lainlain) }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
                                             </div>
+                                            
 
                                         </div>
 
@@ -530,10 +580,8 @@
                             <div class="container">
                                 @foreach ($spjs as $index => $spj)
                                     @csrf
-
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h2>Surat Premi Jalan {{ $spj->id_spj }} </h2>
-
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h2>Surat Premi Jalan {{ $spj->id_spj }}</h2>
                                         <a href="#"
                                             onclick="printPreview('{{ route('viewSPJ', $spj->id_spj) }}'); return false;"
                                             class="btn btn-primary">
@@ -541,98 +589,85 @@
                                         </a>
                                     </div>
 
-                                    <script>
-                                        function printPreview(url) {
-                                            var printWindow = window.open(url, 'printWindow', 'width=800,height=600');
-                                            printWindow.onload = function() {
-                                                printWindow.print();
-                                            };
-                                        }
-                                    </script>
-
-
-
                                     <form method="POST"
-                                        action="{{ route('pesanan.updateSPJ', $spj->id_spj) }}#SuratPerintahJalan">
+                                        action="{{ route('pesanan.updateSPJ', $spj->id_spj) }}#SuratPerintahJalan" class="form-update" data-type="SPJ" data-id="{{ $spj->id_spj }}">
                                         @csrf
                                         @method('PUT')
-
-
                                         <div class="row">
+                                            <!-- Kolom Kiri -->
                                             <div class="col-md-6">
+                                                <!-- Saldo E-toll Awal -->
                                                 <div class="form-group row mb-3">
-                                                    <label for="SaldoEtollawal_{{ $spj->id_sj }} "
-                                                        class="col-sm-4 col-form-label form-label">Saldo E-toll
-                                                        Awal</label>
+                                                    <label for="SaldoEtollawal_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        Saldo E-toll Awal
+                                                    </label>
                                                     <div class="col-sm-8">
-                                                        {{-- <input type="text" name="SaldoEtollawal"
-                                                            id="SaldoEtollawal_{{ $spj->id_sj }}"
-                                                            value="{{ old('SaldoEtollawal', $spj->SaldoEtollawal) }}"
-                                                            class="form-control"> --}}
-
-                                                        <input type="text" id="SaldoEtollawal"
+                                                        <input type="text" id="SaldoEtollawal_{{ $index }}"
                                                             class="form-control currency-input"
-                                                            placeholder="Masukkan saldo awal E toll" required>
+                                                            placeholder="Masukkan saldo awal E-toll"
+                                                            value="{{ old('SaldoEtollawal', $spj->SaldoEtollawal) }}">
                                                         <input type="hidden" name="SaldoEtollawal"
-                                                            id="SaldoEtollawal_hidden"
-                                                            value="{{ old('SaldoEtollawal', $spj->SaldoEtollawal) }}"
-                                                            title="Hanya angka yang diperbolehkan">
+                                                            id="SaldoEtollawal_{{ $index }}_hiddens"
+                                                            value="{{ old('SaldoEtollawal', $spj->SaldoEtollawal) }}">
+                                                        @error('SaldoEtollawal')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
+                                                <!-- Saldo E-toll Akhir -->
                                                 <div class="form-group row mb-3">
-                                                    <label for="SaldoEtollakhir_{{ $spj->id_sj }}"
-                                                        class="col-sm-4 col-form-label form">Saldo E-toll Akhir</label>
+                                                    <label for="SaldoEtollakhir_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        Saldo E-toll Akhir
+                                                    </label>
                                                     <div class="col-sm-8">
-                                                        {{-- <input type="text" name="SaldoEtollakhir"
-                                                            id="SaldoEtollakhir_{{ $spj->id_sj }}"
-                                                            value="{{ old('SaldoEtollakhir', $spj->SaldoEtollakhir) }}"
-                                                            class="form-control"> --}}
-                                                        <input type="text" id="SaldoEtollakhir"
+                                                        <input type="text" id="SaldoEtollakhir_{{ $index }}"
                                                             class="form-control currency-input"
-                                                            placeholder="Masukkan saldo akhir E toll" required>
+                                                            placeholder="Masukkan saldo akhir E-toll"
+                                                            value="{{ old('SaldoEtollakhir', $spj->SaldoEtollakhir) }}">
                                                         <input type="hidden" name="SaldoEtollakhir"
-                                                            id="SaldoEtollakhir_hidden"
-                                                            value="{{ old('SaldoEtollakhir', $spj->SaldoEtollakhir) }}"
-                                                            title="Hanya angka yang diperbolehkan">
+                                                            id="SaldoEtollakhir_{{ $index }}_hiddens"
+                                                            value="{{ old('SaldoEtollakhir', $spj->SaldoEtollakhir) }}">
+                                                        @error('SaldoEtollakhir')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
+
                                                 </div>
 
                                                 <div class="form-group row mb-3">
                                                     <label for="PenggunaanToll_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Penggunaan Toll</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" id="PenggunaanToll"
+                                                        <input type="text" id="PenggunaanToll_{{ $index }}"
                                                             class="form-control currency-input"
-                                                            placeholder="Masukkan Penggunaan toll" required>
+                                                            placeholder="Masukkan saldo awal E-toll"
+                                                            value="{{ old('PenggunaanToll', $spj->PenggunaanToll) }}">
                                                         <input type="hidden" name="PenggunaanToll"
-                                                            id="PenggunaanToll_hidden"
-                                                            value="{{ old('PenggunaanToll', $spj->PenggunaanToll) }}"
-                                                            title="Hanya angka yang diperbolehkan">
-                                                        {{-- <input type="text" name="PenggunaanToll"
-                                                            id="PenggunaanToll_{{ $spj->id_sj }}"
-                                                            value="{{ old('PenggunaanToll', $spj->PenggunaanToll) }}"
-                                                            class="form-control"> --}}
+                                                            id="PenggunaanToll_{{ $index }}_hiddens"
+                                                            value="{{ old('PenggunaanToll', $spj->PenggunaanToll) }}">
+                                                        @error('PenggunaanToll')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row mb-3">
                                                     <label
-                                                        for="uanglainlain_{{ $spj->id_sj }}
-                                                "
+                                                        for="uanglainlain_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Uang Lain-lain</label>
                                                     <div class="col-sm-8">
-                                                        {{-- <input type="text" name="uanglainlain"
-                                                            id="uanglainlain_{{ $spj->id_sj }}"
-                                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}"
-                                                            class="form-control"> --}}
-                                                        <input type="text" id="uanglainlain"
+                                                        <input type="text" id="uanglainlain_{{ $index }}"
                                                             class="form-control currency-input"
-                                                            placeholder="Masukkan Uang lain-lain" required>
+                                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}">
                                                         <input type="hidden" name="uanglainlain"
-                                                            id="uanglainlain_hidden"
-                                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}"
-                                                            title="Hanya angka yang diperbolehkan">
+                                                            id="uanglainlain_{{ $index }}_hiddens"
+                                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}">
+                                                        @error('uanglainlain')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
@@ -640,58 +675,67 @@
                                                     <label for="uangmakan_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Uang Makan</label>
                                                     <div class="col-sm-8">
-                                                        {{-- <input type="text" name="uangmakan"
-                                                            id="uangmakan_{{ $spj->id_sj }}"
-                                                            value="{{ old('uangmakan', $spj->uangmakan) }}"
-                                                            class="form-control"> --}}
-                                                        <input type="text" id="uangmakan"
+                                                        <input type="text" id="uangmakan_{{ $index }}"
                                                             class="form-control currency-input"
-                                                            placeholder="Masukkan Uang Makan" required>
-                                                        <input type="hidden" name="uangmakan" id="uangmakan_hidden"
-                                                            value="{{ old('uangmakan', $spj->uangmakan) }}"
-                                                            title="Hanya angka yang diperbolehkan">
+                                                            value="{{ old('uangmakan', $spj->uangmakan) }}">
+                                                        <input type="hidden" name="uangmakan"
+                                                            id="uangmakan_{{ $index }}_hiddens"
+                                                            value="{{ old('uangmakan', $spj->uangmakan) }}">
+                                                        @error('uangmakan')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
 
-
+                                            <!-- Kolom Kanan -->
                                             <div class=" col-md-6">
                                                 <div class="form-group">
                                                     <a href="{{ route('bbm.index', $spj->id_spj) }}"
                                                         class="btn btn-primary mb-4"> <i class='bx bx-gas-pump'> </i>
                                                         Konsumsi
                                                         BBM</a>
-                                                        <a href="{{ route('pengeluaran.index', $spj->id_spj) }}"
-                                                            class="btn btn-primary mb-4"> <i class='bx bx-gas-pump'> </i>
-                                                            Pengeluaran Uang Saku</a>
+                                                    <a href="{{ route('pengeluaran.index', $spj->id_spj) }}"
+                                                        class="btn btn-primary mb-4"> <i class='bx bx-gas-pump'> </i>
+                                                        Pengeluaran Uang Saku</a>
 
                                                 </div>
                                                 <div class="form-group row mb-3">
                                                     <label for="sisabbm_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Sisa BBM</label>
+                                                    
                                                     <div class="col-sm-8">
-                                                        <input type="text" name="sisabbm"
-                                                            id="sisabbm_{{ $spj->id_sj }}"
-                                                            placeholder="Masukkan Sisa BBM"
-                                                            value="{{ old('sisabbm', $spj->sisabbm) }}"
-                                                            class="form-control" title="Harus berupa angka">
+                                                        <input type="text" id="sisabbm_{{ $index }}"
+                                                            class="form-control currency-input"
+                                                            value="{{ old('sisabbm', $spj->sisabbm) }}">
+                                                        <input type="hidden" name="sisabbm"
+                                                            id="sisabbm_{{ $index }}_hiddens"
+                                                            value="{{ old('sisabbm', $spj->sisabbm) }}">
+                                                        @error('sisabbm')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row mb-3">
                                                     <label for="totalisibbm_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Total Isi BBM</label>
-                                                    <div class="col-sm-8">
-                                                        {{-- <input type="text" name="totalisibbm"
+                                                    {{-- <div class="col-sm-8">
+                                                        <input type="text" name="totalisibbm"
                                                             id="totalisibbm_{{ $spj->id_sj }}"
                                                             value="{{ old('totalisibbm', $spj->totalisibbm) }}"
-                                                            class="form-control"> --}}
-                                                        <input type="text" id="totalisibbm"
+                                                            class="form-control">
+                                                    </div> --}}
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="totalisibbm_{{ $index }}"
                                                             class="form-control currency-input"
-                                                            placeholder="Masukkan total isi bbm" required>
-                                                        <input type="hidden" name="totalisibbm" id="totalisibbm_hidden"
-                                                            value="{{ old('totalisibbm', $spj->totalisibbm) }}"
-                                                            title="Hanya angka yang diperbolehkan">
+                                                            value="{{ old('totalisibbm', $spj->totalisibbm) }}">
+                                                        <input type="hidden" name="totalisibbm"
+                                                            id="totalisibbm_{{ $index }}_hiddens"
+                                                            value="{{ old('totalisibbm', $spj->totalisibbm) }}">
+                                                        @error('totalisibbm')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
@@ -699,48 +743,47 @@
                                                     <label for="sisasaku_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Sisa Saku</label>
                                                     <div class="col-sm-8">
-                                                        {{-- <input type="text" name="sisasaku"
-                                                            id="sisasaku_{{ $spj->id_sj }}"
-                                                            value="{{ old('sisasaku', $spj->sisasaku) }}"
-                                                            class="form-control"> --}}
-                                                        <input type="text" id="sisasaku"
+                                                        <input type="text" id="sisasaku_{{ $index }}"
                                                             class="form-control currency-input"
-                                                            placeholder="Masukkan Sisa Saku" required>
-                                                        <input type="hidden" name="sisasaku" id="sisasaku_hidden"
-                                                            value="{{ old('sisasaku', $spj->sisasaku) }}"
-                                                            title="Hanya angka yang diperbolehkan">
+                                                            value="{{ old('sisasaku', $spj->sisasaku) }}">
+                                                        <input type="hidden" name="sisasaku"
+                                                            id="sisasaku_{{ $index }}_hiddens"
+                                                            value="{{ old('sisasaku', $spj->sisasaku) }}">
+                                                        @error('sisasaku')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row mb-3">
                                                     <label for="totalsisa_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Total Sisa</label>
+                                                    
                                                     <div class="col-sm-8">
-                                                        {{-- <input type="text" name="totalsisa"
-                                                            id="totalsisa_{{ $spj->id_sj }}"
-                                                            value="{{ old('totalsisa', $spj->totalsisa) }}"
-                                                            class="form-control"> --}}
-                                                        <input type="text" id="totalsisa"
+                                                        <input type="text" id="totalsisa_{{ $index }}"
                                                             class="form-control currency-input"
-                                                            placeholder="Masukkan Total Sisa" required>
-                                                        <input type="hidden" name="totalsisa" id="totalsisa_hidden"
-                                                            value="{{ old('totalsisa', $spj->totalsisa) }}"
-                                                            title="Hanya angka yang diperbolehkan">
+                                                            value="{{ old('totalsisa', $spj->totalsisa) }}">
+                                                        <input type="hidden" name="totalsisa"
+                                                            id="totalsisa_{{ $index }}_hiddens"
+                                                            value="{{ old('totalsisa', $spj->totalsisa) }}">
+                                                        @error('totalsisa')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-10 offset-sm-2 d-flex justify-content-end">
-                                            <button type="submit" onclick="checkForm()"
-                                                class="btn btn-primary">Update</button>
+                                        <!-- Tombol Submit -->
+                                        <div class="d-flex justify-content-end mt-3">
+                                            <button type="submit" class="btn btn-primary">Update</button>
                                         </div>
                                     </form>
                                     <hr>
                                 @endforeach
-
                             </div>
                         </div>
+
 
 
 
@@ -856,62 +899,6 @@
         // Set min saat halaman pertama kali dimuat
         window.addEventListener('load', setMinKepulangan);
     </script>
-
-
-    {{-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const jumlahArmadaInput = document.getElementById('jumlah_armada');
-        const nilaiKontrak1 = document.getElementById('nilai_kontrak1');
-        const nilaiKontrak2 = document.getElementById('nilai_kontrak2');
-        const biayaTambahan = document.getElementById('biaya_tambahan');
-        const totalBiaya = document.getElementById('total_biaya');
-        const totalBiayaHidden = document.getElementById('total_biaya_hidden');
-        const uangMuka = document.getElementById('uang_muka');
-        const sisaPembayaran = document.getElementById('sisa_pembayaran');
-        const sisaPembayaranHidden = document.getElementById('sisa_pembayaran_hidden');
-
-        function calculateTotal() {
-            const kontrak1 = parseFloat(nilaiKontrak1.value.replace(/[^\d]/g, '')) || 0;
-            const kontrak2 = parseFloat(nilaiKontrak2.value.replace(/[^\d]/g, '')) || 0;
-            const tambahan = parseFloat(biayaTambahan.value.replace(/[^\d]/g, '')) || 0;
-
-            const total = kontrak1 + kontrak2 + tambahan;
-            totalBiaya.value = formatToRupiah(total.toString());
-            totalBiayaHidden.value = total;
-
-            calculateSisa(total);
-        }
-
-        function calculateSisa(total) {
-            const uangMukaValue = parseFloat(uangMuka.value.replace(/[^\d]/g, '')) || 0;
-            const sisa = total - uangMukaValue;
-            sisaPembayaran.value = formatToRupiah(sisa.toString());
-            sisaPembayaranHidden.value = sisa;
-        }
-
-    function formatToRupiah(angka) {
-            const isNegative = parseFloat(angka) < 0; // Cek apakah nilai negatif
-            let numberString = angka.replace(/[^\d]/g, '').toString();
-            let sisa = numberString.length % 3;
-            let rupiah = numberString.substr(0, sisa);
-            let ribuan = numberString.substr(sisa).match(/\d{3}/g);
-
-            if (ribuan) {
-                rupiah += (sisa ? '.' : '') + ribuan.join('.');
-            }
-
-            return (isNegative ? '-Rp ' : 'Rp ') + rupiah;
-        }
-
-
-        [nilaiKontrak1, nilaiKontrak2, biayaTambahan, uangMuka].forEach(input => {
-            input.addEventListener('input', calculateTotal);
-        });
-
-        // Initial calculation on load
-        calculateTotal();
-    });
-</script> --}}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1041,6 +1028,8 @@
         });
     </script>
 
+
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const tabs = document.querySelectorAll('.nav-link');
@@ -1066,29 +1055,6 @@
         });
     </script>
 
-
-    @if (session('success'))
-        <div id="successToast" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
-            <div class="bs-toast toast show bg-success" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <div class="me-auto fw-semibold"> ✓ Data Pesanan</div>
-                </div>
-                <div class="toast-body">
-                    {{ session('success') }}
-                </div>
-            </div>
-        </div>
-
-        <!-- Script untuk menghilangkan toast setelah beberapa detik -->
-        <script>
-            setTimeout(function() {
-                var toastElement = document.getElementById('successToast');
-                if (toastElement) {
-                    toastElement.style.display = 'none'; // Menghilangkan toast
-                }
-            }, 2500);
-        </script>
-    @endif
 
     <!-- Toast HTML -->
     <div id="emptyToast" style="position: fixed; top: 20px; right: 20px; z-index: 1050; display: none;">
@@ -1124,12 +1090,192 @@
                 // Hide toast after a few seconds
                 setTimeout(() => {
                     toastElement.style.display = 'none';
-                }, 2500);
+                }, 2000);
             } else {
                 form.submit();
             }
         }
     </script>
+
+    <script>
+        // Fungsi untuk Memformat Input sebagai Rupiah
+        function formatInputRupiah(inputElement, hiddensElement) {
+            inputElement.addEventListener('input', function() {
+                const formattedValue = convertToRupiah(this.value);
+                hiddensElement.value = formattedValue.replace(/[^\d]/g, ''); // Set hiddens input ke angka saja
+                inputElement.value = formattedValue;
+            });
+
+            // Set nilai awal jika ada
+            const initialValue = hiddensElement.value;
+            if (initialValue) {
+                inputElement.value = convertToRupiah(initialValue);
+            }
+        }
+
+        // Fungsi untuk Mengubah Angka Menjadi Format Rupiah
+        function convertToRupiah(angka) {
+            let numberString = angka.replace(/[^\d]/g, '').toString();
+            let sisa = numberString.length % 3;
+            let rupiah = numberString.substr(0, sisa);
+            let ribuan = numberString.substr(sisa).match(/\d{3}/g);
+
+            if (ribuan) {
+                rupiah += (sisa ? '.' : '') + ribuan.join('.');
+            }
+
+            return 'Rp ' + rupiah;
+        }
+
+        // Inisialisasi Semua Input dengan Kelas "currency-input"
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.currency-input').forEach(input => {
+                const hiddensInputId = input.id + '_hiddens';
+                const hiddensInput = document.getElementById(hiddensInputId);
+                if (hiddensInput) {
+                    formatInputRupiah(input, hiddensInput);
+                }
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script>
+        $(document).ready(function () {
+            $(document).on('submit', '.form-update', function (e) {
+                e.preventDefault(); // Mencegah refresh halaman
+    
+                const form = $(this);
+                const formData = form.serialize();
+                const type = form.data('type'); // Ambil tipe dokumen (SP, SJ, SPJ)
+                const id = form.data('id'); // Ambil ID dokumen
+                const url = form.attr('action'); // URL endpoint
+    
+                // Kirim AJAX
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Tampilkan pesan sukses
+                        alert(`${type} berhasil diupdate!`);
+    
+                        // Perbarui data pada halaman tanpa refresh
+                        $(`#data-${type}-${id}`).html(response.html);
+                    },
+                    error: function (xhr) {
+                        // Tangani error
+                        alert(`Gagal mengupdate ${type}.`);
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script> --}}
+    {{-- <script>
+        $(document).ready(function () {
+            $(document).on('submit', '.form-update', function (e) {
+                e.preventDefault(); // Mencegah refresh halaman
+    
+                const form = $(this);
+                const formData = form.serialize();
+                const type = form.data('type'); // Ambil tipe dokumen (SP, SJ, SPJ)
+                const id = form.data('id'); // Ambil ID dokumen
+                const url = form.attr('action'); // URL endpoint
+    
+                // Kirim AJAX
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Tampilkan pesan sukses
+                        $('body').append(`
+                            <div id="successToast" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                                <div class="bs-toast toast show bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                        <div class="me-auto fw-semibold"> ✓ Data ${type}</div>
+                                    </div>
+                                    <div class="toast-body">
+                                        Data ${type} berhasil diupdate!
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+    
+                        // Hilangkan toast setelah beberapa detik
+                        setTimeout(function() {
+                            var toastElement = document.getElementById('successToast');
+                            if (toastElement) {
+                                toastElement.style.display = 'none'; // Menghilangkan toast
+                            }
+                        }, 600);
+    
+                        // Perbarui data pada halaman tanpa refresh (Opsional jika ingin menampilkan data baru)
+                        $(`#data-${type}-${id}`).html(response.html);
+                    },
+                    error: function (xhr) {
+                        alert(`Gagal mengupdate ${type}.`);
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+     --}}
+     <script>
+        $(document).ready(function () {
+            $(document).on('submit', '.form-update', function (e) {
+                e.preventDefault();
+    
+                const form = $(this);
+                const formData = form.serialize();
+                const type = form.data('type'); // Ambil tipe dokumen (SP, SJ, SPJ)
+                const id = form.data('id'); // Ambil ID dokumen
+                const url = form.attr('action'); // URL endpoint
+    
+                // Kirim AJAX
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Hapus toast lama jika ada
+                        $('body').find('#successToast').remove();
+    
+                        // Tampilkan toast baru
+                        $('body').append(`
+                            <div id="successToast" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
+                                <div class="bs-toast toast show bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                        <div class="me-auto fw-semibold"> ✓ Data ${type}</div>
+                                    </div>
+                                    <div class="toast-body">
+                                        Data ${type} berhasil diupdate!
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+    
+                        // Hilangkan toast setelah beberapa detik
+                        setTimeout(function() {
+                            var toastElement = document.getElementById('successToast');
+                            if (toastElement) {
+                                toastElement.style.display = 'none'; // Menghilangkan toast
+                            }
+                        }, 2500);
+    
+                        // Perbarui data pada halaman tanpa refresh (Opsional jika ingin menampilkan data baru)
+                        $(`#data-${type}-${id}`).html(response.html);
+                    },
+                    error: function (xhr) {
+                        alert(`Gagal mengupdate ${type}.`);
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    
 @endsection
 
 @include('main_owner')

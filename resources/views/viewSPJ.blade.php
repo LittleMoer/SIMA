@@ -56,121 +56,72 @@
         input[type="time"],
         textarea,
         select {
-            width: 100%;
-            border: none;
-            padding: 3px;
-            /* Kurangi padding */
-            box-sizing: border-box;
-            font-size: 0.8em;
-            /* Kurangi ukuran font */
-        }
+        background: none;
+    }
+    .SK {
+        margin-top: 2px; /* Kurangi margin */
+    }
+    .signature-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px; /* Kurangi margin */
+    }
+    .signatureManajemen, .signaturePemesan {
+        text-align: left;
+        font-size: 1em; /* Kurangi ukuran font */
+    }
+    .small-text {
+        font-size: 0.6em; /* Kurangi ukuran font */
+        margin-bottom: 2px; /* Atur jarak antar item sesuai keinginan */
+        padding-bottom: 0; /* Tambahkan jika ingin meniadakan padding bawah */
+    }
+    ul {
+        list-style-type: disc;
+        padding-left: 15px; /* Kurangi padding */
+    }
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid black;
+        padding-bottom: 5px; 
+        margin-bottom: 8px; 
+    }
+    .logo {
+        width: 100px; /* Sesuaikan ukuran logo */
+    }
+    .company-info {
+        text-align: left;
+    }
+    .company-info h1 {
+        margin: 0;
+        font-size: 1.4em; /* Kurangi ukuran font */
+    }
+    .company-info p {
+        margin: 0;
+        font-size: 0.8em; /* Kurangi ukuran font */
+        line-height: 1.4; 
+    }
+    .order-title {
+        text-align: center;
+    }
+    .order-title h5 {
+        color: black;
+        margin-top: 5px;
+        /* Jarak dari elemen sebelumnya */
 
-        textarea {
-            resize: vertical;
-        }
+    }
 
-        select {
-            background: none;
-        }
+    .order-title p {
+        margin-bottom: 1px;
+        
+        /* Jarak ke elemen <p> */
+    }
 
-        .SK {
-            margin-top: 8px;
-            /* Kurangi margin */
-        }
+    .gambar-hitam {
+        filter: grayscale(100%);
+    }
 
-        .signature-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 12px;
-            /* Kurangi margin */
-        }
-
-        .signatureManajemen,
-        .signaturePemesan {
-            text-align: left;
-            font-size: 0.8em;
-            /* Kurangi ukuran font */
-        }
-
-        .small-text {
-            font-size: 0.6em;
-            /* Kurangi ukuran font */
-        }
-
-        ul {
-            list-style-type: disc;
-            padding-left: 15px;
-            /* Kurangi padding */
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid black;
-            padding-bottom: 5px;
-            margin-bottom: 8px;
-        }
-
-        .logo {
-            width: 130px;
-            /* Sesuaikan ukuran logo */
-        }
-
-        .company-info {
-            text-align: left;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            /* Menyelaraskan item secara vertikal */
-            border-bottom: 2px solid black;
-            padding-bottom: 5px;
-            margin-bottom: 8px;
-        }
-
-        .logo {
-            width: 130px;
-            /* Sesuaikan ukuran logo */
-        }
-
-        .company-info {
-            text-align: left;
-            /* Menambahkan jarak antara logo dan informasi perusahaan */
-        }
-
-        .company-info h1 {
-            margin: 0;
-            font-size: 1.5em;
-            /* Kurangi ukuran font */
-        }
-
-        .company-info p {
-            margin: 0;
-            font-size: 0.7em;
-            /* Kurangi ukuran font */
-        }
-
-        .order-title {
-            text-align: center;
-        }
-
-        .gambar-hitam {
-            filter: grayscale(100%);
-        }
-
-        .order-title h5 {
-            color: black;
-            margin-top: 20px;
-            /* Jarak dari elemen sebelumnya */
-
-        }
-
-        .order-title p {
-            margin-bottom: 10px;
-            /* Jarak ke elemen <p> */
-        }
 
         @media print {
             #element-to-print {
@@ -290,7 +241,7 @@
             <table>
                 <div class="header">
                     <div class="logo">
-                        <img src="https://i.ibb.co.com/dMHB2bC/sima.png" alt="Logo" width="200"
+                        <img src="https://i.ibb.co.com/dMHB2bC/sima.png" alt="Logo" width="160"
                             class="gambar-hitam">
                     </div>
                     <div class="company-info">
@@ -315,9 +266,9 @@
                     </tr>
                     <tr>
                         <td>Driver</td>
-                        <td> </td>
+                        <td> {{ $sj->driver}} </td>
                         <td>Co Driver</td>
-                        <td> - </td>
+                        <td> {{ $sj->codriver}} </td>
                     </tr>
 
 
@@ -327,46 +278,52 @@
             </table>
             <table style="border: none; border-collapse: collapse;">
                 <tr>
-                    <td style="width: 200px;  border: none;">Tujuan</td>
-                    <td style="border: none;"> <span class="line"></span>: {{ $sp->tujuan }}</td>
+                    <td style="border: none; width: 200px; line-height: 1; padding: 2px;">Tujuan</td>
+                    <td style="border: none; line-height: 1; padding: 2px;">
+                        <span class="line"></span>: {{ $sp->tujuan }}
+                    </td>
                 </tr>
                 <tr>
-                    <td style="width: 200px;  border: none;">Tanggal dan jam keberangkatan</td>
-                    <td style="border: none;"><span class="line"></span>: {{ $sp->tgl_keberangkatan }},
-                        {{ $sp->jam_keberangkatan }}</td>
+                    <td style="border: none; width: 200px; line-height: 1; padding: 2px;">Tanggal dan jam keberangkatan</td>
+                    <td style="border: none; line-height: 1; padding: 2px;">
+                        <span class="line"></span>: {{ $sp->tgl_keberangkatan }}, {{ $sp->jam_keberangkatan }}
+                    </td>
                 </tr>
                 <tr>
-                    <td style="width: 200px; border: none;">Tanggal dan jam Tiba</td>
-                    <td style="border: none;"><span class="line"></span>: {{ $sp->tgl_kepulangan }},
-                        {{ $sp->jam_kepulangan }}</td>
+                    <td style="border: none; width: 200px; line-height: 1; padding: 2px;">Tanggal dan jam tiba</td>
+                    <td style="border: none; line-height: 1; padding: 2px;">
+                        <span class="line"></span>: {{ $sp->tgl_kepulangan }}, {{ $sp->jam_kepulangan }}
+                    </td>
                 </tr>
             </table>
+            
+            
             <div style="display: flex; gap: 20px;">
                 <!-- Tabel Kiri -->
                 <table style="width: 50%; border-collapse: collapse;">
                     <tr>
                         <td style="border: 1px solid black; ">Saldo awal E-toll</td>
-                        <td style="border: 1px solid black; ">{{ $spj->SaldoEtollawal }}</td>
+                        <td style="border: 1px solid black; ">@currency($spj->SaldoEtollawal)</td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Saldo akhir E-toll</td>
-                        <td style="border: 1px solid black; ">{{ $spj->SaldoEtollakhir }}</td>
+                        <td style="border: 1px solid black; ">@currency($spj->SaldoEtollakhir)</td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Penggunaan Toll</td>
-                        <td style="border: 1px solid black; ">{{ $spj->PenggunaanToll }}</td>
+                        <td style="border: 1px solid black; ">@currency($spj->PenggunaanToll)</td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Uang Lain-lain</td>
-                        <td style="border: 1px solid black; ">{{ $spj->uanglainlain }}</td>
+                        <td style="border: 1px solid black; ">@currency($spj->uanglainlain)</td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Uang Makan</td>
-                        <td style="border: 1px solid black; ">{{ $spj->uangmakan }}</td>
+                        <td style="border: 1px solid black; ">@currency($spj->uangmakan)</td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Total BBM</td>
-                        <td style="border: 1px solid black; ">{{ $spj->totalisibbm }}</td>
+                        <td style="border: 1px solid black; ">@currency($spj->totalisibbm)</td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Sisa BBM</td>
@@ -374,70 +331,64 @@
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Sisa Saku</td>
-                        <td style="border: 1px solid black; ">{{ $spj->sisasaku }}</td>
+                        <td style="border: 1px solid black; ">@currency($spj->sisasaku)</td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Total Sisa</td>
-                        <td style="border: 1px solid black; "> {{ $spj->totalsisa }}</td>
+                        <td style="border: 1px solid black; "> @currency($spj->totalsisa)</td>
                     </tr>
                 </table>
 
                 <!-- Tabel Kanan -->
-                @if ($bbms->count())
-                    <table style="width: 50%; border-collapse: collapse;">
-                        <thead>
+                @if($bbms->count())
+                <table style="width: 50%; border-collapse: collapse; font-size: 0.8em; white-space: nowrap;">
+                    <thead>
+                        <tr>
+                            <td style="border: 1px solid black; padding: 4px;">Pengisian BBM</td>
+                            <td style="border: 1px solid black; padding: 4px;">Tanggal</td>
+                            <td style="border: 1px solid black; padding: 4px;">Lokasi</td>
+                            <td style="border: 1px solid black; padding: 4px;">Total</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($bbms as $bbm)
                             <tr>
-                                <td style="border: 1px solid black;">Pengisian BBM</td>
-                                <td style="border: 1px solid black;">Tanggal</td>
-                                <td style="border: 1px solid black;">Lokasi</td>
-                                <td style="border: 1px solid black;">Total</td>
+                                <td style="border: 1px solid black; padding: 4px;">{{ $bbm->isiBBM }}</td>
+                                <td style="border: 1px solid black; padding: 4px;">{{ $bbm->tanggal }}</td>
+                                <td style="border: 1px solid black; padding: 4px;">{{ $bbm->lokasiisi }}</td>
+                                <td style="border: 1px solid black; padding: 4px;">@currency($bbm->totalbayar)</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($bbms->take(4) as $bbm)
-                                <!-- hanya menampilkan 4 baris -->
-                                <tr>
-                                    <td style="border: 1px solid black;">{{ $bbm->isiBBM }}</td>
-                                    <td style="border: 1px solid black;">{{ $bbm->tanggal }}</td>
-                                    <td style="border: 1px solid black;">{{ $bbm->lokasiisi }}</td>
-                                    <td style="border: 1px solid black;">{{ $bbm->totalbayar }}</td>
-                                </tr>
-                            @endforeach
+                        @endforeach
+            
+                        @if($pengeluaran)
+                            <tr>
+                                <td rowspan="3" style="border: 1px solid black; padding: 4px; vertical-align: top;">
+                                    Pengeluaran<br> Uang Saku
+                                </td>
+                                <td colspan="3" style="border: 1px solid black; padding: 4px;">
+                                    @currency($pengeluaran->nominal ?? '-')
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="border: 1px solid black; padding: 4px;">
+                                    {{ $pengeluaran->catatan ?? '-' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="border: 1px solid black; padding: 4px;">
+                                    {{ $pengeluaran->deskripsi ?? '-' }}
+                                </td>
+                            </tr>
+                       
+                        @endif
+                    </tbody>
+                </table>
+            @endif
+            
 
-                            <!-- Jika data kurang dari 4, tambahkan baris kosong -->
-                            @for ($i = $bbms->count(); $i < 4; $i++)
-                                <tr>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                </tr>
-                            @endfor
-                            <tr>
-                                <!-- Kolom pertama, merge 3 baris -->
-                                <td class="rowspan" rowspan="3">Pengeluaran Uang Saku</td>
-                                <!-- Baris pertama kolom kedua -->
-                                <td colspan="4">Makan Siang</td>
-                            </tr>
-                            <tr>
-                                <!-- Baris kedua kolom kedua -->
-                                <td colspan="4">Transportasi</td>
-                            </tr>
-                            <tr>
-                                <!-- Baris ketiga kolom kedua -->
-                                <td colspan="4">Pembelian Alat Tulis</td>
-                            </tr>
-                        </tbody>
 
-                    </table>
 
-                    {{-- <!-- Bagian untuk Pengeluaran Uang Saku -->
-                    <td colspan="4" class="section-title"
-                        style="text-align: center; font-weight: bold; padding-top: 10px;">Pengeluaran Uang Saku</td> --}}
-                @endif
-               
-                
-{{-- 
+                {{-- 
                 </tr>
                 <tr>
                     <td colspan="4" style="height: 30px;"></td>
@@ -458,18 +409,18 @@
 
             <div class="signature-container">
                 <div class="signaturePemesan">
-                    Pemesan<br><br><br><br><br>
-                    (____________________)
+                    Pemesan<br><br><br>
+                    ____________________
                 </div>
                 <div class="signatureManajemen">
                     Semarang,<br>
-                    Manajemen JSP<br><br><br><br><br>
-                    (____________________)
+                    Manajemen JSP<br><br><br>
+                    ____________________
                 </div>
             </div>
             <div class="SK">
                 <strong>Syarat dan Ketentuan</strong>
-                <br>
+                
                 <ul class="small-text">
                     <li>Semua pembayaran melalui rekening Bank Mandiri an JAGAD SIMA PERKASYA No.rek 1350019116597.</li>
                     <li>Pemesan/penyewa wajib membayarkan uang muka sebesar 25% dari total nilai kontrak.</li>

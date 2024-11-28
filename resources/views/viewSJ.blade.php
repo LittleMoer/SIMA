@@ -11,142 +11,135 @@
 <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
 <link rel="stylesheet" href="{{ asset('sneat/assets/css/demo.css') }}" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
-    <style>
-        body {
-            background-color: white;
-            /* font-family: 'Montserrat', sans-serif; */
-            margin: 0;
-            padding: 0;
-            color: black;
-        }
+<style>
+    body {
+        background-color: white;
+        /* font-family: 'Montserrat', sans-serif; */
+        margin: 0;
+        padding: 0;
+        color: black;
+    }
+    #element-to-print {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .table-container {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1.2em; /* Kurangi ukuran font untuk fit di halaman */
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 5px;
+        text-align: left;
+    }
+    th {
+        background-color: black;
+        color: white;
+    }
+    input[type="text"], input[type="date"], input[type="time"], textarea, select {
+        width: 100%;
+        border: none;
+        padding: 3px; /* Kurangi padding */
+        box-sizing: border-box;
+        font-size: 0.8em; /* Kurangi ukuran font */
+    }
+    textarea {
+        resize: vertical;
+    }
+    select {
+        background: none;
+    }
+    .SK {
+        margin-top: 5px; /* Kurangi margin */
+    }
+    .signature-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px; /* Kurangi margin */
+    }
+    .signatureManajemen, .signaturePemesan {
+        text-align: left;
+        font-size: 1em; /* Kurangi ukuran font */
+    }
+    .small-text {
+        font-size: 0.7em; /* Kurangi ukuran font */
+        margin-bottom: 2px; /* Atur jarak antar item sesuai keinginan */
+        padding-bottom: 0; /* Tambahkan jika ingin meniadakan padding bawah */
+    }
+    ul {
+        list-style-type: disc;
+        padding-left: 15px; /* Kurangi padding */
+    }
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid black;
+        padding-bottom: 5px; 
+        margin-bottom: 8px; 
+    }
+    .logo {
+        width: 100px; /* Sesuaikan ukuran logo */
+    }
+    .company-info {
+        text-align: left;
+    }
+    .company-info h1 {
+        margin: 0;
+        font-size: 1.4em; /* Kurangi ukuran font */
+    }
+    .company-info p {
+        margin: 0;
+        font-size: 0.8em; /* Kurangi ukuran font */
+        line-height: 1.4; 
+    }
+    .order-title {
+        text-align: center;
+    }
+    .order-title h5 {
+        color: black;
+        margin-top: 5px;
+        /* Jarak dari elemen sebelumnya */
+
+    }
+
+    .order-title p {
+        margin-bottom: 1px;
+        
+        /* Jarak ke elemen <p> */
+    }
+
+    .gambar-hitam {
+        filter: grayscale(100%);
+    }
+
+    @media print {
         #element-to-print {
             width: 100%;
-            box-sizing: border-box;
+            height: 100%;
+            overflow: hidden;
+            page-break-inside: avoid;
         }
-        .table-container {
-            width: 100%;
-            box-sizing: border-box;
+        @page {
+            size: A4;
+            margin: 0.5in;
         }
         table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8em; /* Kurangi ukuran font untuk fit di halaman */
+            font-size: 1em; /* Kurangi ukuran font */
         }
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-            text-align: left;
+        .header, .signature-container, .SK {
+            page-break-inside: avoid; /* Hindari pemisahan bagian penting saat print */
         }
-        th {
-            background-color: black;
-            color: white;
-        }
-        input[type="text"], input[type="date"], input[type="time"], textarea, select {
-            width: 100%;
-            border: none;
-            padding: 3px; /* Kurangi padding */
-            box-sizing: border-box;
-            font-size: 0.8em; /* Kurangi ukuran font */
-        }
-        textarea {
-            resize: vertical;
-        }
-        select {
-            background: none;
-        }
-        .SK {
-            margin-top: 8px; /* Kurangi margin */
-        }
-        .signature-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 12px; /* Kurangi margin */
-        }
-        .signatureManajemen, .signaturePemesan {
-            text-align: left;
-            font-size: 0.8em; /* Kurangi ukuran font */
-        }
-        .small-text {
-            font-size: 0.6em; /* Kurangi ukuran font */
-        }
-        ul {
-            list-style-type: disc;
-            padding-left: 15px; /* Kurangi padding */
-        }
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid black;
-            padding-bottom: 5px; 
-            margin-bottom: 8px; 
-        }
-        .logo {
-            width: 130px; /* Sesuaikan ukuran logo */
-        }
-        .company-info {
-            text-align: left;
-        }
-        .header {
-            display: flex;
-            align-items: center; /* Menyelaraskan item secara vertikal */
-            border-bottom: 2px solid black;
-            padding-bottom: 5px;
-            margin-bottom: 8px;
-        }
-        .logo {
-            width: 130px; /* Sesuaikan ukuran logo */
-        }
-        .company-info {
-            text-align: left; /* Menambahkan jarak antara logo dan informasi perusahaan */
-        }
-        
-        .company-info h1 {
-            margin: 0;
-            font-size: 1.5em; /* Kurangi ukuran font */
-        }
-        .company-info p {
-            margin: 0;
-            font-size: 0.7em; /* Kurangi ukuran font */
-        }
-        .order-title {
-            text-align: center;
-        }
-        .gambar-hitam {
-            filter: grayscale(100%);
-        }
-
-        .order-title h5 {
-            color: black;
-            margin-top: 20px; /* Jarak dari elemen sebelumnya */
-            
-            }
-        .order-title p {
-            margin-bottom: 10px; /* Jarak ke elemen <p> */
-            }
-
-        @media print {
-            #element-to-print {
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-                page-break-inside: avoid;
-            }
-            @page {
-                size: A4;
-                margin: 0.5in;
-            }
-            table {
-                font-size: 0.8em; /* Kurangi ukuran font */
-            }
-            .header, .signature-container, .SK {
-                page-break-inside: avoid; /* Hindari pemisahan bagian penting saat print */
-            }
-            .header, .signature-container, .SK {
-        margin-bottom: 5px; /* Kurangi margin bawah */
+        .header, .signature-container, .SK {
+    margin-bottom: 5px; /* Kurangi margin bawah */
+}
     }
-        }
-    </style>
+</style>
     <script>
         function toggleCustomMethod() {
             const select = document.getElementById('payment-method');
@@ -226,7 +219,7 @@
             <table>
                 <div class="header">
                     <div class="logo">
-                        <img src="https://i.ibb.co.com/dMHB2bC/sima.png" alt="Logo" width="200" class="gambar-hitam">
+                        <img src="https://i.ibb.co.com/dMHB2bC/sima.png" alt="Logo" width="160" class="gambar-hitam">
                     </div>
                     <div class="company-info">
                         <h1 style="color: black"><b>Your Transportation Solution</b></h1>
@@ -291,16 +284,16 @@
                     </tr>
                     <tr>
                         <td>Kasbon BBM</td>
-                        <td colspan="3">{{ $sj->kasbonbbm }}</td>
+                        <td colspan="3">@currency($sj->kasbonbbm)</td>
                     </tr>
                     <tr>
                         <td>Kasbon uang makan</td>
-                        <td colspan="3">{{ $sj->kasbonmakan }}</td>
+                        <td colspan="3">@currency($sj->kasbonmakan)</td>
                     </tr>
                     <tr>
                         <td>Lain-lain</td>
                         <td colspan="3">
-                            {{ $sj->lainlain}}
+                            @currency($sj->lainlain)
                         </td>
                     </tr>
                 </tbody>
@@ -308,13 +301,13 @@
     
             <div class="signature-container" >
                 <div class="signaturePemesan">
-                    Pemesan<br><br><br><br><br>
-                    (____________________)
+                    Pemesan<br><br><br><br>
+                    ____________________
                 </div>
                 <div class="signatureManajemen">
                     Semarang,<br>
-                    Manajemen JSP<br><br><br><br><br>
-                    (____________________)
+                    Manajemen JSP<br><br><br><br>
+                    ____________________
                 </div>
             </div>
             <div class="SK">

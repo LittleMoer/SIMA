@@ -28,7 +28,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.8em; /* Kurangi ukuran font untuk fit di halaman */
+            font-size: 1.2em; /* Kurangi ukuran font untuk fit di halaman */
         }
         th, td {
             border: 1px solid black;
@@ -53,7 +53,7 @@
             background: none;
         }
         .SK {
-            margin-top: 8px; /* Kurangi margin */
+            margin-top: 5px; /* Kurangi margin */
         }
         .signature-container {
             display: flex;
@@ -62,10 +62,12 @@
         }
         .signatureManajemen, .signaturePemesan {
             text-align: left;
-            font-size: 0.8em; /* Kurangi ukuran font */
+            font-size: 1em; /* Kurangi ukuran font */
         }
         .small-text {
-            font-size: 0.6em; /* Kurangi ukuran font */
+            font-size: 0.7em; /* Kurangi ukuran font */
+            margin-bottom: 2px; /* Atur jarak antar item sesuai keinginan */
+            padding-bottom: 0; /* Tambahkan jika ingin meniadakan padding bawah */
         }
         ul {
             list-style-type: disc;
@@ -80,22 +82,36 @@
             margin-bottom: 8px; 
         }
         .logo {
-            width: 150px; /* Sesuaikan ukuran logo */
+            width: 100px; /* Sesuaikan ukuran logo */
         }
         .company-info {
             text-align: left;
         }
         .company-info h1 {
             margin: 0;
-            font-size: 1.2em; /* Kurangi ukuran font */
+            font-size: 1.4em; /* Kurangi ukuran font */
         }
         .company-info p {
             margin: 0;
-            font-size: 0.7em; /* Kurangi ukuran font */
+            font-size: 0.8em; /* Kurangi ukuran font */
+            line-height: 1.4; 
         }
         .order-title {
             text-align: center;
         }
+        .order-title h5 {
+            color: black;
+            margin-top: 5px;
+            /* Jarak dari elemen sebelumnya */
+
+        }
+
+        .order-title p {
+            margin-bottom: 1px;
+            
+            /* Jarak ke elemen <p> */
+        }
+
         .gambar-hitam {
             filter: grayscale(100%);
         }
@@ -112,7 +128,7 @@
                 margin: 0.5in;
             }
             table {
-                font-size: 0.8em; /* Kurangi ukuran font */
+                font-size: 1em; /* Kurangi ukuran font */
             }
             .header, .signature-container, .SK {
                 page-break-inside: avoid; /* Hindari pemisahan bagian penting saat print */
@@ -240,7 +256,7 @@ function printPreview() {
             <table>
                 <div class="header">
                     <div class="logo">
-                        <img src="https://i.ibb.co.com/dMHB2bC/sima.png" alt="Logo" width="200" class="gambar-hitam">
+                        <img src="https://i.ibb.co.com/dMHB2bC/sima.png" alt="Logo" width="160" class="gambar-hitam">
                     </div>
                     <div class="company-info">
                         <h1 style="color: black"><b>Your Transportation Solution</b></h1>
@@ -292,27 +308,27 @@ function printPreview() {
                         <th rowspan="2">Jumlah Armada</th>
                         <td rowspan="2">{{ $sp->jumlah_armada }}</td>
                         <td>Nilai Kontrak 1</td>
-                        <td>{{ $sp->nilai_kontrak1 }}</td>
+                        <td>@currency($sp->nilai_kontrak1)</td>
                     </tr>
                     <tr>
                         <td>Nilai Kontrak 2</td>
-                        <td>{{ $sp->nilai_kontrak2 }}</td>
+                        <td>@currency($sp->nilai_kontrak2)</td>
                     </tr>
                     <tr>
                         <td>Biaya Tambahan</td>
-                        <td colspan="3">{{ $sp->biaya_tambahan }}</td>
+                        <td colspan="3">@currency($sp->biaya_tambahan)</td>
                     </tr>
                     <tr>
                         <td>Total Biaya</td>
-                        <td colspan="3">{{ $sp->total_biaya }}</td>
+                        <td colspan="3">@currency($sp->total_biaya)</td>
                     </tr>
                     <tr>
                         <td>Uang Muka</td>
-                        <td colspan="3">{{ $sp->uang_muka }}</td>
+                        <td colspan="3">@currency($sp->uang_muka)</td>
                     </tr>
                     <tr>
                         <td>Sisa Pembayaran</td>
-                        <td colspan="3">{{ $sp->sisa_pembayaran }}</td>
+                        <td colspan="3">@currency( $sp->sisa_pembayaran)</td>
                     </tr>
                     <tr>
                         <td>Metode Pembayaran</td>
@@ -329,13 +345,13 @@ function printPreview() {
     
             <div class="signature-container">
                 <div class="signaturePemesan">
-                    Pemesan<br><br><br><br>
-                    (____________________)
+                    Pemesan<br><br> <br><br>
+                    ______________________
                 </div>
                 <div class="signatureManajemen">
                     Semarang,<br>
-                    Manajemen JSP<br><br><br><br>
-                    (____________________)
+                    Manajemen JSP<br><br> <br>
+                    ______________________
                 </div>
             </div>
             <div class="SK">

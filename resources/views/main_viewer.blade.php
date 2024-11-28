@@ -53,22 +53,13 @@
                 </button>
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" href="{{ url('/admin/dashboard') }}">Home</a>
+                        <a class="nav-link fw-medium" href="{{ url('viewer/dashboard') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" href="{{ url('/pesanan') }}">Data Pesanan</a>
+                        <a class="nav-link fw-medium" href="{{ url('viewer/pesanan') }}">Data Pesanan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" href="{{ url('/calendar/monthly') }}">Jadwal</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="{{ url('/manajemen_akun') }}">Manajemen Akun</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="{{ url('/manajemen_armada') }}">Manajemen Crew</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="{{ url('/unit') }}">Unit Kendaraan</a>
+                        <a class="nav-link fw-medium" href="{{ url('viewer/calendar') }}">Jadwal</a>
                     </li>
                 </ul>
                 <!-- Menu wrapper: End -->
@@ -95,27 +86,17 @@
 
 
 
-    @yield('dashboard')
+    @yield('dashboard_viewer')
 
-    @yield('data_pesanan')
+    @yield('pesanan_viewer')
 
-    @yield('detail_pesanan')
+    @yield('detail_pesanan_viewer')
 
-    @yield('manajemen_akun')
+    @yield('bbm_viewer')
 
-    @yield('tambah_akun')
+    @yield('pengeluaran_viewer')
 
-    @yield('rekap_gaji_crew')
-
-    @yield('manajemen_armada')
-
-    @yield('bbm')
-    @yield('unit_avail')
-    @yield('unit_events')
-
-    @yield('pengeluaran')
-    @yield('unit')
-
+    @yield('viewer_jadwal')
 
     {{-- Hubungi diyan --}}
     @include('layouts.hubungi')
