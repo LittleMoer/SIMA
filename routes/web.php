@@ -133,10 +133,10 @@ Route::get('viewer/pesanan', [ViewerController::class, 'pesanan'])->name('viewer
 Route::get('viewer/pesanan/detail_pesanan/{id}', [ViewerController::class, 'detail'])->name('viewer.detail_pesanan');
 Route::get('viewer/calendar', [ViewerController::class, 'showMonthlyCalendar'])->name('viewer.calendar');
 //view data pesanan
+});
 Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
 Route::get('/viewSJ/{id}', [OrderController::class, 'viewSJ'])->name('viewSJ');
 Route::get('/viewSPJ/{id}', [OrderController::class, 'viewSPJ'])->name('viewSPJ');
-});
 
 Route::get('/viewSPJ/{id}', [OrderController::class, 'viewSPJ'])->name('viewSPJ');
 //Bus

@@ -60,7 +60,7 @@
                                         <span class="tf-icons bx bx-printer me-2"></span> Print SP
                                     </a>
 
-                                    <a href="https://wa.me/{{ '62' . ltrim($sp->no_telppn, '0') }}?text=Check%20this%20link:%20{{ urlencode(route('view', $sp->id_sp)) }}" 
+                                    <a href="https://wa.me/{{ '62' . ltrim($sp->no_telppn, '0') }}?text=Ini%20surat%20pemesanan%20Anda%20link:%20{{ urlencode(route('view', $sp->id_sp)) }}" 
                                         class="btn btn-success" 
                                         target="_blank">
                                         <span class="tf-icons bx bx-send me-2"></span> Send to WhatsApp

@@ -122,20 +122,33 @@ public function generate(Request $request)
     $namauser = Akun::where('id_akun', $idAkun)->get();
     $nama = $namauser->pluck('name')->toArray(); 
 
-    // Fetch SJ records for the given armada filtered by month, year, and driver/codriver names
-    $sjRecords = SJ::where('id_unit', $armada->id_unit)
-        ->whereMonth('created_at', $selectedMonth)
-        ->whereYear('created_at', $selectedYear)
-        ->where(function($query) use ($nama) {
-            $query->whereIn('driver', $nama)
-                  ->orWhereIn('codriver', $nama);
-        })
-        ->get();
 
-        RekapGajiCrew::where('id_armada', $request->id_armada)
-        ->where('bulan', $selectedMonth)
-        ->whereYear('tanggal', $selectedYear)
-        ->delete();
+    // // get all id from sj that has driver òr codriver name column equal to nama
+    // $sjRecordsGet = SJ::where('id_unit', $armada->id_unit)
+    //                 ->where('driver', $nama)
+    //                 ->orWhere('codriver', $nama)
+    //                 ->get();
+
+
+    // // from all that records, get all from sp table that has id_sp equal to id_sp from sj and selected month and year of tgl_keberangkatan
+    // $spRecords = SP::whereIn('id_sp', $sjRecordsGet->pluck('id_sp'))
+    //                 ->whereMonth('tgl_keberangkatan', $selectedMonth)
+    //                 ->whereYear('tgl_keberangkatan', $selectedYear)
+    //                 ->get();
+
+    // get from spRecords that has tgl_keberangkatan between selected month and year
+    $spRecords = SP::whereMonth('tgl_keberangkatan', $selectedMonth)
+                ->whereYear('tgl_keberangkatan', $selectedYear)
+                ->get(); 
+
+    // get all records from sj that has id_sp equal to id_sp from spRecords and driver and codriver name column equal to nama
+    $sjRecords = SJ::whereIn('id_sp', $spRecords->pluck('id_sp'))
+                    ->where('driver', $nama)
+                    ->orWhere('codriver', $nama)
+                    ->get();
+    
+// before generate clear rekapgajicrew table that has id_armada equal to id_armada from request
+    RekapGajiCrew::where('id_armada', $request->id_armada)->delete();
 
     if ($sjRecords->isEmpty()) {
         return redirect()->back()->withErrors('No SJ records found for the selected month, year, and drivers.');

@@ -511,7 +511,7 @@
         }
     </script>
 
-    <script>
+    <!-- <script>
         // Mendapatkan tanggal hari ini
         const today = new Date();
         const year = today.getFullYear();
@@ -538,7 +538,7 @@
                 this.value = ''; // Reset nilai jika tidak valid
             }
         });
-    </script>
+    </script> -->
 
 
 
