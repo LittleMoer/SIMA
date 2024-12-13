@@ -46,9 +46,9 @@ window.addEventListener('scroll', function() {
     <li class="nav-item">
       <a class="nav-link fw-medium" href="#landingFeatures">Tentang</a>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link fw-medium" href="#landingJadwal">Jadwal</a>
-    </li>
+    </li> --}}
     <li class="nav-item dropdown">
       <a class="nav-link fw-medium dropdown-toggle" href="#landingBus" id="busDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         Bus
@@ -63,9 +63,9 @@ window.addEventListener('scroll', function() {
     
   
     
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link fw-medium" href="#landingFAQ">Pertanyaan</a>
-    </li>
+    </li> --}}
     <li class="nav-item">
       <a class="nav-link fw-medium" href="#Kontak">Kontak</a>
     </li>
@@ -109,11 +109,11 @@ window.addEventListener('scroll', function() {
           {{-- <br class="d-none d-lg-block" /> --}}
           <h2 class="hero-sub-title h6 mb-4 pb-1">Sima Perkasya siap menemani perjalananmu
           </h2>
-          <div class="landing-hero-btn d-inline-block position-relative">
+          {{-- <div class="landing-hero-btn d-inline-block position-relative">
             <span class="hero-btn-item position-absolute d-none d-md-flex text-heading">Lihat Jadwal
               <img src="{{ asset('sneat/assets/img/sima/Join-community-arrow.png') }}" alt="tanda panah" class="scaleX-n1-rtl" /></span>
             <a href="#landingJadwal" class="btn btn-primary">Jadwal tersedia</a>
-          </div>
+          </div> --}}
         </div>
         <div id="heroDashboardAnimation" class="hero-animation-img">
           <a href="../vertical-menu-template/app-ecommerce-dashboard.html" target="_blank">
@@ -267,7 +267,7 @@ window.addEventListener('scroll', function() {
   <!-- Unit Bus: End -->
 
   <!-- Jadwal: Start -->
-  <section id="landingJadwal" class="section-py bg-body landing-jadwal">
+  {{-- <section id="landingJadwal" class="section-py bg-body landing-jadwal">
     <div class="container">
       <div class="text-center mb-3 pb-1">
         <span class="badge bg-label-primary">Jadwal Tersedia</span>
@@ -326,7 +326,7 @@ window.addEventListener('scroll', function() {
       </div>
     </div>
     
-  </section>
+  </section> --}}
   <!-- Jadwal: End -->
 
   <!-- Fun facts: Start -->
@@ -336,7 +336,7 @@ window.addEventListener('scroll', function() {
   <!-- Fun facts: End -->
 
   <!-- FAQ: Start -->
-  <section id="landingFAQ" class="section-py bg-body landing-faq">
+  {{-- <section id="landingFAQ" class="section-py bg-body landing-faq">
     <div class="container">
       <div class="text-center mb-3 pb-1">
         <span class="badge bg-label-primary">Pertanyaan Populer</span>
@@ -430,7 +430,7 @@ window.addEventListener('scroll', function() {
         </div>
       </div>
     </div>
-  </section>
+  </section> --}}
   <!-- FAQ: End -->
 
   <!-- Contact Us: Start -->
@@ -477,10 +477,11 @@ window.addEventListener('scroll', function() {
         <div class="col-lg-7">
           <div class="card">
             <div class="card-body">
-              <h4 class="mb-1">Kirim Email</h4>
-              <p class="mb-4"> Jika Anda ingin mengirimkan Email khusus untuk kami.
+              <h4 class="mb-1">Kirim WhatsApp</h4>
+              <input type="hidden" id="fileUrl" data-url="{{ asset('sneat/assets/img/sima/logo.png') }}">
+              <p class="mb-4"> Kirimkan pesanmu terhadap kami.
               </p>
-              <form>
+              {{-- <form>
                 <div class="row g-4">
                   <div class="col-md-6">
                     <label class="form-label" for="contact-form-fullname">Nama</label>
@@ -498,7 +499,23 @@ window.addEventListener('scroll', function() {
                     <button type="submit" class="btn btn-primary">Kirim</button>
                   </div>
                 </div>
+              </form> --}}
+              <form id="contact-form" onsubmit="sendToWhatsApp(event)">
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <label class="form-label" for="contact-form-fullname">Nama</label>
+                    <input type="text" class="form-control" id="contact-form-fullname" name="name" placeholder="Nama Anda" required />
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" for="contact-form-message">Pesan</label>
+                    <textarea id="contact-form-message" class="form-control" name="message" rows="9" placeholder="Tuliskan pesan Anda" required></textarea>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Kirim</button>
+                  </div>
+                </div>
               </form>
+              
             </div>
           </div>
         </div>
@@ -533,6 +550,28 @@ window.addEventListener('scroll', function() {
     passwordInput.addEventListener('input', updateButtonState);
   });
 </script>
+<script>
+  function sendToWhatsApp(event) {
+    event.preventDefault(); // Mencegah form dari reload halaman
+
+    // Ambil data dari form
+    const name = document.getElementById("contact-form-fullname").value;
+    const message = document.getElementById("contact-form-message").value;
+
+    // Nomor WhatsApp tujuan (format internasional tanpa 0 di awal)
+    const phoneNumber = "6283169251172"; // Ganti dengan nomor WhatsApp tujuan
+
+    // // Buat pesan yang akan dikirim
+    const text = `Halo, saya ${name}.%0A${message}`;
+
+    // // Redirect ke WhatsApp
+    const url = `https://wa.me/${phoneNumber}?text=${text}`;
+    window.open(url, "_blank");
+
+    
+  }
+</script>
+
 </body>
 
 </html>

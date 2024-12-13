@@ -39,6 +39,35 @@
         color: white;
     }
 
+    /* Mengubah warna tombol dengan class .btn-warning menjadi oranye */
+.btn-warning {
+    background-color: #FF5722; /* Oranye */
+    border-color: #FF5722;
+}
+
+/* Mengubah warna tombol dengan class .btn-info menjadi ungu */
+.btn-info {
+    background-color: #9C27B0; /* Ungu */
+    border-color: #9C27B0;
+}
+
+/* Mengubah warna tombol dengan class .btn-warning menjadi oranye */
+.btn-warning {
+    background-color: #f6f938 !important; /* Oranye */
+    border-color: #f6f938!important;
+    color: black !important;
+}
+
+/* Mengubah warna tombol dengan class .btn-info menjadi ungu */
+.btn-info {
+    background-color: #ec25b7 !important; /* Ungu */
+    border-color: #ec25b7 !important;
+    color: black !important;
+}
+
+.btn{
+    color: black !important;
+}
 
     /* .table-container {
     max-height: 1000px;
@@ -188,7 +217,7 @@
                                             $status = isset($availability[$date]) && $availability[$date]->where('id_unit', $unit->id_unit)->first() ? $availability[$date]->where('id_unit', $unit->id_unit)->first()->available : 0; // Default ke Tersedia
                                             $status = $status % 4; // Validasi rentang status
                                             
-                                            $statusClasses = ['btn-success', 'btn-danger', 'btn-warning', 'btn-info'];
+                                            $statusClasses = ['btn-secondary', 'btn-success', 'btn-warning', 'btn-info'];
                                             $statusLabels = ['Tersedia', 'Terpakai', 'Booking', 'Perpal'];
                                             ?>
                                             <td class="{{ 'seri-' . $unit->seri_unit }}">
@@ -370,7 +399,7 @@
                             const newStatus = data.new_status; // Status baru dari server
 
                             // Update tombol (class dan teks) berdasarkan status baru
-                            const statusClasses = ['btn-success', 'btn-danger',
+                            const statusClasses = ['btn-secondary', 'btn-success',
                                 'btn-warning', 'btn-info'
                             ];
                             const statusLabels = ['Tersedia', 'Terpakai', 'Booking',

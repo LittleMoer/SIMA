@@ -90,7 +90,6 @@ class OrderController extends Controller
                 'PenggunaanToll' => null,
                 'uanglainlain' => null,
                 'uangmakan' => null,
-                'sisabbm' => null,
                 'totalisibbm' => null,
                 'sisasaku' => null,
                 'totalsisa' => null,
@@ -252,7 +251,6 @@ public function updateSP(Request $request, $id)
                 'PenggunaanToll' => null,
                 'uanglainlain' => null,
                 'uangmakan' => null,
-                'sisabbm' => null,
                 'totalisibbm' => null,
                 'sisasaku' => null,
                 'totalsisa' => null

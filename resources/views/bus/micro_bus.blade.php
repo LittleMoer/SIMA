@@ -30,9 +30,6 @@
       <li class="nav-item">
         <a class="nav-link fw-medium" href="/#landingFeatures">Tentang</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link fw-medium" href="/#landingJadwal">Jadwal</a>
-      </li>
       <li class="nav-item dropdown">
         <a class="nav-link fw-medium dropdown-toggle" href="#landingBus" id="busDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Bus </a>
         <ul class="dropdown-menu" aria-labelledby="busDropdown">
@@ -49,9 +46,6 @@
             <a class="dropdown-item" href="{{ url('/bus/big_bus') }}"> Big Bus</a>
           </li>
         </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link fw-medium" href="#landingFAQ">Pertanyaan</a>
       </li>
       <li class="nav-item">
         <a class="nav-link fw-medium" href="#Kontak">Kontak</a>
@@ -165,37 +159,20 @@
                   <div class="mt-3">
                     <ul class="list-group">
                       <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bx-bus me-3"></i> 
+                        <i class="bx bx-music me-3"></i> Audio 
                       </li>
                       <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bx-coin-stack me-3"></i> 
+                        <i class="bx bx-handicap me-3"></i> Seatbelt
                       </li>
                       <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bx-handicap me-3"></i> 
+                        <i class="bx bx-wind me-3"></i> AC
                       </li>
                       <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bx-box me-3"></i>
+                        <i class="bx bx-coffee me-3"> 
+                        </i> Air Mineral
                       </li>
                       <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bx-wind me-3"></i> 
-                      </li>
-                      <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bx-usb me-3"></i> 
-                      </li>
-                      <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bx-coffee me-3"></i>
-                      </li>
-                      <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bxs-inbox me-3"></i> 
-                      </li>
-                      <li class="list-group-item d-flex align-items-center">
-                        <i class='bx bx-music me-3 '></i> 
-                      </li>
-                      <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bx-tv me-3"></i> 
-                      </li>
-                      <li class="list-group-item d-flex align-items-center">
-                        <i class="bx bxs-briefcase-alt me-3"></i> 
+                        <i class="bx bxs-inbox me-3"></i> Netflix 
                       </li>
                     </ul>
                   </div>
