@@ -60,8 +60,8 @@
                                         <span class="tf-icons bx bx-printer me-2"></span> Print SP
                                     </a>
 
-                                    <a href="https://wa.me/{{ '62' . ltrim($sp->no_telppn, '0') }}?text=Ini%20surat%20pemesanan%20Anda%20link:%20{{ urlencode(route('view', $sp->id_sp)) }}" 
-                                        class="btn btn-success" 
+                                    <a href="https://wa.me/{{ '62' . ltrim($sp->no_telppn, '0') }}?text= Berikut kami kirim bukti transaksi Sima Perkasya melalui e-receipt : {{ rawurlencode(route('e-receipt', ['id' => encrypt($sp->id_sp)])) }}"
+                                        class="btn btn-success"
                                         target="_blank">
                                         <span class="tf-icons bx bx-send me-2"></span> Send to WhatsApp
                                      </a>
@@ -673,12 +673,22 @@
                                                     <label for="totalisibbm_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Total Isi BBM</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" id="totalisibbm_{{ $index }}" placeholder="Masukkan Total Isi BBM"
-                                                            class="form-control currency-input"
-                                                            value="{{ old('totalisibbm', $spj->totalisibbm) }}">
-                                                        <input type="hidden" name="totalisibbm"
-                                                            id="totalisibbm_{{ $index }}_hiddens"
-                                                            value="{{ old('totalisibbm', $spj->totalisibbm) }}">
+                                                            <div class="form-group">
+                                                                <div class="input-group">
+                                                                    <input type="text" id="totalisibbm_{{ $index }}"
+                                                                           name="totalisibbm"
+                                                                           class="form-control currency-input"
+                                                                           value="{{ old('totalisibbm', $spj->totalisibbm ?? 0) }}"
+                                                                           placeholder="Masukkan Total Isi BBM">
+                                                                    <input type="hidden" name="totalisibbm"
+                                                                           id="totalisibbm_{{ $index }}_hiddens"
+                                                                           value="{{ old('totalisibbm', $spj->totalisibbm) }}">
+                                                           
+                                                                    <button type="button" class="btn btn-primary" id="tarik-total-{{ $index }}"
+                                                                            onclick="tarikTotalBBM('{{ $index }}', '{{ $spj->id_spj }}')">Tarik Total</button>
+                                                                </div>
+                                                            </div>
+                                                           
                                                         @error('totalisibbm')
                                                             <div class="text-danger">{{ $message }}</div>
                                                         @enderror
@@ -738,6 +748,27 @@
 
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+            function tarikTotalBBM(index, idSpj) {
+        fetch(`/total-bbm/${idSpj}`)
+            .then(response => response.json())
+            .then(data => {
+                const totalInput = document.getElementById(`totalisibbm_${index}`);
+                const hiddensInput = document.getElementById(`totalisibbm_${index}_hiddens`);
+
+
+                // Format ke Rupiah
+                const formattedValue = convertToRupiah(data.totalBBM.toString());
+
+
+                // Set nilai untuk input dan hiddens
+                totalInput.value = formattedValue;
+                hiddensInput.value = data.totalBBM; // Tetap angka untuk backend
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    </script>
 
 
 <!-- automate calculate Penggunaantoll data in realtime using ajax where SaldoEtollawal minus SaldoEtollakhir -->

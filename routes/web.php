@@ -59,7 +59,8 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::put('/pesanan/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');
     Route::put('/pesanan/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
     Route::get('/get-driver-codriver/{id}',[OrderController::class, 'getDriverCoDriver']);
-    
+    Route::get('/total-bbm/{id_spj}', [OrderController::class, 'TotalBBM']);
+    Route::get('e-receipt/simaperkasya/{id}', [OrderController::class, 'show'])->name('e-receipt');
     //konsumbbm
     Route::get('/bbm/{id_spj}', [BbmController::class, 'index', 'detailPesanan'])->name('bbm.index');
     Route::post('/bbm/{id_spj}', [BbmController::class, 'create'])->name('bbm.create');
@@ -80,8 +81,6 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::get('/pengeluaran/edit/{id_pengeluaran}', [PengeluaranController::class, 'edit'])->name('pengeluaran.edit');
     Route::put('/pengeluaran/{id_pengeluaran}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
     Route::delete('/pengeluaran/{id_pengeluaran}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.destroy');
-    
-    
     
     //Manajemen Armada
     Route::get('/manajemen_armada', [ArmadaController::class, 'index'])->name('manajemen_armada.index');

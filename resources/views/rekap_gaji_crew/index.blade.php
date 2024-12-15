@@ -126,8 +126,10 @@
                         <tr>
                             <th colspan="4">Insentif:</th>
                             <td colspan="2">
+                            <div class="input-group">
                                 <input type="number" id="insentif" value="{{ old('insentif', session('insentif', 0)) }}" class="form-control" placeholder="Insentif" oninput="calculateTotalPendapatan()">
-                                <button type="button" id="saveInsentif" class="btn btn-primary btn-sm" onclick="saveInsentif()">Save</button>
+                                <button type="button" class="btn btn-primary" onclick="saveInsentif()">Simpan</button>
+                            </div>
                             </td>
                             <th colspan="4">Total Pendapatan:</th>
                             <td colspan="2" id="totalPendapatan">{{ 'Rp ' . number_format($rekapGajiCrew->sum('total_gaji') + session('insentif', 0), 0, ',', '.') }}</td>

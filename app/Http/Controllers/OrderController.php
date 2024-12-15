@@ -283,6 +283,35 @@ public function updateSP(Request $request, $id)
     return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'Surat Pemesanan berhasil diupdate!');
 }
 
+public function TotalBBM($id_spj)
+{
+    // Mengambil semua data konsumsi BBM berdasarkan id_spj
+    $bbms = KonsumBbm::where('id_spj', $id_spj)->get();
+
+
+    // Menghitung total dari kolom totalbayar
+    $totalBBM = $bbms->sum('totalbayar');
+
+
+    // Return data JSON agar bisa digunakan oleh JavaScript
+    return response()->json([
+        'totalBBM' => $totalBBM,
+    ]);
+}
+
+public function show($id)
+    {
+        try {
+            $decryptedId = decrypt($id); // Dekripsi id
+            // dd($decryptedId); // Debug hasil dekripsi
+            $sp = Sp::findOrFail($decryptedId);
+            return view('view-receipt', compact('sp'));
+        } catch (\Exception $e) {
+            // Tangani jika dekripsi gagal
+            return abort(404, 'Invalid decryption.');
+        }
+    }
+
 
 // Update data for SJ related to the given SP
 public function updateSJ(Request $request, $id)

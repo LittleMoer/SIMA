@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Pemesanan {{ $sp->id_sp }} {{ $sp->tgl_keberangkatan}}  </title>
+    <title>Surat Pemesanan {{ $sp->id_sp }} {{ $sp->tgl_keberangkatan }} </title>
     <link rel="icon" type="image/x-icon" href="{{ asset('sneat/assets/img/sima/logo.png') }}" />
 
 
     <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
-<link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
-<link rel="stylesheet" href="{{ asset('sneat/assets/css/demo.css') }}" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/theme-default.css') }}"
+        class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ asset('sneat/assets/css/demo.css') }}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
     <style>
         body {
             background-color: white;
@@ -19,88 +21,152 @@
             padding: 0;
             color: black;
         }
+
+        @media (max-width: 765px) {
+            .logo img {
+                width: 80px;
+                /* Ukuran lebih kecil untuk layar di bawah 768px */
+            }
+
+
+            .status img {
+                width: 120px;
+                /* Ukuran lebih kecil untuk layar di bawah 768px */
+            }
+
+            .order-title h5, h6{
+                font-size: 1.3em;
+            }
+
+            .table-container {
+                width: 50%;
+                box-sizing: border-box;
+                font-size: 0.6em ;
+            }
+
+        }
+
+
         #element-to-print {
             width: 100%;
             box-sizing: border-box;
         }
+
         .table-container {
             width: 100%;
             box-sizing: border-box;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 1.2em; /* Kurangi ukuran font untuk fit di halaman */
+            font-size: 1.2em;
+            /* Kurangi ukuran font untuk fit di halaman */
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid black;
             padding: 5px;
             text-align: left;
         }
+
         th {
             background-color: black;
             color: white;
         }
-        input[type="text"], input[type="date"], input[type="time"], textarea, select {
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        textarea,
+        select {
             width: 100%;
             border: none;
-            padding: 3px; /* Kurangi padding */
+            padding: 3px;
+            /* Kurangi padding */
             box-sizing: border-box;
-            font-size: 0.8em; /* Kurangi ukuran font */
+            font-size: 0.8em;
+            /* Kurangi ukuran font */
         }
+
         textarea {
             resize: vertical;
         }
+
         select {
             background: none;
         }
+
         .SK {
-            margin-top: 5px; /* Kurangi margin */
+            margin-top: 5px;
+            /* Kurangi margin */
         }
+
         .signature-container {
             display: flex;
             justify-content: space-between;
-            margin-top: 8px; /* Kurangi margin */
+            margin-top: 8px;
+            /* Kurangi margin */
         }
-        .signatureManajemen, .signaturePemesan {
+
+        .signatureManajemen,
+        .signaturePemesan {
             text-align: left;
-            font-size: 1em; /* Kurangi ukuran font */
+            font-size: 1em;
+            /* Kurangi ukuran font */
         }
+
         .small-text {
-            font-size: 0.7em; /* Kurangi ukuran font */
-            margin-bottom: 2px; /* Atur jarak antar item sesuai keinginan */
-            padding-bottom: 0; /* Tambahkan jika ingin meniadakan padding bawah */
+            font-size: 0.7em;
+            /* Kurangi ukuran font */
+            margin-bottom: 2px;
+            /* Atur jarak antar item sesuai keinginan */
+            padding-bottom: 0;
+            /* Tambahkan jika ingin meniadakan padding bawah */
         }
+
         ul {
             list-style-type: disc;
-            padding-left: 15px; /* Kurangi padding */
+            padding-left: 15px;
+            /* Kurangi padding */
         }
+
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 2px solid black;
-            padding-bottom: 5px; 
-            margin-bottom: 8px; 
+            padding-bottom: 5px;
+            margin-bottom: 8px;
         }
+
         .logo {
-            width: 100px; /* Sesuaikan ukuran logo */
+            width: 100px;
+            /* Sesuaikan ukuran logo */
         }
+
         .company-info {
             text-align: left;
         }
+
         .company-info h1 {
             margin: 0;
-            font-size: 1.4em; /* Kurangi ukuran font */
+            font-size: 1.4em;
+            /* Kurangi ukuran font */
         }
+
         .company-info p {
             margin: 0;
-            font-size: 0.8em; /* Kurangi ukuran font */
-            line-height: 1.4; 
+            font-size: 0.8em;
+            /* Kurangi ukuran font */
+            line-height: 1.4;
         }
+
         .order-title {
             text-align: center;
         }
+
         .order-title h5 {
             color: black;
             margin-top: 5px;
@@ -110,13 +176,14 @@
 
         .order-title p {
             margin-bottom: 1px;
-            
+
             /* Jarak ke elemen <p> */
         }
 
         .gambar-hitam {
             filter: grayscale(100%);
         }
+
         .gambar-status {
             position: absolute;
             /* Posisi absolut untuk gambar */
@@ -138,19 +205,30 @@
                 overflow: hidden;
                 page-break-inside: avoid;
             }
+
             @page {
                 size: A4;
                 margin: 0.5in;
             }
+
             table {
-                font-size: 1em; /* Kurangi ukuran font */
+                font-size: 1em;
+                /* Kurangi ukuran font */
             }
-            .header, .signature-container, .SK {
-                page-break-inside: avoid; /* Hindari pemisahan bagian penting saat print */
+
+            .header,
+            .signature-container,
+            .SK {
+                page-break-inside: avoid;
+                /* Hindari pemisahan bagian penting saat print */
             }
-            .header, .signature-container, .SK {
-        margin-bottom: 5px; /* Kurangi margin bawah */
-    }
+
+            .header,
+            .signature-container,
+            .SK {
+                margin-bottom: 5px;
+                /* Kurangi margin bawah */
+            }
         }
     </style>
     <script>
@@ -168,24 +246,26 @@
         }
     </script>
 
-  <style>
-    @media print {
-    body * {
-        visibility: hidden;
-    }
-    #element-to-print, #element-to-print * {
-        visibility: visible;
-    }
-    #element-to-print {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-    }
-}
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+            }
 
-  </style>
+            #element-to-print,
+            #element-to-print * {
+                visibility: visible;
+            }
+
+            #element-to-print {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    </style>
     <script>
         function toggleCustomMethod() {
             const select = document.getElementById('payment-method');
@@ -201,42 +281,54 @@
         }
     </script>
 
-        <script>
-            function createPDF() {
-                var element = document.getElementById('element-to-print');
-                html2pdf(element, {
-                    margin: [0.5, 0.5, 0.5, 0.5],
-                    filename: 'myfile.pdf',
-                    image: { type: 'png', quality: 1 },
-                    html2canvas: { scale: 2, useCORS: true },
-                    jsPDF: { unit: 'in', format: 'A4', orientation: 'P' }
-                });
-            }
-    
-    function printPreview() {
-        window.print();
-    }
-    
-        </script>
-      <style>
+    <script>
+        function createPDF() {
+            var element = document.getElementById('element-to-print');
+            html2pdf(element, {
+                margin: [0.5, 0.5, 0.5, 0.5],
+                filename: 'myfile.pdf',
+                image: {
+                    type: 'png',
+                    quality: 1
+                },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'A4',
+                    orientation: 'P'
+                }
+            });
+        }
+
+        function printPreview() {
+            window.print();
+        }
+    </script>
+    <style>
         @media print {
-        body * {
-            visibility: hidden;
+            body * {
+                visibility: hidden;
+            }
+
+            #element-to-print,
+            #element-to-print * {
+                visibility: visible;
+            }
+
+            #element-to-print {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
         }
-        #element-to-print, #element-to-print * {
-            visibility: visible;
-        }
-        #element-to-print {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-        }
-    }
-    
-      </style>
+    </style>
 </head>
+
 <body class="container">
 
     <div id="element-to-print">
@@ -405,5 +497,4 @@
 
 </body>
 
-</body>
 </html>

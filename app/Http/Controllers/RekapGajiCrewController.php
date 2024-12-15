@@ -51,27 +51,33 @@ class RekapGajiCrewController extends Controller
     return response()->json(['success' => true, 'insentif' => session('insentif')]);
 }
 
-    public function countWorkDays($startDate, $endDate)
-    {
-        $start = new \DateTime($startDate);
-        $end = new \DateTime($endDate);
-        $end->modify('+1 day');
-        $interval = $end->diff($start);
-        $days = $interval->days;
+public function countWorkDays($startDate, $endDate)
+{
+    $start = new \DateTime($startDate);
+    $end = new \DateTime($endDate);
 
-        $period = new \DatePeriod($start, new \DateInterval('P1D'), $end);
-        $workdays = 0;
-
-        foreach ($period as $dt) {
-            if ($dt->format('N') < 6) { 
-                $workdays++;
-            }
+    if ($start == $end) {
+        if ($start->format('N') < 6) {
+            return 1;
+        } else {
+            return 1;
         }
-
-        return $workdays;
     }
 
-    public function calculatePremiPercentage($seri, $posisi)
+    $end->modify('+1 day');
+    $workdays = 0;
+
+    $period = new \DatePeriod($start, new \DateInterval('P1D'), $end);
+    foreach ($period as $dt) {
+        if ($dt->format('N') < 6) {
+            $workdays++;
+        }
+    }
+
+    return $workdays;
+}
+
+public function calculatePremiPercentage($seri, $posisi)
 {
     $premiPercentage = 0;
 
@@ -173,7 +179,7 @@ public function generate(Request $request)
 
             $totalOperasional = $spj->totalisibbm + $spj->uangmakan + $spj->PenggunaanToll;
             $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
-            $totalGaji = $nilaiKontrak;
+            $totalGaji = $sisaNilaiKontrak;
 
             foreach ($namauser as $user) {
                 $premiPercentage = $this->calculatePremiPercentage($seri, $posisi);

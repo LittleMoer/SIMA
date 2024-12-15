@@ -10,6 +10,7 @@
 <body>
     @section('bbm')
 
+
         <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
             <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}" alt="Help center header"
                 style="position: absolute; top: 0; left: 0; width: 100%; height: auto; z-index: -1;">
@@ -23,7 +24,8 @@
                             <a href="{{ url('/pesanan/detail_pesanan/' . $id_sp) }}">Detail Pesanan</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            <a href="{{ url('/pesanan/detail_pesanan/' . $id_sp . '/#SuratPerintahJalan') }}">Surat Perintah Jalan</a>
+                            <a href="{{ url('/pesanan/detail_pesanan/' . $id_sp . '/#SuratPerintahJalan') }}">Surat Perintah
+                                Jalan</a>
                         </li>
                         <li class="breadcrumb-item active">
                             <a href="javascript:void(0);">Konsum BBM</a>
@@ -54,20 +56,48 @@
                 </script>
             @endif
         </section>
+        @if ($errors->any())
+            <div id="errorToast" style="position: fixed; top: 80px; right: 20px; z-index: 1050;">
+                <div class="bs-toast toast show bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto fw-semibold">✖ Error</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Script to hide error toast after a few seconds -->
+            <script>
+                setTimeout(function() {
+                    var toastElement = document.getElementById('errorToast');
+                    if (toastElement) {
+                        toastElement.style.display = 'none'; // Hide error toast
+                    }
+                }, 2500);
+            </script>
+        @endif
 
         <section>
 
             <div class="card">
-                <div class="container"  style="padding: 30px 30px">
+                <div class="container" style="padding: 30px 30px">
                     <h2>Konsumsi Bbm</h2>
 
                     <!-- Button to Create a New Record -->
                     <a href="{{ route('bbm.create', ['id_spj' => $spj->id_spj]) }}" class="btn btn-primary mb-3"
-                        data-bs-toggle="modal" data-bs-target="#modalCentercreate"> <i class='bx bx-gas-pump' > </i>   Isi Bensin</a>
+                        data-bs-toggle="modal" data-bs-target="#modalCentercreate"> <i class='bx bx-gas-pump'> </i> Isi
+                        Bensin</a>
 
                     @if ($bbms->count() > 0)
                         {{-- Pindahkan pengecekan ke sini --}}
-                        <table class="datatables-basic table border-top" >
+                        <table class="datatables-basic table border-top">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -89,7 +119,7 @@
                                         <td>{{ $bbm->lokasiisi }}</td>
                                         <td>@currency($bbm->totalbayar)</td>
 
-                                        
+
                                         <td>
                                             @if ($bbm->foto_struk)
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
@@ -112,6 +142,7 @@
                                                 data-isibbm="{{ $bbm->isiBBM }}" data-tanggal="{{ $bbm->tanggal }}"
                                                 data-lokasiisi="{{ $bbm->lokasiisi }}"
                                                 data-totalbayar="{{ $bbm->totalbayar }}"
+                                                data-foto_struk="{{ $bbm->foto_struk }}"
                                                 data-isvalid="{{ $bbm->isvalid }}">
                                                 Edit
                                             </button>
@@ -125,6 +156,13 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">Total BBM</td>
+                                    <td>@currency($bbms->sum('totalbayar'))</td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            </tfoot>
                             </tbody>
                         </table>
                     @else
@@ -153,35 +191,41 @@
                             <div class="row">
                                 <div class="col mb-6">
                                     <label for="nameWithTitle" class="form-label">Isi BBM</label>
-                                    <input type="text" id="edit_isiBBM" name="isiBBM" class="form-control">
+                                    <input type="text" id="edit_isiBBM" name="isiBBM" class="form-control"
+                                       >
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-6">
                                     <label for="nameWithTitle" class="form-label">Tanggal</label>
-                                    <input type="date" id="edit_tanggal" name="tanggal" class="form-control">
+                                    <input type="date" id="edit_tanggal" name="tanggal" class="form-control"
+                                        >
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-6">
                                     <label for="nameWithTitle" class="form-label">Lokasi Isi</label>
-                                    <input type="text" id="edit_lokasiisi" name="lokasiisi" class="form-control">
+                                    <input type="text" id="edit_lokasiisi" name="lokasiisi" class="form-control"
+                                        >
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-6">
                                     <label for="nameWithTitle" class="form-label">Total Bayar</label>
-                                    <input type="text" id="edit_totalbayar" class="form-control currency-input" required>
+                                    <input type="text" id="edit_totalbayar" class="form-control currency-input"
+                                        >
                                     <input type="hidden" name="totalbayar" id="edit_totalbayar_hidden"
                                         title="Hanya angka yang diperbolehkan">
                                 </div>
                             </div>
                             <div class="row">
+                                
                                 <div class="col mb-6">
                                     <label for="nameWithTitle" class="form-label">Foto Struk</label>
                                     <input type="file" id="edit_foto_struk" name="foto_struk" class="form-control">
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col mb-6">
                                     <label for="nameWithTitle" class="form-label">Status</label>
@@ -192,6 +236,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save changes</button>
@@ -279,6 +325,7 @@
             </div>
         </div>
 
+
     @endsection
 
     @include('main_owner')
@@ -297,6 +344,7 @@
                     const tanggal = this.getAttribute('data-tanggal');
                     const lokasiisi = this.getAttribute('data-lokasiisi');
                     const totalbayar = this.getAttribute('data-totalbayar');
+                    const foto_struk = this.getAttribute('data-foto_struk');
                     const isvalid = this.getAttribute('data-isvalid');
 
                     // Set action URL form
@@ -307,6 +355,7 @@
                     document.getElementById('edit_tanggal').value = tanggal;
                     document.getElementById('edit_lokasiisi').value = lokasiisi;
                     document.getElementById('edit_totalbayar').value = totalbayar;
+                    document.getElementById('edit_foto_struk').value = foto_struk;
                     document.getElementById('edit_isvalid').value = isvalid;
                 });
             });
@@ -323,46 +372,46 @@
         });
     </script>
 
-<script>
-    // Fungsi untuk Memformat Input sebagai Rupiah
-    function formatRupiahInput(inputElement, hiddenElement) {
-        inputElement.addEventListener('input', function() {
-            const formattedValue = formatToRupiah(this.value);
-            hiddenElement.value = formattedValue.replace(/[^\d]/g,
-                ''); // Set hidden input to numeric value only
-            inputElement.value = formattedValue;
+    <script>
+        // Fungsi untuk Memformat Input sebagai Rupiah
+        function formatRupiahInput(inputElement, hiddenElement) {
+            inputElement.addEventListener('input', function() {
+                const formattedValue = formatToRupiah(this.value);
+                hiddenElement.value = formattedValue.replace(/[^\d]/g,
+                    ''); // Set hidden input to numeric value only
+                inputElement.value = formattedValue;
+            });
+
+            // Set nilai awal jika ada
+            const initialValue = hiddenElement.value;
+            if (initialValue) {
+                inputElement.value = formatToRupiah(initialValue);
+            }
+        }
+
+        // Fungsi untuk Mengubah Angka Menjadi Format Rupiah
+        function formatToRupiah(angka) {
+            let numberString = angka.replace(/[^\d]/g, '').toString();
+            let sisa = numberString.length % 3;
+            let rupiah = numberString.substr(0, sisa);
+            let ribuan = numberString.substr(sisa).match(/\d{3}/g);
+
+            if (ribuan) {
+                rupiah += (sisa ? '.' : '') + ribuan.join('.');
+            }
+
+            return 'Rp ' + rupiah;
+        }
+
+        // Inisialisasi Semua Input dengan Kelas "currency-input"
+        document.querySelectorAll('.currency-input').forEach(input => {
+            const hiddenInputId = input.id + '_hidden';
+            const hiddenInput = document.getElementById(hiddenInputId);
+            if (hiddenInput) {
+                formatRupiahInput(input, hiddenInput);
+            }
         });
-
-        // Set nilai awal jika ada
-        const initialValue = hiddenElement.value;
-        if (initialValue) {
-            inputElement.value = formatToRupiah(initialValue);
-        }
-    }
-
-    // Fungsi untuk Mengubah Angka Menjadi Format Rupiah
-    function formatToRupiah(angka) {
-        let numberString = angka.replace(/[^\d]/g, '').toString();
-        let sisa = numberString.length % 3;
-        let rupiah = numberString.substr(0, sisa);
-        let ribuan = numberString.substr(sisa).match(/\d{3}/g);
-
-        if (ribuan) {
-            rupiah += (sisa ? '.' : '') + ribuan.join('.');
-        }
-
-        return 'Rp ' + rupiah;
-    }
-
-    // Inisialisasi Semua Input dengan Kelas "currency-input"
-    document.querySelectorAll('.currency-input').forEach(input => {
-        const hiddenInputId = input.id + '_hidden';
-        const hiddenInput = document.getElementById(hiddenInputId);
-        if (hiddenInput) {
-            formatRupiahInput(input, hiddenInput);
-        }
-    });
-</script>
+    </script>
 
 
 
