@@ -10,7 +10,10 @@ use App\Models\Spj;
 use App\Models\Sj;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class BbmController extends Controller
@@ -55,28 +58,45 @@ class BbmController extends Controller
     
     public function edit($idkonsumbbm)
     {
-        $bbm = Konsumbbm::findOrFail($idkonsumbbm);
-
-        $validatedData = request()->validate([
-            'isiBBM' => 'required|numeric',
-            'tanggal' => 'required|date',
-            'lokasiisi' => 'required|string',
-            'totalbayar' => 'required|numeric',
-            'foto_struk' => 'nullable|image',
-            'isvalid' => 'required|boolean',
+        // Log incoming data for debugging
+        Log::info('Edit BBM Request', [
+            'files' => request()->allFiles(),
+            'input' => request()->all()
         ]);
-
-
+    
+        $bbm = Konsumbbm::findOrFail($idkonsumbbm);
+    
+        $validatedData = request()->validate([
+            'isiBBM' => 'nullable|numeric',
+            'tanggal' => 'nullable|date',
+            'lokasiisi' => 'nullable|string',
+            'totalbayar' => 'nullable|numeric',
+            'foto_struk' => 'nullable|image|max:2048', // Added max file size
+            'isvalid' => 'nullable|boolean',
+        ]);
+    
         if (request()->hasFile('foto_struk')) {
+            // Log file details
+            Log::info('Foto Struk uploaded', [
+                'filename' => request()->file('foto_struk')->getClientOriginalName(),
+                'size' => request()->file('foto_struk')->getSize()
+            ]);
+    
+            // Delete old file if exists
+            if ($bbm->foto_struk) {
+                Storage::delete($bbm->foto_struk);
+            }
+    
             $validatedData['foto_struk'] = request()->file('foto_struk')->store('public/bbm');
-        } else {
-            unset($validatedData['foto_struk']);
         }
-
+    
         $bbm->update($validatedData);
-
+    
         return back()->with('success', 'BBM data updated successfully.');
     }
+    
+    
+    
     // Di BbmController, tambahkan method untuk mengambil data BBM
 public function getEditData($idkonsumbbm) 
 {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Print Surat Pesanan</title>
+    <title>{{ $unit->nama_unit }} {{ $sp->tgl_keberangkatan }}</title>
  <!-- icon -->
 <link rel="icon" type="image/x-icon" href="{{ asset('sneat/assets/img/sima/logo.png') }}" />
 
@@ -241,12 +241,12 @@
                         <th>No Telp</th>
                         <td>{{ $sp->no_telppn }}</td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>PJ Rombongan</td>
                         <td>{{ $sp->pj_rombongan }}</td>
                         <td>No Telp</td>
                         <td>{{ $sp->no_telpps }}</td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <th>Tanggal Keberangkatan</th>
                         <td>{{ $sp->tgl_keberangkatan }}</td>
@@ -267,14 +267,30 @@
                         <td>Alamat Penjemputan</td>
                         <td colspan="3">{{ $sp->alamat_penjemputan }}</td>
                     </tr>
-                    {{-- <tr>
+                     <tr>
                         <th> Armada</th>
                         <td >{{  $unit->nama_unit }}</td>
-                        <td>Nilai Kontrak </td>
-                        <td>{{ $sj->nilai_kontrak}}</td>
+                        <td>Jumlah Seat </td>
+                        <td> </td>
                     </tr>
-                     --}}
+ 
                     <tr>
+                        <td>Driver</td>
+                        <td> {{ $sj->driver}} </td>
+                        <td>Co Driver</td>
+                        <td> {{ $sj->codriver}} </td>
+                    </tr>
+                    <!-- add automation for calculate workdays -->
+                    <tr>
+                        <td>Jumlah Hari Kerja</td>
+                        <td colspan="3" id ="workdays"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Catatan Lainnya</td>
+                        <td colspan="3">{{ $sp->catatan_pembayaran }}</td>
+                    </tr>
+                    <!-- <tr>
                         <td>KM saat Berangkat</td>
                         <td colspan="3">{{ $sj->kmsebelum}}</td>
                     </tr>
@@ -295,11 +311,11 @@
                         <td colspan="3">
                             @currency($sj->lainlain)
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
     
-            <div class="signature-container" >
+            <!-- <div class="signature-container" >
                 <div class="signaturePemesan">
                     Pemesan<br><br><br><br>
                     ____________________
@@ -333,6 +349,16 @@
         
     </div>
 </div>
-
+<script>
+    //add automation for calculate workdays
+    
+    function calculateWorkdays() {
+        const startDate = new Date('{{ $sp->tgl_keberangkatan }}');
+        const endDate = new Date('{{ $sp->tgl_kepulangan }}');
+        const timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+        const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        document.getElementById('workdays').innerText = diffDays;
+    }
+</script> -->
 </body>
 </html>

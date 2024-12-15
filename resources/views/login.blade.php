@@ -65,9 +65,6 @@
             <label class="form-label" for="password">
               Password
             </label>
-            <a href="auth-forgot-password-basic.html">
-              <small>Lupa Password?</small>
-            </a>
           </div>
           <div class="input-group input-group-merge">
             <input

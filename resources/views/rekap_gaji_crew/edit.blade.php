@@ -17,7 +17,7 @@
 </section>
 
 <section>
-    <div class="container">
+    <div class="container mt-5 mb-5">
         <h3>Rekap Gaji Crew</h3>
         <h4>Armada: {{ $armada->unit->nama_unit }}</h4>
         <h4>Nama: {{ $armada->akun->name }}</h4>
@@ -131,7 +131,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary mt-3">Update</button>
             </form>
         @else
             <p class="text-muted">Tidak ada data rekap gaji untuk armada ini.</p>

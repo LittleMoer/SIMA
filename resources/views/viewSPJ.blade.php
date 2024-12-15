@@ -295,6 +295,32 @@
                         <span class="line"></span>: {{ $sp->tgl_kepulangan }}, {{ $sp->jam_kepulangan }}
                     </td>
                 </tr>
+                <tr>
+                        <td>KM saat Berangkat</td>
+                        <td colspan="3">{{ $sj->kmsebelum}}</td>
+                    </tr>
+                    <tr>
+                        <td>KM saat Tiba</td>
+                        <td colspan="3">{{ $sj->kmtiba }}</td>
+                    </tr>
+                    <tr>
+                        <td>KM Tempuh</td>
+                        <td colspan="3">--</td>
+                    </tr>
+                    <tr>
+                        <td>Kasbon BBM</td>
+                        <td colspan="3">@currency($sj->kasbonbbm)</td>
+                    </tr>
+                    <tr>
+                        <td>Kasbon uang makan</td>
+                        <td colspan="3">@currency($sj->kasbonmakan)</td>
+                    </tr>
+                    <tr>
+                        <td>Lain-lain</td>
+                        <td colspan="3">
+                            @currency($sj->lainlain)
+                        </td>
+                    </tr> 
             </table>
             
             
@@ -314,7 +340,7 @@
                         <td style="border: 1px solid black; ">@currency($spj->PenggunaanToll)</td>
                     </tr>
                     <tr>
-                        <td style="border: 1px solid black; ">Uang Lain-lain</td>
+                        <td style="border: 1px solid black; ">Uang Saku</td>
                         <td style="border: 1px solid black; ">@currency($spj->uanglainlain)</td>
                     </tr>
                     <tr>
@@ -418,7 +444,7 @@
                     ____________________
                 </div>
             </div>
-            <div class="SK">
+            <!-- <div class="SK">
                 <strong>Syarat dan Ketentuan</strong>
                 
                 <ul class="small-text">
@@ -437,7 +463,7 @@
                     <li>Kehilangan, kerusakan, dan barang tertukar bukan tanggung jawab crew/perusahaan.</li>
                     <li>Penyewa harus bertanggung jawab atas kerusakan yang disebabkan oleh peserta rombongan.</li>
                 </ul>
-            </div>
+            </div> -->
 
 
         </div>

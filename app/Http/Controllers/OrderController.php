@@ -202,6 +202,13 @@ public function updateSP(Request $request, $id)
         'catatan_pembayaran' => 'nullable'
     ]);
 
+    $validatedData['tgl_keberangkatan'] = date('Y-m-d', strtotime($validatedData['tgl_keberangkatan_full']));
+    $validatedData['jam_keberangkatan'] = date('H:i', strtotime($validatedData['tgl_keberangkatan_full']));
+
+    $validatedData['tgl_kepulangan'] = date('Y-m-d', strtotime($validatedData['tgl_kepulangan_full']));
+    $validatedData['jam_kepulangan'] = date('H:i', strtotime($validatedData['tgl_kepulangan_full']));
+
+
     // Retrieve the SP record
     $sp = SP::findOrFail($id);
 

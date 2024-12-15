@@ -155,17 +155,6 @@
 
                                         </div>
                                         <div class="form-group row mb-3">
-                                            <label for="sisabbm_{{ $spj->id_sj }}"
-                                                class="col-sm-4 col-form-label form">Sisa BBM</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" name="sisabbm" id="sisabbm_{{ $spj->id_sj }}"
-                                                    placeholder="Masukkan Sisa BBM"
-                                                    value="{{ old('sisabbm', $spj->sisabbm) }}" class="form-control"
-                                                    title="Harus berupa angka">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-3">
                                             <label for="totalisibbm_{{ $spj->id_sj }}"
                                                 class="col-sm-4 col-form-label form">Total Isi BBM</label>
                                             <div class="col-sm-8">

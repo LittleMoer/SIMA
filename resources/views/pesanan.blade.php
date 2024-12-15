@@ -511,36 +511,6 @@
         }
     </script>
 
-    <!-- <script>
-        // Mendapatkan tanggal hari ini
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0'); // Bulan mulai dari 0
-        const day = String(today.getDate()).padStart(2, '0');
-
-        // Mengatur atribut minimum pada input
-        const minDateTime = `${year}-${month}-${day}T00:00`; // format YYYY-MM-DDTHH:MM
-        document.getElementById('tgl_keberangkatan_full').setAttribute('min', minDateTime);
-
-        // Mengatur atribut minimum pada input tanggal kepulangan
-        const departureInput = document.getElementById('tgl_keberangkatan_full');
-        const returnInput = document.getElementById('tgl_kepulangan_full');
-
-        // Set min untuk tanggal kepulangan sesuai tanggal keberangkatan
-        departureInput.addEventListener('change', function() {
-            returnInput.min = this.value; // Set min untuk tanggal kepulangan
-        });
-
-        // Validasi tanggal kepulangan saat berubah
-        returnInput.addEventListener('change', function() {
-            if (new Date(this.value) <= new Date(departureInput.value)) {
-                alert('Tanggal kepulangan harus lebih dari tanggal keberangkatan.');
-                this.value = ''; // Reset nilai jika tidak valid
-            }
-        });
-    </script> -->
-
-
 
 @endsection
 

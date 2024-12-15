@@ -79,8 +79,6 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            Auth::login($akun);
-
             return redirect()->intended('/manajemen_akun')->with('success', 'Akun berhasil dibuat!');
         } catch (Exception $e) {
             return back()->withErrors(['error' => 'Terjadi kesalahan saat membuat akun: ' . $e->getMessage()]);

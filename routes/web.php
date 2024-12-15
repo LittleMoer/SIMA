@@ -34,6 +34,14 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::middleware([isAdmin::class])->group(function () {
+    //register awal
+    //manajemen akun
+    Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
+    Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
+    Route::post('/manajemen_akun/{id}', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/manajemen_akun/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
+    
     Route::get('/admin/dashboard', [AdminController::class, 'index']);
     //order
     Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
@@ -73,12 +81,6 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::put('/pengeluaran/{id_pengeluaran}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
     Route::delete('/pengeluaran/{id_pengeluaran}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.destroy');
     
-    //manajemen akun
-    Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
-    Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
-    Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
-    Route::post('/manajemen_akun/{id}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/manajemen_akun/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     
     
     //Manajemen Armada

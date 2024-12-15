@@ -626,7 +626,7 @@
                                                 <div class="form-group row mb-3">
                                                     <label
                                                         for="uanglainlain_{{ $spj->id_sj }}"
-                                                        class="col-sm-4 col-form-label form">Uang Lain-lain</label>
+                                                        class="col-sm-4 col-form-label form">Uang Saku</label>
                                                     <div class="col-sm-8">
                                                         <input type="text" id="uanglainlain_{{ $index }}"
                                                             class="form-control currency-input" placeholder="Masukkan Uang Lain-lain"
@@ -735,106 +735,44 @@
         </div>
         
     </section>
-    // Add this at the start of your page
-    <script>
-        console.log('Document ready state:', document.readyState);
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM Content Loaded');
-        });
-    </script>
-<script>
-    $(document).ready(function() {
-    var table = $('#yourTableId').DataTable();
-    console.log('DataTable initialized successfully');
-});
 
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<!-- automate calculate Penggunaantoll data in realtime using ajax where SaldoEtollawal minus SaldoEtollakhir -->
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    function setupTollCalculation(index) {
-        console.log('Setting up toll calculation for index:', index);
-        
-        const saldoAwal = document.getElementById(`SaldoEtollawal`);
-        const saldoAwalHidden = document.getElementById(`SaldoEtollawal_hiddens`);
-        const saldoAkhir = document.getElementById(`SaldoEtollakhir`);
-        const saldoAkhirHidden = document.getElementById(`SaldoEtollakhir_hiddens`);
-        const penggunaanToll = document.getElementById(`PenggunaanToll`);
-        const penggunaanTollHidden = document.getElementById(`PenggunaanToll_hiddens`);
-
-        // Log if elements are found
-        console.log('Elements found:', {
-            saldoAwal: !!saldoAwal,
-            saldoAwalHidden: !!saldoAwalHidden,
-            saldoAkhir: !!saldoAkhir,
-            saldoAkhirHidden: !!saldoAkhirHidden,
-            penggunaanToll: !!penggunaanToll,
-            penggunaanTollHidden: !!penggunaanTollHidden
+    $(document).ready(function() {
+        $('.currency-input').on('input', function() {
+            const saldoAwal = $('#SaldoEtollawal_{{ $index }}').val().replace(/\D/g, '');
+            const saldoAkhir = $('#SaldoEtollakhir_{{ $index }}').val().replace(/\D/g, '');
+            const penggunaanToll = saldoAwal - saldoAkhir;
+            $('#PenggunaanToll_{{ $index }}').val(formatToRupiah(penggunaanToll.toString()));
+            $('#PenggunaanToll_{{ $index }}_hiddens').val(penggunaanToll);
         });
-
-        ['input', 'keyup', 'change'].forEach(eventType => {
-            saldoAwal.addEventListener(eventType, function(e) {
-                console.log(`${eventType} event triggered on saldoAwal:`, this.value);
-                const cleanValue = this.value.replace(/[^\d]/g, '');
-                console.log('Cleaned value:', cleanValue);
-                const formattedValue = formatToRupiah(cleanValue);
-                console.log('Formatted value:', formattedValue);
-                this.value = formattedValue;
-                saldoAwalHidden.value = cleanValue;
-                calculateTollUsage();
-            });
-
-            saldoAkhir.addEventListener(eventType, function(e) {
-                console.log(`${eventType} event triggered on saldoAkhir:`, this.value);
-                const cleanValue = this.value.replace(/[^\d]/g, '');
-                console.log('Cleaned value:', cleanValue);
-                const formattedValue = formatToRupiah(cleanValue);
-                console.log('Formatted value:', formattedValue);
-                this.value = formattedValue;
-                saldoAkhirHidden.value = cleanValue;
-                calculateTollUsage();
-            });
-        });
-
-        function calculateTollUsage() {
-            const awal = parseFloat(saldoAwalHidden.value) || 0;
-            const akhir = parseFloat(saldoAkhirHidden.value) || 0;
-            const penggunaan = awal - akhir;
-
-            console.log('Calculating toll usage:', {
-                awal: awal,
-                akhir: akhir,
-                penggunaan: penggunaan
-            });
-
-            penggunaanToll.value = formatToRupiah(penggunaan.toString());
-            penggunaanTollHidden.value = penggunaan;
-        }
-    }
+    });
 
     function formatToRupiah(angka) {
-        console.log('Formatting to Rupiah:', angka);
-        let number = parseFloat(angka) || 0;
-        const formatted = new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }).format(number);
-        console.log('Formatted result:', formatted);
-        return formatted;
-    }
+        let numberString = angka.replace(/[^\d]/g, '').toString();
+        let sisa = numberString.length % 3;
+        let rupiah = numberString.substr(0, sisa);
+        let ribuan = numberString.substr(sisa).match(/\d{3}/g);
 
-    // Log all forms found
-    const forms = document.querySelectorAll('[id^="SaldoEtollawal_"]');
-    console.log('Found forms:', forms.length);
-    
-    forms.forEach(form => {
-        const index = form.id.split('_')[1](citation_1);
-        console.log('Processing form with index:', index);
-        setupTollCalculation(index);
-    });
-});
+        if (ribuan) {
+            rupiah += (sisa ? '.' : '') + ribuan.join('.');
+        }
+
+        return 'Rp ' + rupiah;
+    }
+        // Inisialisasi Semua Input dengan Kelas "currency-input"
+        document.querySelectorAll('.currency-input').forEach(input => {
+            const hiddenInputId = input.id + '_hidden';
+            const hiddenInput = document.getElementById(hiddenInputId);
+            if (hiddenInput) {
+                formatRupiahInput(input, hiddenInput);
+            }
+        });
 </script>
     <!-- buat otomatis ngisi driver codriver -->
     <script>

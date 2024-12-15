@@ -122,20 +122,6 @@ public function generate(Request $request)
     $namauser = Akun::where('id_akun', $idAkun)->get();
     $nama = $namauser->pluck('name')->toArray(); 
 
-
-    // // get all id from sj that has driver òr codriver name column equal to nama
-    // $sjRecordsGet = SJ::where('id_unit', $armada->id_unit)
-    //                 ->where('driver', $nama)
-    //                 ->orWhere('codriver', $nama)
-    //                 ->get();
-
-
-    // // from all that records, get all from sp table that has id_sp equal to id_sp from sj and selected month and year of tgl_keberangkatan
-    // $spRecords = SP::whereIn('id_sp', $sjRecordsGet->pluck('id_sp'))
-    //                 ->whereMonth('tgl_keberangkatan', $selectedMonth)
-    //                 ->whereYear('tgl_keberangkatan', $selectedYear)
-    //                 ->get();
-
     // get from spRecords that has tgl_keberangkatan between selected month and year
     $spRecords = SP::whereMonth('tgl_keberangkatan', $selectedMonth)
                 ->whereYear('tgl_keberangkatan', $selectedYear)
