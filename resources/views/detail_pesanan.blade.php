@@ -629,7 +629,7 @@
                                                         class="col-sm-4 col-form-label form">Uang Saku</label>
                                                     <div class="col-sm-8">
                                                         <input type="text" id="uanglainlain_{{ $index }}"
-                                                            class="form-control currency-input" placeholder="Masukkan Uang Lain-lain"
+                                                            class="form-control currency-input" placeholder="Masukkan Uang Saku"
                                                             value="{{ old('uanglainlain', $spj->uanglainlain) }}">
                                                         <input type="hidden" name="uanglainlain"
                                                             id="uanglainlain_{{ $index }}_hiddens"

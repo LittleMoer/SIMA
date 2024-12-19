@@ -262,18 +262,6 @@ public function updateSP(Request $request, $id)
                 'sisasaku' => null,
                 'totalsisa' => null
             ]);
-
-            // // Create corresponding KonsumBbm
-            // KonsumBbm::create([
-            //     'idkonsumbbm' => $randomId,
-            //     'id_spj' => $spj->id_spj,
-            //     'isiBBM' => null,
-            //     'tanggal' => null,
-            //     'lokasiisi' => null,
-            //     'totalbayar' => null,
-            //     'foto_struk' => null,
-            //     'isvalid' => 0
-            // ]);
         }
     }
 

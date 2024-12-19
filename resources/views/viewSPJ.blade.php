@@ -255,7 +255,7 @@
 
                 <div class="order-title">
                     <h5><b>SURAT PERINTAH JALAN</b></h5>
-                    <p>No.</p>
+                    <p>No.{{ $sp->id_sp }}</p>
                 </div>
                 <tbody>
                     <tr>
