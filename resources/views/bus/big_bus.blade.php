@@ -43,7 +43,7 @@
               <a class="dropdown-item" href="{{ url('/bus/medium_bus') }}"> Medium Bus</a>
             </li>
             <li>
-              <a class="dropdown-item" href="{{ url('/bus/mediumSE_bus') }}">Medium Bus SE</a>
+              <a class="dropdown-item" href="{{ url('/bus/mediumSE_bus') }}">Medium Bus SEGS</a>
             </li>
             <li>
               <a class="dropdown-item" href="{{ url('/bus/big_bus') }}"> Big Bus</a>
