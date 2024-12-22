@@ -30,7 +30,7 @@
                     @foreach($armadas as $armada)
                         <tr>
                             <td>{{ $armada->akun->name }}</td>
-                            <td>{{ $armada->unit->nama_unit }}</td> <!-- Assuming 'nama_unit' is the column in the 'unit' table -->
+                            <td>{{ $armada->unit->nama_unit }}</td>
                             <td>{{ $armada->posisi }}</td>
                             <td>{{ $armada->status == 1 ? 'Active' : 'Inactive' }}</td>
                             <td>

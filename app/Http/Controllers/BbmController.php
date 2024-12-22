@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Akun;
 use App\Models\Armada;
 use App\Models\Unit;
-use App\Models\KonsumBbm;
+use App\Models\Konsumbbm;
 use App\Models\Spj;
 use App\Models\Sj;
 use Illuminate\Auth\Events\Validated;

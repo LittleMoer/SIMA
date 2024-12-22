@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KonsumBbm;
+use App\Models\Konsumbbm;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\SP;
-use App\Models\SPJ;
-use App\Models\SJ;
+use App\Models\Sp;
+use App\Models\Spj;
+use App\Models\Sj;
 use App\Models\Unit;
 use App\Models\Armada;
 use App\Models\PengeluaranUangSaku;

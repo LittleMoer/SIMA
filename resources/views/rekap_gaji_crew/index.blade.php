@@ -29,7 +29,7 @@
 
             @php
                 $currentMonth = date('m');
-                $earliestYear = \App\Models\SP::min(\DB::raw('YEAR(tgl_keberangkatan)')) ?? date('Y');
+                $earliestYear = \App\Models\Sp::min(\DB::raw('YEAR(tgl_keberangkatan)')) ?? date('Y');
                 $currentYear = date('Y');
             @endphp
 

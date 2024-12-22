@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Akun;
 use App\Models\Rekapgajicrew;
 use App\Models\Armada;
-use App\Models\SP;
-use App\Models\SJ;
-use App\Models\SPJ;
+use App\Models\Sp;
+use App\Models\Sj;
+use App\Models\Spj;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 

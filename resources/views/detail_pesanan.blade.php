@@ -768,7 +768,7 @@
             })
             .catch(error => console.error('Error:', error));
     }
-    </script>
+</script>
 
 
 <!-- automate calculate Penggunaantoll data in realtime using ajax where SaldoEtollawal minus SaldoEtollakhir -->

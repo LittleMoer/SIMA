@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Unit extends Model
 {
     protected $primaryKey = 'id_unit';
-    protected $table = 'Unit';
+    protected $table = 'unit';
     protected $fillable = [
         'id_unit'
         ,'nama_unit'
