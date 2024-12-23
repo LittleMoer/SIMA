@@ -105,7 +105,7 @@ window.addEventListener('scroll', function() {
       <img src="{{ asset('sneat/assets/img/sima/hero-bg.png')}}" alt="hero background" class="position-absolute top-0 start-50 translate-middle-x object-fit-contain w-100 h-100" data-speed="1" />
       <div class="container">
         <div class=" text-center">
-          <h1 class="text-primary hero-title display-4 fw-bold">Sima Perkasya<br> Ndolanmu Mberkahi lurrrr </h1>
+          <h1 class="text-primary hero-title display-4 fw-bold">Sima Perkasya<br> Ndolanmu Mberkahi </h1>
           {{-- <br class="d-none d-lg-block" /> --}}
           <h2 class="hero-sub-title h6 mb-4 pb-1">Sima Perkasya siap menemani perjalananmu
           </h2>

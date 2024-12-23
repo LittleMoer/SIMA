@@ -241,12 +241,6 @@
                         <th>No Telp</th>
                         <td>{{ $sp->no_telppn }}</td>
                     </tr>
-                    <!-- <tr>
-                        <td>PJ Rombongan</td>
-                        <td>{{ $sp->pj_rombongan }}</td>
-                        <td>No Telp</td>
-                        <td>{{ $sp->no_telpps }}</td>
-                    </tr> -->
                     <tr>
                         <th>Tanggal Keberangkatan</th>
                         <td>{{ $sp->tgl_keberangkatan }}</td>
@@ -271,7 +265,7 @@
                         <th> Armada</th>
                         <td >{{  $unit->nama_unit }}</td>
                         <td>Jumlah Seat </td>
-                        <td> </td>
+                        <td> {{ $sj->jumlahseat }} </td>
                     </tr>
  
                     <tr>
