@@ -59,7 +59,6 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::put('/pesanan/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');
     Route::put('/pesanan/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
     Route::get('/get-driver-codriver/{id}',[OrderController::class, 'getDriverCoDriver']);
-    Route::get('/total-bbm/{id_spj}', [OrderController::class, 'TotalBBM']);
     //konsumbbm
     Route::get('/bbm/{id_spj}', [BbmController::class, 'index', 'detailPesanan'])->name('bbm.index');
     Route::post('/bbm/{id_spj}', [BbmController::class, 'create'])->name('bbm.create');
@@ -105,10 +104,9 @@ Route::middleware([isCrew::class])->group(function () {
     Route::get('crew/pesanan', [CrewController::class, 'pesanan'])->name('crew.pesanan');
     Route::get('crew/pesanan/detail_pesanan/{id}', [CrewController::class, 'detail'])->name('crew.detail_pesanan');
     Route::put('crew/pesanan/detail_pesanan/{id}/update-spj', [CrewController::class, 'updateSPJ'])->name('crew.pesanan.updateSPJ');
-    Route::get('/total-bbm/{id_spj}', [OrderController::class, 'TotalBBM']);
     
     //konsumbbm
-    Route::get('crew/pesanan/detail_pesanan/bbm/{id_spj}', [CrewController::class, 'bbmindex', 'detailPesanan'])->name('crew.bbm');
+    Route::get('crew/pesanan/detail_pesanan/bbm/{id_spj}', [CrewController::class, 'bbmindex'])->name('crew.bbm');
     Route::post('crew/pesanan/detail_pesanan/bbm/{id_spj}', [CrewController::class, 'bbmcreate'])->name('crew.bbm.create');
     Route::get('crew/pesanan/detail_pesanan/bbm/{idkonsumbbm}/edit-data', [CrewController::class, 'bbmgetEditData'])->name('crew.bbm.getEditData');
     Route::put('crew/pesanan/detail_pesanan/bbm/{idkonsumbbm}/edit', [CrewController::class, 'bBmedit'])->name('crew.bbm.edit');
@@ -135,6 +133,7 @@ Route::middleware([isViewer::class])->group(function () {
     Route::get('viewer/calendar', [ViewerController::class, 'showMonthlyCalendar'])->name('viewer.calendar');
     //view data pesanan
 });
+Route::get('/total-bbm/{id_spj}', [OrderController::class, 'TotalBBM']);
 Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
 Route::get('/viewSJ/{id}', [OrderController::class, 'viewSJ'])->name('viewSJ');
 Route::get('/viewSPJ/{id}', [OrderController::class, 'viewSPJ'])->name('viewSPJ');

@@ -438,6 +438,47 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<script>
+        // Fungsi untuk Memformat Input sebagai Rupiah
+        function formatInputRupiah(inputElement, hiddensElement) {
+            inputElement.addEventListener('input', function() {
+                const formattedValue = convertToRupiah(this.value);
+                hiddensElement.value = formattedValue.replace(/[^\d]/g, ''); // Set hiddens input ke angka saja
+                inputElement.value = formattedValue;
+            });
+
+            // Set nilai awal jika ada
+            const initialValue = hiddensElement.value;
+            if (initialValue) {
+                inputElement.value = convertToRupiah(initialValue);
+            }
+        }
+
+        // Fungsi untuk Mengubah Angka Menjadi Format Rupiah
+        function convertToRupiah(angka) {
+            let numberString = angka.replace(/[^\d]/g, '').toString();
+            let sisa = numberString.length % 3;
+            let rupiah = numberString.substr(0, sisa);
+            let ribuan = numberString.substr(sisa).match(/\d{3}/g);
+
+            if (ribuan) {
+                rupiah += (sisa ? '.' : '') + ribuan.join('.');
+            }
+
+            return 'Rp ' + rupiah;
+        }
+
+        // Inisialisasi Semua Input dengan Kelas "currency-input"
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.currency-input').forEach(input => {
+                const hiddensInputId = input.id + '_hiddens';
+                const hiddensInput = document.getElementById(hiddensInputId);
+                if (hiddensInput) {
+                    formatInputRupiah(input, hiddensInput);
+                }
+            });
+        });
+    </script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
