@@ -262,7 +262,7 @@
                         <th>No Pemesan</th>
                         <td>{{ $sp->id_sp }}</td>
                         <th>No Lambung</th>
-                        <td>{{ $unit-> }}</td>
+                        <td>{{ $unit->nama_unit}}</td>
                     </tr>
                     <tr>
                         <td>Driver</td>
