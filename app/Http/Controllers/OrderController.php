@@ -311,7 +311,7 @@ public function show($id)
 
             $sp = Sp::findOrFail($decryptedId);
             $marketing = Akun::where('id_akun',$sp->marketing)->firstOrFail();
-            return view('view-receipt', compact('sp'));
+            return view('view-receipt', compact('sp','marketing'));
         } catch (\Exception $e) {
             // Tangani jika dekripsi gagal
             return abort(404, 'Invalid decryption.');
