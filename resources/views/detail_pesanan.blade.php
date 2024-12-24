@@ -900,7 +900,8 @@
     document.addEventListener('DOMContentLoaded', function() {
         const index = '{{ $index }}'; // Pastikan $index tersedia di Blade view
 
-        document.getElementById('totalisibbm_' + index).addEventListener('input', function() {
+       document.getElementById('uanglainlain_' + index).addEventListener('input', function() {
+            calculateSisaSaku(index);
             calculateTotalSisa(index);
         });
 
@@ -908,7 +909,7 @@
             calculateTotalSisa(index);
         });
 
-        document.getElementById('uanglainlain_' + index).addEventListener('input', function() {
+        document.getElementById('totalisibbm_' + index).addEventListener('input', function() {
             calculateTotalSisa(index);
         });
     });
