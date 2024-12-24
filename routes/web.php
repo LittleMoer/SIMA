@@ -109,7 +109,7 @@ Route::middleware([isCrew::class])->group(function () {
     Route::get('crew/pesanan/detail_pesanan/bbm/{id_spj}', [CrewController::class, 'bbmindex'])->name('crew.bbm');
     Route::post('crew/pesanan/detail_pesanan/bbm/{id_spj}', [CrewController::class, 'bbmcreate'])->name('crew.bbm.create');
     Route::get('crew/pesanan/detail_pesanan/bbm/{idkonsumbbm}/edit-data', [CrewController::class, 'bbmgetEditData'])->name('crew.bbm.getEditData');
-    Route::put('crew/pesanan/detail_pesanan/bbm/{idkonsumbbm}/edit', [CrewController::class, 'bBmedit'])->name('crew.bbm.edit');
+    Route::put('crew/pesanan/detail_pesanan/bbm/{idkonsumbbm}/edit', [CrewController::class, 'bbmedit'])->name('crew.bbm.edit');
     Route::delete('crew/pesanan/detail_pesanan/bbm/{id}', [CrewController::class, 'bbmdestroy'])->name('crew.bbm.destroy');
     
     // pengeluaran
