@@ -60,7 +60,6 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::put('/pesanan/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
     Route::get('/get-driver-codriver/{id}',[OrderController::class, 'getDriverCoDriver']);
     Route::get('/total-bbm/{id_spj}', [OrderController::class, 'TotalBBM']);
-    Route::get('e-receipt/simaperkasya/{id}', [OrderController::class, 'show'])->name('e-receipt');
     //konsumbbm
     Route::get('/bbm/{id_spj}', [BbmController::class, 'index', 'detailPesanan'])->name('bbm.index');
     Route::post('/bbm/{id_spj}', [BbmController::class, 'create'])->name('bbm.create');
@@ -106,6 +105,7 @@ Route::middleware([isCrew::class])->group(function () {
     Route::get('crew/pesanan', [CrewController::class, 'pesanan'])->name('crew.pesanan');
     Route::get('crew/pesanan/detail_pesanan/{id}', [CrewController::class, 'detail'])->name('crew.detail_pesanan');
     Route::put('crew/pesanan/detail_pesanan/{id}/update-spj', [CrewController::class, 'updateSPJ'])->name('crew.pesanan.updateSPJ');
+    Route::get('/total-bbm/{id_spj}', [OrderController::class, 'TotalBBM']);
     
     //konsumbbm
     Route::get('crew/pesanan/detail_pesanan/bbm/{id_spj}', [CrewController::class, 'bbmindex', 'detailPesanan'])->name('crew.bbm');
@@ -127,18 +127,18 @@ Route::middleware([isCrew::class])->group(function () {
 });
 
 Route::middleware([isViewer::class])->group(function () {
-// Viewer
-Route::get('viewer/dashboard', [ViewerController::class, 'index'])->name('viewer.dashboard');
-//pesanan
-Route::get('viewer/pesanan', [ViewerController::class, 'pesanan'])->name('viewer.pesanan');
-Route::get('viewer/pesanan/detail_pesanan/{id}', [ViewerController::class, 'detail'])->name('viewer.detail_pesanan');
-Route::get('viewer/calendar', [ViewerController::class, 'showMonthlyCalendar'])->name('viewer.calendar');
-//view data pesanan
+    // Viewer
+    Route::get('viewer/dashboard', [ViewerController::class, 'index'])->name('viewer.dashboard');
+    //pesanan
+    Route::get('viewer/pesanan', [ViewerController::class, 'pesanan'])->name('viewer.pesanan');
+    Route::get('viewer/pesanan/detail_pesanan/{id}', [ViewerController::class, 'detail'])->name('viewer.detail_pesanan');
+    Route::get('viewer/calendar', [ViewerController::class, 'showMonthlyCalendar'])->name('viewer.calendar');
+    //view data pesanan
 });
 Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
 Route::get('/viewSJ/{id}', [OrderController::class, 'viewSJ'])->name('viewSJ');
 Route::get('/viewSPJ/{id}', [OrderController::class, 'viewSPJ'])->name('viewSPJ');
-
+Route::get('e-receipt/simaperkasya/{id}', [OrderController::class, 'show'])->name('e-receipt');
 Route::get('/viewSPJ/{id}', [OrderController::class, 'viewSPJ'])->name('viewSPJ');
 //Bus
 Route::get('/bus/big_bus', function () {
@@ -162,6 +162,7 @@ Route::get('/calendar/events', [CalendarController::class, 'showCalendar'])->nam
 
 //Api Fetch Events
 // Route::get('/tes', function () {
-//     return view('tes');
-// });
-Route::get('/api/events', [HomepageController::class,'index']);
+    //     return view('tes');
+    // });
+    Route::get('/api/events', [HomepageController::class,'index']);
+    

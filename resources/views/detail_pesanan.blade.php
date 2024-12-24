@@ -199,9 +199,7 @@
                                                     <div class="input-group input-group-merge">
                                                         <input type="text" name="tujuan" id="tujuan"
                                                             class="form-control" placeholder="Masukkan tujuan"
-                                                            value="{{ $sp->tujuan }}" aria-describedby="tujuan"
-                                                            required pattern="[A-Za-z\s]{3,}[0-9]*$"
-                                                            title="Harus diisi dengan minimal 3 huruf" />
+                                                            value="{{ $sp->tujuan }}" aria-describedby="tujuan" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -218,9 +216,7 @@
                                                             id="alamat_penjemputan" class="form-control"
                                                             placeholder="Masukkan alamat penjemputan"
                                                             value="{{ $sp->alamat_penjemputan }}"
-                                                            aria-describedby="pickup-address-icon" required
-                                                            pattern="[A-Za-z\s]{3,}[0-9]*$"
-                                                            title="Harus diisi dengan minimal 3 huruf" />
+                                                            aria-describedby="pickup-address-icon" required />
                                                     </div>
                                                 </div>
                                             </div>

@@ -40,9 +40,9 @@ class OrderController extends Controller
         // Validate request
         $request->validate([
             'nama_pemesan' => 'required',
-            'pj_rombongan' => 'required',
-            'no_telppn' => 'required',
-            'no_telpps' => 'required',
+            'pj_rombongan' => 'nullable',
+            'no_telppn' => 'required',  
+            'no_telpps' => 'nullable',
             'tgl_keberangkatan_full' => 'required|date_format:Y-m-d\TH:i',
             'tgl_kepulangan_full' => 'required|date_format:Y-m-d\TH:i',
             'tujuan' => 'required',
