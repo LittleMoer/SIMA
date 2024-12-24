@@ -137,9 +137,7 @@
                                                 <div class="col-sm-8 ">
                                                     <div class="input-group input-group-merge">
                                                         <input type="text" class="form-control" name="pj_rombongan"
-                                                            value="{{ $sp->pj_rombongan }}" required
-                                                            pattern="[A-Za-z\s']{2,}[0-9]*$"
-                                                            title="Harus diawali dengan minimal 2 huruf dan tanda baca yg diperbolehkan hanya berupa '">
+                                                            value="{{ $sp->pj_rombongan }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -153,8 +151,7 @@
                                                 <div class="col-sm-8">
                                                     <div class="input-group input-group-merge">
                                                         <input type="text" class="form-control" name="no_telpps"
-                                                            value="{{ $sp->no_telpps }}" required pattern="[0-9]*"
-                                                            title="Hanya angka yang diperbolehkan dan minimal 10 digit"
+                                                            value="{{ $sp->no_telpps }}"
                                                             minlength="10" maxlength="13">
                                                     </div>
                                                 </div>
