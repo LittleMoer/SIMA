@@ -310,7 +310,7 @@ public function show($id)
             $decryptedId = decrypt($id); // Dekripsi id
 
             $sp = Sp::findOrFail($decryptedId);
-            $marketing = Akun::where('id_akun',$id)->firstOrFail();
+            $marketing = Akun::where('id_akun',$sp->marketing)->firstOrFail();
             return view('view-receipt', compact('sp'));
         } catch (\Exception $e) {
             // Tangani jika dekripsi gagal
