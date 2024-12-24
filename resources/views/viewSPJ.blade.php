@@ -353,7 +353,7 @@
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Sisa BBM</td>
-                        <td style="border: 1px solid black; ">@currency{{ $spj->sisabbm }}</td>
+                        <td style="border: 1px solid black; ">@currency ($spj->sisabbm)</td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid black; ">Sisa Saku</td>
