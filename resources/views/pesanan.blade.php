@@ -109,7 +109,7 @@
                                                             <div class="col-sm-8">
                                                                 <input type="text" name="no_telppn" minlength="10"
                                                                     maxlength="13" id="no_telppn"
-                                                                    class="form-control  @error('no_telppn') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     value="{{ old('no_telppn') }}"
                                                                     placeholder="Masukkan No Telp Pemesan"  required
                                                                     pattern="[0-9]*"
@@ -377,17 +377,6 @@
                                             <td class="text-center status-pembayaran">{{ $order->status_pembayaran }}</td>
                                             <td class="text-center col-1">{{ $order->jumlah_armada }}</td>
                                             <td class="text-center">
-                                                @if ($order->sj->isNotEmpty())
-                                                    @foreach ($order->sj as $sj)
-                                                        @if ($sj->unit)
-                                                            {{ $sj->unit->nama_unit }}<br>
-                                                        @else
-                                                            Unit tidak tersedia<br>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    Surat jalan tidak tersedia
-                                                @endif
                                             </td>                    
                                             <td> <a href="{{ route('detail_pesanan', [$order->id_sp]) }}"
                                                     class="btn btn-outline-warning btn-sm view-btn"><i
