@@ -19,7 +19,7 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $sp = Sp::with('sj.unit')->get();
+        $sp = SP::all(); 
         return view('pesanan', compact('sp'));  // Mengirimkan data ke view
     }
 
