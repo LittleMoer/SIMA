@@ -397,7 +397,7 @@ function calculateSisaSaku(index) {
     const totalSisaSaku = uangSaku - uangLainLain;
 
     // Menampilkan hasil ke input field total sisa saku
-    document.getElementById('sisasaku_' + index).value = totalSisaSaku.toLocaleString('id-ID');
+    document.getElementById('sisasaku_' + index).value = formatInputRupiah();
     document.getElementById('sisasaku_' + index + '_hiddens').value = totalSisaSaku;
 }
 
@@ -407,16 +407,16 @@ function calculateTotalSisa(index) {
     const kasbonBBM = parseFloat(document.getElementById('kasbon_bbm_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
     const kasbonMakan = parseFloat(document.getElementById('kasbon_makan_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
     const uangSaku = parseFloat(document.getElementById('uang_saku_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-    const penggunaanToll = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
     const uangMakan = parseFloat(document.getElementById('uangmakan_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
     const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
     const totalisiBBM = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+    const sisasaku = parseFloat(document.getElementById('sisasaku_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
 
     // Menghitung total sisa
-    const totalSisa = (kasbonBBM + kasbonMakan + uangSaku) - (totalisiBBM + uangMakan + uangLainLain);
+    const totalSisa = (kasbonBBM + kasbonMakan + uangSaku + ) - (totalisiBBM + uangMakan + uangLainLain);
 
     // Menampilkan hasil ke input field total sisa
-    document.getElementById('totalsisa_' + index).value = totalSisa.toLocaleString('id-ID');
+    document.getElementById('totalsisa_' + index).value = formatInputRupiah(totalSisa);
     document.getElementById('totalsisa_' + index + '_hiddens').value = totalSisa;
 }
 

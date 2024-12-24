@@ -348,12 +348,10 @@
         const startDate = new Date('{{ $sp->tgl_keberangkatan }}');
         const endDate = new Date('{{ $sp->tgl_kepulangan }}');
         const timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
-        let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        diffDays = diffDays < 1 ? 1 : diffDays; // Ensure minimum of 1 workday
+        let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // Add 1 to include both start and end dates
         document.getElementById('workdays').innerText = diffDays;
     }
     calculateWorkdays();
-    const workdaysOutput = document.getElementById('workdays').innerText;
 </script>
 </body>
 </html>
