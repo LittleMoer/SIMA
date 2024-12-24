@@ -872,21 +872,21 @@
 
 
     function calculateTotalSisa(index) {
-        // Mengambil nilai dari input fields
-        const kasbonBBM = parseFloat(document.getElementById('kasbon_bbm_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-        const kasbonMakan = parseFloat(document.getElementById('kasbon_makan_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-        const uangSaku = parseFloat(document.getElementById('uang_saku_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-        const penggunaanToll = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-        const uangMakan = parseFloat(document.getElementById('uangmakan_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-        const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-        const totalisiBBM = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+    // Mengambil nilai dari input fields
+    const kasbonBBM = parseFloat(document.getElementById('kasbon_bbm_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
+    const kasbonMakan = parseFloat(document.getElementById('kasbon_makan_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
+    const uangSaku = parseFloat(document.getElementById('uang_saku_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
+    const uangMakan = parseFloat(document.getElementById('uangmakan_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+    const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+    const totalisiBBM = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+    const sisasaku = parseFloat(document.getElementById('sisasaku_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
 
-        // Menghitung total sisa
-        const totalSisa = (kasbonBBM + kasbonMakan + uangSaku) - (totalisiBBM + uangMakan + uangLainLain);
+    // Menghitung total sisa
+    const totalSisa = (kasbonBBM + kasbonMakan + uangSaku + sisasaku) - (totalisiBBM + uangMakan + uangLainLain);
 
-        // Menampilkan hasil ke input field total sisa
-        document.getElementById('totalsisa_' + index).value = totalSisa.toLocaleString('id-ID');
-        document.getElementById('totalsisa_' + index + '_hiddens').value = totalSisa;
+    // Menampilkan hasil ke input field total sisa
+    document.getElementById('totalsisa_' + index).value = formatInputRupiah(totalSisa);
+    document.getElementById('totalsisa_' + index + '_hiddens').value = totalSisa;
     }
 
     // Menambahkan event listener untuk input fields yang berubah

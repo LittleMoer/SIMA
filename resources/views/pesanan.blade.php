@@ -100,9 +100,7 @@
                                                                     class="form-control  @error('nama_pemesan') is-invalid @enderror"
                                                                     name="nama_pemesan" id="nama_pemesan"
                                                                     placeholder="Masukkan Nama Pemesan"
-                                                                    value="{{ old('nama_pemesan') }}" required
-                                                                    pattern="[A-Za-z\s'-]{2,}[0-9]*$"
-                                                                    title="Harus diawali dengan minimal 2 huruf dan tanda baca yg diperbolehkan hanya berupa '">
+                                                                    value="{{ old('nama_pemesan') }}" >
                                                             </div>
                                                         </div>
                                                         <div class="row mb-1">
@@ -113,7 +111,7 @@
                                                                     maxlength="13" id="no_telppn"
                                                                     class="form-control  @error('no_telppn') is-invalid @enderror"
                                                                     value="{{ old('no_telppn') }}"
-                                                                    placeholder="Masukkan No Telp Pemesan" required required
+                                                                    placeholder="Masukkan No Telp Pemesan"  required
                                                                     pattern="[0-9]*"
                                                                     title="Hanya angka yang diperbolehkan dan minimal 10 digit">
                                                             </div>
@@ -125,9 +123,7 @@
                                                                 <input type="text" name="pj_rombongan" id="pj_rombongan"
                                                                     class="form-control @error('pj_rombongan') is-invalid @enderror "
                                                                     placeholder="Masukkan Nama Pj Rombongan"
-                                                                    value="{{ old('pj_rombongan') }}" required
-                                                                    pattern="[A-Za-z\s]{2,}[0-9]*$"
-                                                                    title="Harus diawali dengan minimal 2 huruf  tanda baca yg diperbolehkan hanya berupa '">
+                                                                    value="{{ old('pj_rombongan') }}">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-1">
@@ -166,9 +162,7 @@
                                                             <div class="col-sm-8">
                                                                 <input type="text" name="tujuan" id="tujuan"
                                                                     class="form-control" placeholder="Masukkan tujuan"
-                                                                    value="{{ old('tujuan') }}" required
-                                                                    pattern="[A-Za-z\s]{3,}[0-9]*$"
-                                                                    title="Harus diisi dengan minimal 3 huruf">
+                                                                    value="{{ old('tujuan') }}">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-1">
@@ -178,9 +172,7 @@
                                                                 <input type="text" name="alamat_penjemputan"
                                                                     id="alamat_penjemputan" class="form-control"
                                                                     placeholder="Masukkan alamat penjemputan"
-                                                                    value="{{ old('alamat_penjemputan') }}" required
-                                                                    pattern="[A-Za-z\s]{3,}[0-9]*$"
-                                                                    title="Harus diisi dengan minimal 3 huruf">
+                                                                    value="{{ old('alamat_penjemputan') }}">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-1">

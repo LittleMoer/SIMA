@@ -413,7 +413,7 @@ function calculateTotalSisa(index) {
     const sisasaku = parseFloat(document.getElementById('sisasaku_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
 
     // Menghitung total sisa
-    const totalSisa = (kasbonBBM + kasbonMakan + uangSaku + ) - (totalisiBBM + uangMakan + uangLainLain);
+    const totalSisa = (kasbonBBM + kasbonMakan + uangSaku + sisasaku) - (totalisiBBM + uangMakan + uangLainLain);
 
     // Menampilkan hasil ke input field total sisa
     document.getElementById('totalsisa_' + index).value = formatInputRupiah(totalSisa);
