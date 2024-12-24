@@ -265,6 +265,12 @@
                 <tbody class="table">
                     <thead>
                         <tr>
+                            <th>Marketing</th>
+                            <td colspan="3">{{ $marketing->name }}</td>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
                             <th>Nama Pemesanan</th>
                             <td>{{ $sp->nama_pemesan }}</td>
                             <th>No Telp</th>
@@ -370,12 +376,12 @@
 
             <div class="signature-container">
                 <div class="signaturePemesan">
-                    Pemesan<br><br> <br><br>
+                    Pemesan<br><br> <br>
                     ______________________
                 </div>
                 <div class="signatureManajemen">
                     Semarang, Manajemen JSP <br>
-                    <img src="{{ asset('images/ttd.png') }}" alt="Logo" width="150">
+                    <img src="{{ asset('images/ttd.png') }}" alt="Logo" width="100">
                 </div>
             </div>
             <div class="SK">

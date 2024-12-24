@@ -120,7 +120,8 @@ class OrderController extends Controller
 public function view($id)
 {
     $sp = SP::where('id_sp', $id)->firstOrFail();
-    return view('view', compact('sp'));
+    $marketing = Akun::where('id_akun', $sp->marketing)->firstOrFail();
+    return view('view', compact('sp', 'marketing'));
 }
 
 
@@ -307,6 +308,7 @@ public function show($id)
             $decryptedId = decrypt($id); // Dekripsi id
             // dd($decryptedId); // Debug hasil dekripsi
             $sp = Sp::findOrFail($decryptedId);
+            $marketing = Akun::where('id_akun', $sp->marketing)->firstOrFail();
             return view('view-receipt', compact('sp'));
         } catch (\Exception $e) {
             // Tangani jika dekripsi gagal

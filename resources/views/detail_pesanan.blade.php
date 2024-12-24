@@ -888,9 +888,10 @@
         const penggunaanToll = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
         const uangMakan = parseFloat(document.getElementById('uangmakan_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
         const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+        const totalisiBBM = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
 
         // Menghitung total sisa
-        const totalSisa = (kasbonBBM + kasbonMakan + uangSaku) - (penggunaanToll + uangMakan + uangLainLain);
+        const totalSisa = (kasbonBBM + kasbonMakan + uangSaku) - (totalisiBBM + uangMakan + uangLainLain);
 
         // Menampilkan hasil ke input field total sisa
         document.getElementById('totalsisa_' + index).value = totalSisa.toLocaleString('id-ID');
@@ -955,7 +956,6 @@
             }
         });
     </script>
-
     <script>
         function tarikTotalBBM(index, idSpj) {
             fetch(`/total-bbm/${idSpj}`)
