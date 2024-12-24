@@ -121,7 +121,7 @@
                                                                 Rombongan</label>
                                                             <div class="col-sm-8">
                                                                 <input type="text" name="pj_rombongan" id="pj_rombongan"
-                                                                    class="form-control @error('pj_rombongan') is-invalid @enderror "
+                                                                    class="form-control "
                                                                     placeholder="Masukkan Nama Pj Rombongan"
                                                                     value="{{ old('pj_rombongan') }}">
                                                             </div>
@@ -355,14 +355,13 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">Id Pesanan</th>
-                                        <th class="text-center">Nama Pesanan</th>
+                                        <th class="text-center">Tujuan</th>
                                         <th class="text-center">PJ Rombongan</th>
                                         <th class="text-center">Keberangkatan</th>
-                                        <th class="text-center">Tujuan</th>
                                         <th class="text-center">Alamat Penjemputan</th>
-
                                         <th class="text-center">Status Pembayaran</th>
-                                        <th class="text-center col-1">Jumlah Armada</th>
+                                        <th class="text-center ">Jumlah Armada</th>
+                                        <th class="text-center ">Armada</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -371,13 +370,25 @@
                                     @foreach ($sp as $order)
                                         <tr data-href="{{ route('detail_pesanan', [$order->id_sp]) }}">
                                             <td class="text-center">{{ $order->id_sp }}</td>
-                                            <td class="text-center">{{ $order->nama_pemesan }}</td>
+                                            <td class="text-center">{{ $order->tujuan }}</td>
                                             <td class="text-center">{{ $order->pj_rombongan }}</td>
                                             <td class="text-center">{{ $order->tgl_keberangkatan }}</td>
-                                            <td class="text-center">{{ $order->tujuan }}</td>
                                             <td class="text-center">{{ $order->alamat_penjemputan }}</td>
                                             <td class="text-center status-pembayaran">{{ $order->status_pembayaran }}</td>
                                             <td class="text-center col-1">{{ $order->jumlah_armada }}</td>
+                                            <td class="text-center">
+                                                @if ($order->sj->isNotEmpty())
+                                                    @foreach ($order->sj as $sj)
+                                                        @if ($sj->id_unit)
+                                                            {{ $sj->unit->nama_unit }}<br>
+                                                        @else
+                                                            Unit tidak tersedia<br>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    Surat jalan tidak tersedia
+                                                @endif
+                                            </td>                    
                                             <td> <a href="{{ route('detail_pesanan', [$order->id_sp]) }}"
                                                     class="btn btn-outline-warning btn-sm view-btn"><i
                                                         class='bx bx-show'></i>Detail</a>

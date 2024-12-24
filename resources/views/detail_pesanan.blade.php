@@ -919,7 +919,6 @@
             totalisiBBM.addEventListener('input', calculate);
             uangMakan.addEventListener('input', calculate);
             uangLainLain.addEventListener('input', calculate);
-            console.log(totalSisa)
         }
 
 
