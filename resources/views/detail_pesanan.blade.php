@@ -863,22 +863,20 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-    // Mengambil data dari Blade view
-    const pengeluaranData = @json($pengeluaranData);
+    // Fungsi untuk menghitung sisa saku dengan mengurangi lainlain dengan uang lainlain
+    function calculateSisaSaku(index) {
+        // Mengambil nilai dari input fields
+        const uangSaku = parseFloat(document.getElementById('uang_saku_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
+        const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
 
-    function fetchPengeluaranUangSaku(index, id_spj) {
-        const pengeluaran = pengeluaranData.find(item => item.id_spj === id_spj);
-        if (pengeluaran) {
-            const uanglainlain = pengeluaran.uanglainlain || 0;
-            document.getElementById('uanglainlain_' + index).value = uanglainlain.toLocaleString('id-ID');
-            document.getElementById('uanglainlain_' + index + '_hiddens').value = uanglainlain;
-            calculateTotalSisa(index); // Hitung total sisa setelah mengisi nilai
-        } else {
-            document.getElementById('uanglainlain_' + index).value = '0';
-            document.getElementById('uanglainlain_' + index + '_hiddens').value = '0';
-            calculateTotalSisa(index); // Hitung total sisa setelah mengisi nilai
-        }
+        // Menghitung total sisa saku
+        const totalSisaSaku = uangSaku - uangLainLain;
+
+        // Menampilkan hasil ke input field total sisa saku
+        document.getElementById('sisasaku_' + index).value = totalSisaSaku.toLocaleString('id-ID');
+        document.getElementById('sisasaku_' + index + '_hiddens').value = totalSisaSaku;
     }
+
 
     function calculateTotalSisa(index) {
         // Mengambil nilai dari input fields
@@ -901,10 +899,6 @@
     // Menambahkan event listener untuk input fields yang berubah
     document.addEventListener('DOMContentLoaded', function() {
         const index = '{{ $index }}'; // Pastikan $index tersedia di Blade view
-        const id_spj = '{{ $spj->id_spj }}'; // Pastikan $spj->id_spj tersedia di Blade view
-
-        // Fetch pengeluaran uang saku saat halaman dimuat
-        fetchPengeluaranUangSaku(index, id_spj);
 
         document.getElementById('totalisibbm_' + index).addEventListener('input', function() {
             calculateTotalSisa(index);
