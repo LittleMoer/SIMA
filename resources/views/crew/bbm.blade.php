@@ -143,7 +143,7 @@
                         <h5 class="modal-title" id="modalCenterTitle">Edit Isi Bensin</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="editForm" action="{{ route('crew.bbm.edit', ['id_spj' => $spj->id_spj]) }}" method="POST" enctype="multipart/form-data">
+                    <form id="editForm" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="modal-body">
