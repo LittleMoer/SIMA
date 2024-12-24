@@ -357,12 +357,6 @@
                 <tbody class="table">
                     <thead>
                         <tr>
-                            <th>Marketing</th>
-                            <td colspan="3">{{ $marketing->name }}</td>
-                        </tr>
-                    </thead>
-                    <thead>
-                        <tr>
                             <th>Nama Pemesanan</th>
                             <td>{{ $sp->nama_pemesan }}</td>
                             <th>No Telp</th>

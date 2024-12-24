@@ -308,7 +308,6 @@ public function show($id)
     {
         try {
             $decryptedId = decrypt($id); // Dekripsi id
-            // dd($decryptedId); // Debug hasil dekripsi
             $sp = Sp::findOrFail($decryptedId);
             $marketing = Akun::where('id_akun', $sp->marketing)->firstOrFail();
             return view('view-receipt', compact('sp'));
