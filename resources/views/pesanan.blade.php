@@ -375,20 +375,7 @@
                                             <td class="text-center">{{ $order->tgl_keberangkatan }}</td>
                                             <td class="text-center">{{ $order->alamat_penjemputan }}</td>
                                             <td class="text-center status-pembayaran">{{ $order->status_pembayaran }}</td>
-                                            <td class="text-center col-1">{{ $order->jumlah_armada }}</td>
-                                            <!-- <td class="text-center">
-                                                @if ($order->sj->isNotEmpty())
-                                                    @foreach ($order->sj as $sj)
-                                                        @if (unit->$sj)
-                                                            {{ $sj->unit->nama_unit }}<br>
-                                                        @else
-                                                            Unit tidak tersedia<br>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    Surat jalan tidak tersedia
-                                                @endif
-                                            </td>                     -->
+                                            <td class="text-center col-1">{{ $order->jumlah_armada }}</td>                  -->
                                             <td> <a href="{{ route('detail_pesanan', [$order->id_sp]) }}"
                                                     class="btn btn-outline-warning btn-sm view-btn"><i
                                                         class='bx bx-show'></i>Detail</a>
