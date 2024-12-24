@@ -277,7 +277,7 @@
                     <!-- add automation for calculate workdays -->
                     <tr>
                         <td>Jumlah Hari Kerja</td>
-                        <td colspan="3" id ="workdays"></td>
+                        <td colspan="3" id ="workdays">{{}}</td>
                     </tr>
 
                     <tr>
@@ -344,8 +344,6 @@
     </div>
 </div>-->
 <script>
-    //add automation for calculate workdays
-    
     function calculateWorkdays() {
         const startDate = new Date('{{ $sp->tgl_keberangkatan }}');
         const endDate = new Date('{{ $sp->tgl_kepulangan }}');
@@ -353,6 +351,8 @@
         const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         document.getElementById('workdays').innerText = diffDays;
     }
+    calculateWorkdays();
+    const workdaysOutput = document.getElementById('workdays').innerText;
 </script>
 </body>
 </html>
