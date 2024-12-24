@@ -44,10 +44,7 @@
                                     };
                                 }
                             </script>
-
-
-
-<form method="POST"
+                                        <form method="POST"
                                         action="{{ route('crew.pesanan.updateSPJ', $spj->id_spj) }}#SuratPerintahJalan"
                                         class="form-update" data-type="SPJ" data-id="{{ $spj->id_spj }}">
                                         @csrf

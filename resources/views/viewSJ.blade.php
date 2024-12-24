@@ -342,7 +342,7 @@
     
         
     </div>
-</div>
+</div>-->
 <script>
     //add automation for calculate workdays
     
@@ -353,6 +353,6 @@
         const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         document.getElementById('workdays').innerText = diffDays;
     }
-</script> -->
+</script>
 </body>
 </html>
