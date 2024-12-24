@@ -109,6 +109,7 @@ class OrderController extends Controller
                 'uanglainlain' => null,
                 'uangmakan' => null,
                 'totalisibbm' => null,
+                'sisabbm' => null,
                 'sisasaku' => null,
                 'totalsisa' => null,
                 
@@ -274,6 +275,7 @@ public function updateSP(Request $request, $id)
                 'uanglainlain' => null,
                 'uangmakan' => null,
                 'totalisibbm' => null,
+                'sisabbm' => null,
                 'sisasaku' => null,
                 'totalsisa' => null
             ]);
@@ -349,6 +351,7 @@ public function updateSPJ(Request $request, $id)
         'SaldoEtollakhir' => 'nullable',
         'PenggunaanToll' => 'nullable',
         'totalisibbm'  => 'nullable',
+        'sisabbm'=> 'nullable',
         'sisasaku'  => 'nullable',
         'totalsisa'  => 'nullable',
         'uanglainlain' => 'nullable',
@@ -364,6 +367,7 @@ public function updateSPJ(Request $request, $id)
         'SaldoEtollakhir' => $request->SaldoEtollakhir,
         'PenggunaanToll' => $request->PenggunaanToll,
         'totalisibbm'  => $request-> totalisibbm,
+        'sisabbm'  => $request-> sisabbm,
         'sisasaku'  => $request-> sisasaku,
         'totalsisa'  => $request->totalsisa,
         'uanglainlain' => $request->uanglainlain,

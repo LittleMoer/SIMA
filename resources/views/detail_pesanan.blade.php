@@ -766,6 +766,23 @@
                                                 </div>
 
                                                 <div class="form-group row mb-3">
+                                                    <label for="sisabbm_{{ $spj->id_sj }}"
+                                                        class="col-sm-4 col-form-label form">Sisa Bbm</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="sisabbm_{{ $index }}"
+                                                            class="form-control currency-input"
+                                                            placeholder="Masukkan Sisa bbm"
+                                                            value="{{ old('sisabbm', $spj->sisabbm) }}">
+                                                        <input type="hidden" name="sisabbm"
+                                                            id="sisabbm_{{ $index }}_hiddens"
+                                                            value="{{ old('sisabbm', $spj->sisabbm) }}">
+                                                        @error('sisabbm')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row mb-3">
                                                     <label for="uanglainlain_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Pengeluaran Uang Saku</label>
                                                     <div class="col-sm-8">
@@ -852,62 +869,66 @@
 
     </section>
 
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-    // Fungsi untuk menghitung sisa saku dengan mengurangi lainlain dengan uang lainlain
-    function calculateSisaSaku(index) {
-        // Mengambil nilai dari input fields
-        const uangSaku = parseFloat(document.getElementById('uang_saku_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-        const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-
-        // Menghitung total sisa saku
-        const totalSisaSaku = uangSaku - uangLainLain;
-
-        // Menampilkan hasil ke input field total sisa saku
-        document.getElementById('sisasaku_' + index).value = totalSisaSaku.toLocaleString('id-ID');
-        document.getElementById('sisasaku_' + index + '_hiddens').value = totalSisaSaku;
-    }
-
-
-    function calculateTotalSisa(index) {
-    // Mengambil nilai dari input fields
-    const kasbonBBM = parseFloat(document.getElementById('kasbon_bbm_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-    const kasbonMakan = parseFloat(document.getElementById('kasbon_makan_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-    const uangSaku = parseFloat(document.getElementById('uang_saku_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-    const uangMakan = parseFloat(document.getElementById('uangmakan_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-    const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-    const totalisiBBM = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-    const sisasaku = parseFloat(document.getElementById('sisasaku_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-
-    // Menghitung total sisa
-    const totalSisa = (kasbonBBM + kasbonMakan + uangSaku + sisasaku) - (totalisiBBM + uangMakan + uangLainLain);
-
-    // Menampilkan hasil ke input field total sisa
-    document.getElementById('totalsisa_' + index).value = formatInputRupiah(totalSisa);
-    document.getElementById('totalsisa_' + index + '_hiddens').value = totalSisa;
-    }
-
-    // Menambahkan event listener untuk input fields yang berubah
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        const index = '{{ $index }}'; // Pastikan $index tersedia di Blade view
+        function calculateTotalSisa(index) {
+            // Mengambil nilai dari input fields
+            const kasbonBBM =document.getElementById(`kasbon_bbm_${index}`);
+            const kasbonMakan = document.getElementById(`kasbon_makan_${index}`);
+            const uangSaku = document.getElementById(`uang_saku_${index}`);
+            const totalisiBBM = document.getElementById(`totalisibbm_${index}`);
+            const uangLainLain = document.getElementById(`uanglainlain_${index}`);
+            const uangMakan = document.getElementById(`uangmakan_${index}`);
+            const sisaSaku = document.getElementById(`sisasaku_${index}`);
+            const totalsisa = document.getElementById(`totalsisa_${index}`);
+            const totalsisahidden = document.getElementById(`totalsisa_${index}_hiddens`);
 
-       document.getElementById('uanglainlain_' + index).addEventListener('input', function() {
-            calculateSisaSaku(index);
-            calculateTotalSisa(index);
-        });
+            
+            function formatToRupiah(angka) {
+                const isNegative = parseFloat(angka) < 0;
+                let numberString = Math.abs(parseFloat(angka)).toString();
+                let split = numberString.split('.');
+                let sisa = split[0].length % 3;
+                let rupiah = split[0].substr(0, sisa);
+                let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+                
+                if (ribuan) {
+                    rupiah += (sisa ? '.' : '') + ribuan.join('.');
+                }
+                
+                return (isNegative ? '-Rp ' : 'Rp ') + rupiah;
+            }
+            function calculate(){
+                const bbm = parseFloat(kasbonBBM.value.replace(/[^\d]/g, '')) || 0;
+                const makan = parseFloat(kasbonMakan.value.replace(/[^\d]/g, '')) || 0;
+                const saku = parseFloat(uangSaku.value.replace(/[^\d]/g, '')) || 0;
+                const sisasaku = parseFloat(sisaSaku.value.replace(/[^\d]/g, '')) || 0;
+                const totbbm = parseFloat(totalisiBBM.value.replace(/[^\d]/g, '')) || 0;
+                const umakan = parseFloat(uangMakan.value.replace(/[^\d]/g, '')) || 0;
+                const ulainlain = parseFloat(uangLainLain.value.replace(/[^\d]/g, '')) || 0;
+                
+                const totalSisa = (bbm + makan + saku + sisasaku) - (totbbm + umakan + ulainlain);
+                
+                totalsisa.value = formatToRupiah(totalSisa);
+                totalsisahidden.value = totalSisa;
+                
+            }
+            sisaSaku.addEventListener('input', calculate);
+            totalisiBBM.addEventListener('input', calculate);
+            uangMakan.addEventListener('input', calculate);
+            uangLainLain.addEventListener('input', calculate);
+            console.log(totalSisa)
+        }
 
-        document.getElementById('uangmakan_' + index).addEventListener('input', function() {
-            calculateTotalSisa(index);
-        });
 
-        document.getElementById('totalisibbm_' + index).addEventListener('input', function() {
-            calculateTotalSisa(index);
+        document.querySelectorAll('[id^="totalisibbm_"]').forEach(element => {
+                const index = element.id.split('_')[1];
+                calculateTotalSisa(index);
         });
     });
 </script>
-
 <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Fungsi untuk menghitung KM Tempuh
@@ -963,46 +984,6 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            function calculateEtollUsage(index) {
-                const awalInput = document.getElementById(`SaldoEtollawal_${index}`);
-                const akhirInput = document.getElementById(`SaldoEtollakhir_${index}`);
-                const penggunaanInput = document.getElementById(`PenggunaanToll_${index}`);
-                const penggunaanHidden = document.getElementById(`PenggunaanToll_${index}_hiddens`);
-
-                function formatToRupiah(angka) {
-                    const isNegative = parseFloat(angka) < 0;
-                    let numberString = Math.abs(parseFloat(angka)).toString();
-                    let split = numberString.split('.');
-                    let sisa = split[0].length % 3;
-                    let rupiah = split[0].substr(0, sisa);
-                    let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-                    if (ribuan) {
-                        rupiah += (sisa ? '.' : '') + ribuan.join('.');
-                    }
-
-                    return (isNegative ? '-Rp ' : 'Rp ') + rupiah;
-                }
-
-                function calculate() {
-                    const awal = parseFloat(awalInput.value.replace(/[^\d]/g, '')) || 0;
-                    const akhir = parseFloat(akhirInput.value.replace(/[^\d]/g, '')) || 0;
-                    const penggunaan = awal - akhir;
-
-                    penggunaanInput.value = formatToRupiah(penggunaan);
-                    penggunaanHidden.value = penggunaan;
-                }
-
-                awalInput.addEventListener('input', calculate);
-                akhirInput.addEventListener('input', calculate);
-
-                calculate();
-            }
-        });
     </script>
     <!-- buat otomatis ngisi driver codriver -->
     <script>
@@ -1401,6 +1382,7 @@
             });
         });
     </script>
+    <!-- kalkulasi toll -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             function calculateEtollUsage(index) {

@@ -9,15 +9,15 @@ class Spj extends Model
     protected $table = 'spj';
     protected $fillable = [
         'id_sj',
-         'SaldoEtollawal',
-          'SaldoEtollakhir',
-           'PenggunaanToll',
-            'uanglainlain',
+        'SaldoEtollawal',
+        'SaldoEtollakhir',
+        'PenggunaanToll',
+        'uanglainlain',
         'uangmakan',
-         'sisabbm',
-          'totalisibbm',
-           'sisasaku',
-            'totalsisa'
+        'totalisibbm',
+        'sisabbm',
+        'sisasaku',
+        'totalsisa'
     ];
     public $timestamps = true;
 
