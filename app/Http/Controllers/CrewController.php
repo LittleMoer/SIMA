@@ -178,7 +178,7 @@ class CrewController extends Controller
     ]);
 
     return redirect()
-        ->route('detail_pesanan', ['id' => $sj->id_sp])
+        ->route('crew.detail_pesanan', ['id' => $sj->id_sp])
         ->with('success', 'SPJ berhasil diupdate!');
 }
 
