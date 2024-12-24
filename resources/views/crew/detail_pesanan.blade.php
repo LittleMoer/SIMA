@@ -48,7 +48,7 @@
 
 
 <form method="POST"
-                                        action="{{ route('pesanan.updateSPJ', $spj->id_spj) }}#SuratPerintahJalan"
+                                        action="{{ route('crew.pesanan.updateSPJ', $spj->id_spj) }}#SuratPerintahJalan"
                                         class="form-update" data-type="SPJ" data-id="{{ $spj->id_spj }}">
                                         @csrf
                                         @method('PUT')
