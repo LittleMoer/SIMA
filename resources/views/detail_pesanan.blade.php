@@ -93,7 +93,7 @@
                                                             <option value="">-- Pilih Akun --</option>
                                                             @foreach ($akuns as $akun)
                                                                 @if ($akun->role_id == 1)
-                                                                    <option value="{{ $akun->id_akun }}">{{ $akun->name }}
+                                                                    <option value="{{ old('id_akun', $akun->id_akun) }}">{{ $akun->name }}
                                                                     </option>
                                                                 @endif
                                                             @endforeach
