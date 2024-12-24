@@ -277,7 +277,7 @@
                     <!-- add automation for calculate workdays -->
                     <tr>
                         <td>Jumlah Hari Kerja</td>
-                        <td colspan="3" id ="workdays">{{}}</td>
+                        <td colspan="3" id ="workdays"></td>
                     </tr>
 
                     <tr>
