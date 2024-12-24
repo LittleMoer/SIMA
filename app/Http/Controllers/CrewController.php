@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\KonsumBbm;
+use App\Models\Konsumbbm;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Sp;
