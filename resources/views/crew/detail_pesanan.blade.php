@@ -20,200 +20,311 @@
 
         <div class="row">
             <div class="col-xl-12">
-                {{-- Tab Surat Perintah Jalan --}}
-                <div id="SuratPerintahJalan"  style="padding: 30px 30px">
-                    <div class="container">
-                        @foreach ($spjs as $index => $spj)
-                            @csrf
+            {-- Tab Surat Perintah Jalan --}}
+                        <div class="tab-pane fade" id="SuratPerintahJalan" role="tabpanel">
+                            <div class="container">
+                                @foreach ($spjs as $index => $spj)
+                                    @csrf
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h2>Surat Premi Jalan {{ $spj->id_spj }}</h2>
+                                        <a href="#"
+                                            onclick="printPreview('{{ route('viewSPJ', $spj->id_spj) }}'); return false;"
+                                            class="btn btn-primary">
+                                            <span class="tf-icons bx bx-printer me-2"></span> Print SPJ
+                                        </a>
+                                    </div>
 
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h2>Surat Premi Jalan {{ $spj->id_spj }} </h2>
+                                    <form method="POST"
+                                        action="{{ route('pesanan.updateSPJ', $spj->id_spj) }}#SuratPerintahJalan"
+                                        class="form-update" data-type="SPJ" data-id="{{ $spj->id_spj }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="row">
+                                            <!-- Kolom Kiri -->
+                                            <div class="col-md-6">
+                                                <div class="form-group md-4">
+                                                    @if ($index == 0 && isset($sp))
+                                                        <h5 id="nilai_kontrak1_{{ $index }}"
+                                                            class="row-sm-4 row-form-label">Nilai Kontrak 1 : Rp
+                                                            {{ number_format($sp->nilai_kontrak1, 0, ',', '.') }} </h5>
+                                                    @elseif (isset($sp))
+                                                        <h5 id="nilai_kontrak2_{{ $index }}"
+                                                            class="row-sm-4 row-form-label">Nilai Kontrak 2 : Rp
+                                                            {{ number_format($sp->nilai_kontrak2, 0, ',', '.') }} </h5>
+                                                    @endif
+                                                    <h5 id="kasbon_bbm_{{ $index }}"
+                                                        class="row-sm-4 row-form-label">Kasbon BBM : Rp
+                                                        {{ number_format($sjs[$index]->kasbonbbm, 0, ',', '.') }} </h5>
+                                                    <h5 id="kasbon_makan_{{ $index }}"
+                                                        class="row-sm-4 row-form-label">Kasbon Makan : Rp
+                                                        {{ number_format($sjs[$index]->kasbonmakan, 0, ',', '.') }} </h5>
+                                                    <h5 id="uang_saku_{{ $index }}"
+                                                        class="row-sm-4 row-form-label">Uang Saku : Rp
+                                                        {{ number_format($sjs[$index]->lainlain, 0, ',', '.') }} </h5>
+                                                </div>
+                                                <!-- Saldo E-toll Awal -->
+                                                <div class="form-group row mb-3">
+                                                    <label for="SaldoEtollawal_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        Saldo E-toll Awal
+                                                    </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="SaldoEtollawal_{{ $index }}"
+                                                            class="form-control currency-input"
+                                                            placeholder="Masukkan saldo awal E-toll"
+                                                            value="{{ old('SaldoEtollawal', $spj->SaldoEtollawal) }}">
+                                                        <input type="hidden" name="SaldoEtollawal"
+                                                            id="SaldoEtollawal_{{ $index }}_hiddens"
+                                                            value="{{ old('SaldoEtollawal', $spj->SaldoEtollawal) }}">
+                                                        @error('SaldoEtollawal')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
 
-                                <a href="#"
-                                    onclick="printPreview('{{ route('viewSPJ', $spj->id_spj) }}'); return false;"
-                                    class="btn btn-primary">
-                                    <span class="tf-icons bx bx-printer me-2"></span> Print SPJ
-                                </a>
+                                                <!-- Saldo E-toll Akhir -->
+                                                <div class="form-group row mb-3">
+                                                    <label for="SaldoEtollakhir_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        Saldo E-toll Akhir
+                                                    </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="SaldoEtollakhir_{{ $index }}"
+                                                            class="form-control currency-input"
+                                                            placeholder="Masukkan saldo akhir E-toll"
+                                                            value="{{ old('SaldoEtollakhir', $spj->SaldoEtollakhir) }}">
+                                                        <input type="hidden" name="SaldoEtollakhir"
+                                                            id="SaldoEtollakhir_{{ $index }}_hiddens"
+                                                            value="{{ old('SaldoEtollakhir', $spj->SaldoEtollakhir) }}">
+                                                        @error('SaldoEtollakhir')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group row mb-3">
+                                                    <label for="PenggunaanToll_{{ $spj->id_sj }}"
+                                                        class="col-sm-4 col-form-label form">Penggunaan Toll</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="PenggunaanToll_{{ $index }}"
+                                                            class="form-control currency-input"
+                                                            placeholder="Masukkan penggunaan E-toll"
+                                                            value="{{ old('PenggunaanToll', $spj->PenggunaanToll) }}">
+                                                        <input type="hidden" name="PenggunaanToll"
+                                                            id="PenggunaanToll_{{ $index }}_hiddens"
+                                                            value="{{ old('PenggunaanToll', $spj->PenggunaanToll) }}">
+                                                        @error('PenggunaanToll')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                {{-- <!-- KM sebelum -->
+                                                <div class="form-group row mb-3">
+                                                    <label for="kmsebelum_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        KM sebelum
+                                                    </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="kmsebelum_{{ $index }}"
+                                                            name="kmsebelum" class="form-control currency-input"
+                                                            placeholder="Masukkan KM sebelum"
+                                                            value="{{ old('kmsebelum', $sjs[$index]->kmsebelum) }}">
+                                                    </div>
+                                                </div>
+
+                                                <!-- KM tiba -->
+                                                <div class="form-group row mb-3">
+                                                    <label for="kmtiba_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        KM tiba
+                                                    </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="kmtiba_{{ $index }}"
+                                                            name="kmtiba" class="form-control"
+                                                            placeholder="Masukkan KM tiba"
+                                                            value="{{ old('kmtiba', $sjs[$index]->kmtiba) }}">
+                                                    </div>
+                                                </div>
+
+                                                <!-- KM Tempuh -->
+                                                <div class="form-group row mb-3">
+                                                    <label for="kmtempuh_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        KM Tempuh
+                                                    </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="kmtempuh_{{ $index }}"
+                                                            name="kmtempuh" class="form-control"
+                                                            placeholder="Masukkan KM Tempuh"
+                                                            value="{{ old('kmtempuh', $sjs[$index]->kmtempuh) }}">
+                                                    </div>
+                                                </div> --}}
+                                                <!-- KM sebelum -->
+                                                <div class="form-group row mb-3">
+                                                    <label for="kmsebelum_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        KM sebelum
+                                                    </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="kmsebelum_{{ $index }}"
+                                                            name="kmsebelum" class="form-control currency-input"
+                                                            placeholder="Masukkan KM sebelum"
+                                                            value="{{ old('kmsebelum', $sjs[$index]->kmsebelum) }}">
+                                                    </div>
+                                                </div>
+
+                                                <!-- KM tiba -->
+                                                <div class="form-group row mb-3">
+                                                    <label for="kmtiba_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        KM tiba
+                                                    </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="kmtiba_{{ $index }}"
+                                                            name="kmtiba" class="form-control"
+                                                            placeholder="Masukkan KM tiba"
+                                                            value="{{ old('kmtiba', $sjs[$index]->kmtiba) }}">
+                                                    </div>
+                                                </div>
+
+                                                <!-- KM Tempuh -->
+                                                <div class="form-group row mb-3">
+                                                    <label for="kmtempuh_{{ $index }}"
+                                                        class="col-sm-4 col-form-label">
+                                                        KM Tempuh
+                                                    </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="kmtempuh_{{ $index }}"
+                                                            name="kmtempuh" class="form-control"
+                                                            placeholder="Masukkan KM Tempuh"
+                                                            value="{{ old('kmtempuh', $sjs[$index]->kmtempuh) }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Kolom Kanan -->
+                                            <div class=" col-md-6">
+                                                <div class="form-group">
+                                                    <a href="{{ route('bbm.index', $spj->id_spj) }}"
+                                                        class="btn btn-primary mb-4"> <i class='bx bx-gas-pump'> </i>
+                                                        Konsumsi
+                                                        BBM</a>
+                                                    <a href="{{ route('pengeluaran.index', $spj->id_spj) }}"
+                                                        class="btn btn-primary mb-4"> <i class='bx bx-gas-pump'> </i>
+                                                        Pengeluaran Uang Saku</a>
+
+                                                </div>
+                                                <div class="form-group row mb-3">
+                                                    <label for="totalisibbm_{{ $spj->id_sj }}"
+                                                        class="col-sm-4 col-form-label form">Total Isi BBM</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <input type="text"
+                                                                    id="totalisibbm_{{ $index }}"
+                                                                    name="totalisibbmhidden"
+                                                                    class="form-control currency-input"
+                                                                    value="{{ old('totalisibbm', $spj->totalisibbm ?? 0) }}"
+                                                                    placeholder="Masukkan Total Isi BBM">
+                                                                <input type="hidden" name="totalisibbm"
+                                                                    id="totalisibbm_{{ $index }}_hiddens"
+                                                                    value="{{ old('totalisibbm', $spj->totalisibbm) }}">
+
+                                                                <button type="button" class="btn btn-primary"
+                                                                    id="tarik-total-{{ $index }}"
+                                                                    onclick="tarikTotalBBM('{{ $index }}', '{{ $spj->id_spj }}')">Tarik
+                                                                    Total</button>
+                                                            </div>
+                                                        </div>
+
+                                                        @error('totalisibbm')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row mb-3">
+                                                    <label for="uanglainlain_{{ $spj->id_sj }}"
+                                                        class="col-sm-4 col-form-label form">Pengeluaran Uang Saku</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="uanglainlain_{{ $index }}"
+                                                            class="form-control currency-input"
+                                                            placeholder="Masukkan Uang Saku"
+                                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}">
+                                                        <input type="hidden" name="uanglainlain"
+                                                            id="uanglainlain_{{ $index }}_hiddens"
+                                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}">
+                                                        @error('uanglainlain')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row mb-3">
+                                                    <label for="uangmakan_{{ $spj->id_sj }}"
+                                                        class="col-sm-4 col-form-label form">Pengeluaran Uang Makan</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="uangmakan_{{ $index }}"
+                                                            placeholder="Masukkan Uang Makan"
+                                                            class="form-control currency-input"
+                                                            value="{{ old('uangmakan', $spj->uangmakan) }}">
+                                                        <input type="hidden" name="uangmakan"
+                                                            id="uangmakan_{{ $index }}_hiddens"
+                                                            value="{{ old('uangmakan', $spj->uangmakan) }}">
+                                                        @error('uangmakan')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row mb-3">
+                                                    <label for="sisasaku_{{ $spj->id_sj }}"
+                                                        class="col-sm-4 col-form-label form">Sisa Saku</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="sisasaku_{{ $index }}"
+                                                            class="form-control currency-input"
+                                                            placeholder="Masukkan Sisa Saku"
+                                                            value="{{ old('sisasaku', $spj->sisasaku) }}">
+                                                        <input type="hidden" name="sisasaku"
+                                                            id="sisasaku_{{ $index }}_hiddens"
+                                                            value="{{ old('sisasaku', $spj->sisasaku) }}">
+                                                        @error('sisasaku')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row mb-3">
+                                                    <label for="totalsisa_{{ $spj->id_sj }}"
+                                                        class="col-sm-4 col-form-label form">Total Sisa</label>
+
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="totalsisa_{{ $index }}"
+                                                            class="form-control currency-input"
+                                                            placeholder="Masukkan Total Sisa"
+                                                            value="{{ old('totalsisa', $spj->totalsisa) }}">
+                                                        <input type="hidden" name="totalsisa"
+                                                            id="totalsisa_{{ $index }}_hiddens"
+                                                            value="{{ old('totalsisa', $spj->totalsisa) }}">
+                                                        @error('totalsisa')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tombol Submit -->
+                                        <div class="d-flex justify-content-end mt-3">
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                @endforeach
                             </div>
-
-                            <script>
-                                function printPreview(url) {
-                                    var printWindow = window.open(url, 'printWindow', 'width=800,height=600');
-                                    printWindow.onload = function() {
-                                        printWindow.print();
-                                    };
-                                }
-                            </script>
-
-
-
-                            <form method="POST" action="{{ route('crew.pesanan.updateSPJ', $spj->id_spj) }}#SuratPerintahJalan">
-                                @csrf
-                                @method('PUT')
-
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group row mb-3">
-                                            <label for="SaldoEtollawal_{{ $spj->id_sj }} "
-                                                class="col-sm-4 col-form-label form-label">Saldo E-toll
-                                                Awal</label>
-                                            <div class="col-sm-8">
-                                                {{-- <input type="text" name="SaldoEtollawal"
-                                                            id="SaldoEtollawal_{{ $spj->id_sj }}"
-                                                            value="{{ old('SaldoEtollawal', $spj->SaldoEtollawal) }}"
-                                                            class="form-control"> --}}
-
-                                                <input type="text" id="SaldoEtollawal"
-                                                    class="form-control currency-input"
-                                                    placeholder="Masukkan saldo awal E toll" required>
-                                                <input type="hidden" name="SaldoEtollawal" id="SaldoEtollawal_hidden"
-                                                    value="{{ old('SaldoEtollawal', $spj->SaldoEtollawal) }}"
-                                                    title="Hanya angka yang diperbolehkan">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-3">
-                                            <label for="SaldoEtollakhir_{{ $spj->id_sj }}"
-                                                class="col-sm-4 col-form-label form">Saldo E-toll Akhir</label>
-                                            <div class="col-sm-8">
-                                                {{-- <input type="text" name="SaldoEtollakhir"
-                                                            id="SaldoEtollakhir_{{ $spj->id_sj }}"
-                                                            value="{{ old('SaldoEtollakhir', $spj->SaldoEtollakhir) }}"
-                                                            class="form-control"> --}}
-                                                <input type="text" id="SaldoEtollakhir"
-                                                    class="form-control currency-input"
-                                                    placeholder="Masukkan saldo akhir E toll" required>
-                                                <input type="hidden" name="SaldoEtollakhir" id="SaldoEtollakhir_hidden"
-                                                    value="{{ old('SaldoEtollakhir', $spj->SaldoEtollakhir) }}"
-                                                    title="Hanya angka yang diperbolehkan">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-3">
-                                            <label for="PenggunaanToll_{{ $spj->id_sj }}"
-                                                class="col-sm-4 col-form-label form">Penggunaan Toll</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" id="PenggunaanToll"
-                                                    class="form-control currency-input"
-                                                    placeholder="Masukkan Penggunaan toll" required>
-                                                <input type="hidden" name="PenggunaanToll" id="PenggunaanToll_hidden"
-                                                    value="{{ old('PenggunaanToll', $spj->PenggunaanToll) }}"
-                                                    title="Hanya angka yang diperbolehkan">
-                                                {{-- <input type="text" name="PenggunaanToll"
-                                                            id="PenggunaanToll_{{ $spj->id_sj }}"
-                                                            value="{{ old('PenggunaanToll', $spj->PenggunaanToll) }}"
-                                                            class="form-control"> --}}
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-3">
-                                            <label
-                                                for="uanglainlain_{{ $spj->id_sj }}
-                                                "
-                                                class="col-sm-4 col-form-label form">Uang Lain-lain</label>
-                                            <div class="col-sm-8">
-                                                {{-- <input type="text" name="uanglainlain"
-                                                            id="uanglainlain_{{ $spj->id_sj }}"
-                                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}"
-                                                            class="form-control"> --}}
-                                                <input type="text" id="uanglainlain" class="form-control currency-input"
-                                                    placeholder="Masukkan Uang lain-lain" required>
-                                                <input type="hidden" name="uanglainlain" id="uanglainlain_hidden"
-                                                    value="{{ old('uanglainlain', $spj->uanglainlain) }}"
-                                                    title="Hanya angka yang diperbolehkan">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-3">
-                                            <label for="uangmakan_{{ $spj->id_sj }}"
-                                                class="col-sm-4 col-form-label form">Uang Makan</label>
-                                            <div class="col-sm-8">
-                                                {{-- <input type="text" name="uangmakan"
-                                                            id="uangmakan_{{ $spj->id_sj }}"
-                                                            value="{{ old('uangmakan', $spj->uangmakan) }}"
-                                                            class="form-control"> --}}
-                                                <input type="text" id="uangmakan" class="form-control currency-input"
-                                                    placeholder="Masukkan Uang Makan" required>
-                                                <input type="hidden" name="uangmakan" id="uangmakan_hidden"
-                                                    value="{{ old('uangmakan', $spj->uangmakan) }}"
-                                                    title="Hanya angka yang diperbolehkan">
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class=" col-md-6">
-                                        <div class="form-group">
-                                            <a href="{{ route('crew.bbm', $spj->id_spj) }}" class="btn btn-primary mb-4">
-                                                <i class='bx bx-gas-pump'> </i>
-                                                Konsumsi
-                                                BBM</a>
-                                            <a href="{{ route('crew.pengeluaran', $spj->id_spj) }}"
-                                                class="btn btn-primary mb-4"> <i class='bx bx-gas-pump'> </i>
-                                                Pengeluaran Uang Saku</a>
-
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label for="totalisibbm_{{ $spj->id_sj }}"
-                                                class="col-sm-4 col-form-label form">Total Isi BBM</label>
-                                            <div class="col-sm-8">
-                                                {{-- <input type="text" name="totalisibbm"
-                                                            id="totalisibbm_{{ $spj->id_sj }}"
-                                                            value="{{ old('totalisibbm', $spj->totalisibbm) }}"
-                                                            class="form-control"> --}}
-                                                <input type="text" id="totalisibbm"
-                                                    class="form-control currency-input"
-                                                    placeholder="Masukkan total isi bbm" required>
-                                                <input type="hidden" name="totalisibbm" id="totalisibbm_hidden"
-                                                    value="{{ old('totalisibbm', $spj->totalisibbm) }}"
-                                                    title="Hanya angka yang diperbolehkan">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-3">
-                                            <label for="sisasaku_{{ $spj->id_sj }}"
-                                                class="col-sm-4 col-form-label form">Sisa Saku</label>
-                                            <div class="col-sm-8">
-                                                {{-- <input type="text" name="sisasaku"
-                                                            id="sisasaku_{{ $spj->id_sj }}"
-                                                            value="{{ old('sisasaku', $spj->sisasaku) }}"
-                                                            class="form-control"> --}}
-                                                <input type="text" id="sisasaku" class="form-control currency-input"
-                                                    placeholder="Masukkan Sisa Saku" required>
-                                                <input type="hidden" name="sisasaku" id="sisasaku_hidden"
-                                                    value="{{ old('sisasaku', $spj->sisasaku) }}"
-                                                    title="Hanya angka yang diperbolehkan">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-3">
-                                            <label for="totalsisa_{{ $spj->id_sj }}"
-                                                class="col-sm-4 col-form-label form">Total Sisa</label>
-                                            <div class="col-sm-8">
-                                                {{-- <input type="text" name="totalsisa"
-                                                            id="totalsisa_{{ $spj->id_sj }}"
-                                                            value="{{ old('totalsisa', $spj->totalsisa) }}"
-                                                            class="form-control"> --}}
-                                                <input type="text" id="totalsisa" class="form-control currency-input"
-                                                    placeholder="Masukkan Total Sisa" required>
-                                                <input type="hidden" name="totalsisa" id="totalsisa_hidden"
-                                                    value="{{ old('totalsisa', $spj->totalsisa) }}"
-                                                    title="Hanya angka yang diperbolehkan">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-10 offset-sm-2 d-flex justify-content-end">
-                                    <button type="submit" onclick="checkForm()" class="btn btn-primary">Update</button>
-                                </div>
-                            </form>
-                            <hr>
-                        @endforeach
-
-                    </div>
-                </div>
+                        </div>
 
             </div>
         </div>
@@ -324,6 +435,155 @@
                 form.submit();
             }
         }
+    </script>
+    <script>
+    // Fungsi untuk menghitung sisa saku dengan mengurangi lainlain dengan uang lainlain
+    function calculateSisaSaku(index) {
+        // Mengambil nilai dari input fields
+        const uangSaku = parseFloat(document.getElementById('uang_saku_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
+        const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+
+        // Menghitung total sisa saku
+        const totalSisaSaku = uangSaku - uangLainLain;
+
+        // Menampilkan hasil ke input field total sisa saku
+        document.getElementById('sisasaku_' + index).value = totalSisaSaku.toLocaleString('id-ID');
+        document.getElementById('sisasaku_' + index + '_hiddens').value = totalSisaSaku;
+    }
+
+
+    function calculateTotalSisa(index) {
+        // Mengambil nilai dari input fields
+        const kasbonBBM = parseFloat(document.getElementById('kasbon_bbm_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
+        const kasbonMakan = parseFloat(document.getElementById('kasbon_makan_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
+        const uangSaku = parseFloat(document.getElementById('uang_saku_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
+        const penggunaanToll = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+        const uangMakan = parseFloat(document.getElementById('uangmakan_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+        const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+        const totalisiBBM = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+
+        // Menghitung total sisa
+        const totalSisa = (kasbonBBM + kasbonMakan + uangSaku) - (totalisiBBM + uangMakan + uangLainLain);
+
+        // Menampilkan hasil ke input field total sisa
+        document.getElementById('totalsisa_' + index).value = totalSisa.toLocaleString('id-ID');
+        document.getElementById('totalsisa_' + index + '_hiddens').value = totalSisa;
+    }
+
+    // Menambahkan event listener untuk input fields yang berubah
+    document.addEventListener('DOMContentLoaded', function() {
+        const index = '{{ $index }}'; // Pastikan $index tersedia di Blade view
+
+       document.getElementById('uanglainlain_' + index).addEventListener('input', function() {
+            calculateSisaSaku(index);
+            calculateTotalSisa(index);
+        });
+
+        document.getElementById('uangmakan_' + index).addEventListener('input', function() {
+            calculateTotalSisa(index);
+        });
+
+        document.getElementById('totalisibbm_' + index).addEventListener('input', function() {
+            calculateTotalSisa(index);
+        });
+    });
+</script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fungsi untuk menghitung KM Tempuh
+            function calculateKmTempuh(index) {
+                // Ambil elemen input
+                const kmSebelum = document.getElementById(kmsebelum_${index});
+                const kmTiba = document.getElementById(kmtiba_${index});
+                const kmTempuh = document.getElementById(kmtempuh_${index});
+    
+                if (!kmSebelum || !kmTiba || !kmTempuh) return;
+    
+                // Fungsi untuk mengupdate KM Tempuh
+                function updateKmTempuh() {
+                    // Konversi nilai ke angka, gunakan 0 jika kosong
+                    const sebelumValue = parseFloat(kmSebelum.value) || 0;
+                    const tibaValue = parseFloat(kmTiba.value) || 0;
+    
+                    // Hitung KM Tempuh
+                    const tempuhValue = tibaValue - sebelumValue;
+    
+                    // Set nilai KM Tempuh (pastikan tidak negatif)
+                    kmTempuh.value = tempuhValue >= 0 ? tempuhValue : 0;
+                }
+    
+                // Pasang event listener pada kedua input
+                kmSebelum.addEventListener('input', updateKmTempuh);
+                kmTiba.addEventListener('input', updateKmTempuh);
+            }
+    
+            // Inisialisasi fungsi untuk setiap baris (gunakan loop jika ada banyak index)
+            const allIndices = document.querySelectorAll('[id^="kmsebelum_"]').length;
+            for (let i = 0; i < allIndices; i++) {
+                calculateKmTempuh(i);
+            }
+        });
+    </script>
+    <script>
+        function tarikTotalBBM(index, idSpj) {
+            fetch(`/total-bbm/${idSpj}`)
+                .then(response => response.json())
+                .then(data => {
+                    const totalInput = document.getElementById(`totalisibbm_${index}`);
+                    const hiddensInput = document.getElementById(`totalisibbm_${index}_hiddens`);
+
+
+                    // Format ke Rupiah
+                    const formattedValue = convertToRupiah(data.totalBBM.toString());
+
+
+                    // Set nilai untuk input dan hiddens
+                    totalInput.value = formattedValue;
+                    hiddensInput.value = data.totalBBM; // Tetap angka untuk backend
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function calculateEtollUsage(index) {
+                const awalInput = document.getElementById(`SaldoEtollawal_${index}`);
+                const akhirInput = document.getElementById(`SaldoEtollakhir_${index}`);
+                const penggunaanInput = document.getElementById(`PenggunaanToll_${index}`);
+                const penggunaanHidden = document.getElementById(`PenggunaanToll_${index}_hiddens`);
+
+                function formatToRupiah(angka) {
+                    const isNegative = parseFloat(angka) < 0;
+                    let numberString = Math.abs(parseFloat(angka)).toString();
+                    let split = numberString.split('.');
+                    let sisa = split[0].length % 3;
+                    let rupiah = split[0].substr(0, sisa);
+                    let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                    if (ribuan) {
+                        rupiah += (sisa ? '.' : '') + ribuan.join('.');
+                    }
+
+                    return (isNegative ? '-Rp ' : 'Rp ') + rupiah;
+                }
+
+                function calculate() {
+                    const awal = parseFloat(awalInput.value.replace(/[^\d]/g, '')) || 0;
+                    const akhir = parseFloat(akhirInput.value.replace(/[^\d]/g, '')) || 0;
+                    const penggunaan = awal - akhir;
+
+                    penggunaanInput.value = formatToRupiah(penggunaan);
+                    penggunaanHidden.value = penggunaan;
+                }
+
+                awalInput.addEventListener('input', calculate);
+                akhirInput.addEventListener('input', calculate);
+
+                calculate();
+            }
+        });
     </script>
 @endsection
 

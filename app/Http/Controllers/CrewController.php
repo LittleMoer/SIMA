@@ -138,27 +138,49 @@ class CrewController extends Controller
     }
 
     public function updateSPJ(Request $request, $id)
-    {
-        // Temukan SJ yang akan diupdate
-        $spj = SPJ::findOrFail($id);
+{
+    // Temukan SPJ yang akan diupdate
+    $spj = SPJ::findOrFail($id);
+    $sj = SJ::findOrFail($spj->id_sj);
 
-        // Validasi input
-        $request->validate([
-            'saldo_etollawal' => 'nullable',
-            'saldo_etollakhir' => 'nullable',
-            'penggunaan_toll' => 'nullable',
-            'uanglainlain' => 'nullable',
-            'uangmakan' => 'nullable',
-        ]);
-        $spj->update($request->all());
-        $sj = SJ::findOrFail($spj->id_sj);
-        $id_sp = $sj->id_sp;
+    // Validate all inputs
+    $request->validate([
+        'SaldoEtollawal' => 'nullable',
+        'SaldoEtollakhir' => 'nullable',
+        'PenggunaanToll' => 'nullable',
+        'totalisibbm'  => 'nullable',
+        'sisasaku'  => 'nullable',
+        'totalsisa'  => 'nullable',
+        'uanglainlain' => 'nullable',
+        'uangmakan' => 'nullable',
+        'kmsebelum' => 'nullable',
+        'kmtiba' => 'nullable',
+        'kmtempuh' => 'nullable',
+    ]);
 
-        // Redirect to detail_pesanan page with the specific tab
-        return redirect()
-            ->route('crew.detail_pesanan', ['id' => $id_sp])
-            ->with('success', 'SPJ berhasil diupdate!');
-    }
+    // Update SPJ
+    $spj->update([
+        'SaldoEtollawal' => $request->SaldoEtollawal,
+        'SaldoEtollakhir' => $request->SaldoEtollakhir,
+        'PenggunaanToll' => $request->PenggunaanToll,
+        'totalisibbm'  => $request-> totalisibbm,
+        'sisasaku'  => $request-> sisasaku,
+        'totalsisa'  => $request->totalsisa,
+        'uanglainlain' => $request->uanglainlain,
+        'uangmakan' => $request->uangmakan,
+    ]);
+
+    // Update SJ
+    $sj->update([
+        'kmsebelum' => $request->kmsebelum,
+        'kmtiba' => $request->kmtiba,
+        'kmtempuh' => $request->kmtempuh,
+    ]);
+
+    return redirect()
+        ->route('detail_pesanan', ['id' => $sj->id_sp])
+        ->with('success', 'SPJ berhasil diupdate!');
+}
 
     // Menampilkan daftar pengeluaran uang saku berdasarkan id_spj
     public function pengeluaranindex($id_spj)
