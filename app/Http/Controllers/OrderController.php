@@ -179,9 +179,11 @@ public function detail($id)
 
     $akuns = Akun::all();
 
+    $pengeluaranData = PengeluaranUangSaku::where('id_spj', $id)->get();
+
     // dd($akuns);
     
-    return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units', 'akuns'));
+    return view('detail_pesanan', compact('sp', 'sjs', 'spjs', 'units', 'akuns', 'pengeluaranData'));
 }
 
 
@@ -335,55 +337,47 @@ public function updateSJ(Request $request, $id)
 
 public function updateSPJ(Request $request, $id)
 {
-    try {
-        // Find records
-        $spj = SPJ::findOrFail($id);
-        $sj = SJ::where('id_sj', $spj->id_sj)->firstOrFail();
+    // Temukan SPJ yang akan diupdate
+    $spj = SPJ::findOrFail($id);
+    $sj = SJ::findOrFail($spj->id_sj);
 
-        // Validate SJ data
-        $sjData = $request->validate([
-            'kmsebelum' => 'numeric|nullable',
-            'kmtiba' => 'numeric|nullable',
-            'kmtempuh' => 'numeric|nullable',
-        ]);
+    // Validate all inputs
+    $request->validate([
+        'SaldoEtollawal' => 'nullable',
+        'SaldoEtollakhir' => 'nullable',
+        'PenggunaanToll' => 'nullable',
+        'totalisibbm'  => 'nullable',
+        'sisasaku'  => 'nullable',
+        'totalsisa'  => 'nullable',
+        'uanglainlain' => 'nullable',
+        'uangmakan' => 'nullable',
+        'kmsebelum' => 'nullable',
+        'kmtiba' => 'nullable',
+        'kmtempuh' => 'nullable',
+    ]);
 
-        // Debug: Check validated SJ data
-        dd('Validated SJ Data:', $sjData);
+    // Update SPJ
+    $spj->update([
+        'SaldoEtollawal' => $request->SaldoEtollawal,
+        'SaldoEtollakhir' => $request->SaldoEtollakhir,
+        'PenggunaanToll' => $request->PenggunaanToll,
+        'totalisibbm'  => $request-> totalisibbm,
+        'sisasaku'  => $request-> sisasaku,
+        'totalsisa'  => $request->totalsisa,
+        'uanglainlain' => $request->uanglainlain,
+        'uangmakan' => $request->uangmakan,
+    ]);
 
-        // Validate SPJ data 
-        $spjData = $request->validate([
-            'saldo_etollawal' => 'numeric|nullable',
-            'saldo_etollakhir' => 'numeric|nullable',
-            'penggunaan_toll' => 'numeric|nullable',
-        ]);
+    // Update SJ
+    $sj->update([
+        'kmsebelum' => $request->kmsebelum,
+        'kmtiba' => $request->kmtiba,
+        'kmtempuh' => $request->kmtempuh,
+    ]);
 
-        // Debug: Check validated SPJ data
-        dd('Validated SPJ Data:', $spjData);
-
-        // Update using arrow syntax
-        $sj->kmsebelum = $sjData['kmsebelum'];
-        $sj->kmtiba = $sjData['kmtiba'];
-        $sj->kmtempuh = $sjData['kmtempuh'];
-        $sj->save();
-
-        // Debug: Check SJ after update
-        dd('Updated SJ:', $sj);
-
-        $spj->saldo_etollawal = $spjData['saldo_etollawal'];
-        $spj->saldo_etollakhir = $spjData['saldo_etollakhir'];
-        $spj->penggunaan_toll = $spjData['penggunaan_toll'];
-        $spj->save();
-
-        // Debug: Check SPJ after update
-        dd('Updated SPJ:', $spj);
-
-        return redirect()->route('detail_pesanan', ['id' => $spj->id])->with('success', 'SJ berhasil diupdate!');
-        
-    } catch (\Exception $e) {
-        // Debug: Check error message
-        dd('Error updating SPJ:', $e->getMessage());
-        return back()->with('error', $e->getMessage());
-    }
+    return redirect()
+        ->route('detail_pesanan', ['id' => $sj->id_sp])
+        ->with('success', 'SPJ berhasil diupdate!');
 }
 public function destroy($id)
 {
