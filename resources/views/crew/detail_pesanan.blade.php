@@ -220,7 +220,7 @@
                                             <!-- Kolom Kanan -->
                                             <div class=" col-md-6">
                                                 <div class="form-group">
-                                                    <a href="{{ route('crew.bbmx', $spj->id_spj) }}"
+                                                    <a href="{{ route('crew.bbm', $spj->id_spj) }}"
                                                         class="btn btn-primary mb-4"> <i class='bx bx-gas-pump'> </i>
                                                         Konsumsi
                                                         BBM</a>
