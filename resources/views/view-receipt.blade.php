@@ -346,8 +346,8 @@
                         <p>PT. JAGAD SIMA PERKASYA<br>
                             PERUMAHAN MANGUNSARI ASRI NO. 6<br>
                             RT 07 / RW 04 MANGUNSARI GUNUNGPATI SEMARANG<br>
-                            No.Tlp 08135 9999 789</br>
-                            No.Tlp 08123 7888 789</p>
+                            No.Telp 08135 9999 789</br>
+                            No.Telp 08123 7888 789</p>
                     </div>
                 </div>
 
@@ -484,16 +484,15 @@
                 <strong>Syarat dan Ketentuan</strong>
                 <br>
                 <ul class="small-text">
-                    <li>Semua pembayaran melalui rekening Bank Mandiri an JAGAD SIMA PERKASYA No.rek 1350019116597.</li>
-                    <li>Pemesan/penyewa wajib membayarkan uang muka sebesar 25% dari total nilai kontrak.</li>
+                <li>Pemesan/penyewa wajib membayarkan uang muka (DP) minimal 25% dari total nilai kontrak.</li>
+                    <li>Pembayaran dapat ditransfer ke rekening: <br> <strong>A.n JAGAD SIMA PERKASYA</strong> <br> BRI: 136901000438301 <br> Mandiri: 1350019116597 </li>
                     <li>Pelunasan maksimal 7 hari sebelum pemberangkatan.</li>
                     <li>Jika terjadi pembatalan maka uang muka tidak bisa dikembalikan.</li>
                     <li>Kelebihan waktu sewa akan dikenakan biaya tambahan sebesar Rp. 200.000-Rp. 400.000/jam.</li>
                     <li>Harga di atas tidak termasuk biaya tol, parkir, pajak, retribusi penyeberangan/ferry.</li>
                     <li>Harga sewaktu-waktu bisa berubah jika terjadi kenaikan BBM.</li>
                     <li>Penyewa berhak menegur pengemudi yang ugal-ugalan/melaporkan kepada pihak manajemen.</li>
-                    <li>Akses charger di tiap armada dikhususkan hanya untuk charging handphone, bukan
-                        perangkat-perangkat lainnya.</li>
+                    <li>Akses charger di tiap armada dikhususkan hanya untuk charging handphone, bukan perangkat-perangkat lainnya.</li>
                     <li>Penyewa tidak diperbolehkan merubah/menambah rute perjalanan diluar yang telah disepakati.</li>
                     <li>Pengemudi berhak menolak jika akses jalan tidak memadai untuk dilalui armada.</li>
                     <li>Kehilangan, kerusakan, dan barang tertukar bukan tanggung jawab crew/perusahaan.</li>
