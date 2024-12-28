@@ -56,7 +56,7 @@
                             @elseif($user->role_id == 3)
                                 Viewer
                             @else
-                                Unknown Role
+                                {{ $user->role_id }}
                             @endif
                         </td>
                         <td>{{ $user->email }}</td>
