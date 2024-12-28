@@ -87,13 +87,15 @@
                                             <div class="row mb-3">
                                                 <label for="marketing"
                                                     class="col-sm-4 col-form-label form-label">Marketing</label>
-                                                <div class="col-sm-8">
+                                                    <div class="col-sm-8">
                                                     <div class="input-group input-group-merge">
                                                         <select class="form-select" name="marketing" required>
                                                             <option value="">-- Pilih Akun --</option>
                                                             @foreach ($akuns as $akun)
                                                                 @if ($akun->role_id == 1)
-                                                                    <option value="{{ old('id_akun', $akun->id_akun) }}">{{ $akun->name }}
+                                                                    <option value="{{ $akun->id_akun }}" 
+                                                                        {{ old('marketing', $sp->marketing ?? '') == $akun->id_akun ? 'selected' : '' }}>
+                                                                        {{ $akun->name }}
                                                                     </option>
                                                                 @endif
                                                             @endforeach

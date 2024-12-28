@@ -346,7 +346,8 @@
                         <p>PT. JAGAD SIMA PERKASYA<br>
                             PERUMAHAN MANGUNSARI ASRI NO. 6<br>
                             RT 07 / RW 04 MANGUNSARI GUNUNGPATI SEMARANG<br>
-                            TELP. 08135 9999 789</p>
+                            No.Tlp 08135 9999 789</br>
+                            No.Tlp 08123 7888 789</p>
                     </div>
                 </div>
 
@@ -472,6 +473,9 @@
                     ______________________
                 </div>
                 <div class="signatureManajemen">
+                    <div class="date-text">
+                    {{ $sp->created_at->format('d F Y') }}  <!-- Jika menggunakan Laravel -->
+                    </div>
                     Semarang, Manajemen JSP <br>
                     <img src="{{ asset('images/ttd.png') }}" alt="Logo" width="150">
                 </div>
@@ -484,7 +488,7 @@
                     <li>Pemesan/penyewa wajib membayarkan uang muka sebesar 25% dari total nilai kontrak.</li>
                     <li>Pelunasan maksimal 7 hari sebelum pemberangkatan.</li>
                     <li>Jika terjadi pembatalan maka uang muka tidak bisa dikembalikan.</li>
-                    <li>Kelebihan waktu sewa akan dikenakan biaya tambahan sebesar Rp. 200.000/jam.</li>
+                    <li>Kelebihan waktu sewa akan dikenakan biaya tambahan sebesar Rp. 200.000-Rp. 400.000/jam.</li>
                     <li>Harga di atas tidak termasuk biaya tol, parkir, pajak, retribusi penyeberangan/ferry.</li>
                     <li>Harga sewaktu-waktu bisa berubah jika terjadi kenaikan BBM.</li>
                     <li>Penyewa berhak menegur pengemudi yang ugal-ugalan/melaporkan kepada pihak manajemen.</li>
