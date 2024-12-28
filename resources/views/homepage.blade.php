@@ -130,7 +130,7 @@ window.addEventListener('scroll', function() {
   <!-- Hero: End -->
 
   <!-- Tentang -->
-  <section id="landingFeatures" class="section-py landing-features">
+  <!-- <section id="landingFeatures" class="section-py landing-features">
     <div class="container">
       <div class="text-center mb-3 pb-1">
         <span class="badge bg-label-primary">Tentang</span>
@@ -144,7 +144,7 @@ window.addEventListener('scroll', function() {
           <div class="text-center mb-3">
             <p>Berisi visi misi ...... </p>
             {{-- <img src="{{ asset('sneat/assets/img/front-pages/icons/laptop.png')}}" alt="laptop charging" />
-          </div> --}}
+          </div> --}} -->
           {{-- <h5 class="mb-3">Quality Code</h5>
           <p class="features-icon-description">
             Code structure that all developers will easily understand and fall in love with.
