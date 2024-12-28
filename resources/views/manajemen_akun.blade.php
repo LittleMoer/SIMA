@@ -49,15 +49,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->username }}</td>
                         <td class="role_id" name="role_id" id="role_id">
-                            @if($user->role_id == 1)
-                                Admin
-                            @elseif($user->role_id == 2)
-                                Crew
-                            @elseif($user->role_id == 3)
-                                Viewer
-                            @else
-                                $user->role_id
-                            @endif
+                        {{ $user->role_id }}
                         </td>
                         <td>{{ $user->email }}</td>
                         <td>
