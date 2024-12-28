@@ -48,7 +48,17 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->username }}</td>
-                        <td class="role_id"name="role_id" id="role_id">{{ $user->role_id }}</td>
+                        <td class="role_id" name="role_id" id="role_id">
+                            @if($user->role_id == 1)
+                                Admin
+                            @elseif($user->role_id == 2)
+                                Crew
+                            @elseif($user->role_id == 3)
+                                Viewer
+                            @else
+                                Unknown Role
+                            @endif
+                        </td>
                         <td>{{ $user->email }}</td>
                         <td>
                             <button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop" aria-controls="offcanvasBackdrop" data-id="{{ $user->id_akun }}" data-name="{{ $user->name }}" data-username="{{ $user->username }}" data-email="{{ $user->email }}" data-role="{{ $user->role_id }}">Edit</button>
