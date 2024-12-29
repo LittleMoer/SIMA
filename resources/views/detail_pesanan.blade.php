@@ -443,6 +443,16 @@
                                                 </div>
 
                                                 <div class="row mb-3">
+                                                    <label for="driver2_{{ $sj->id_sj }}"
+                                                        class="col-sm-3 col-form-label form-label">Driver Cadangan:</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" name="driver2"
+                                                            placeholder="Masukkan Driver Cadangan (optional)" id="drive2r_{{ $sj->id_sj }}"
+                                                            maxlength="50" value="{{ old('driver2', $sj->driver2) }}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
                                                     <label for="codriver_{{ $sj->id_sj }}"
                                                         class="col-sm-3 col-form-label form-label">Co-Driver:</label>
                                                     <div class="col-sm-9">
@@ -453,6 +463,10 @@
                                                     </div>
                                                 </div>
 
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <!-- Jumlah Seat -->
                                                 <div class=" row mb-3">
                                                     <label for="jumlahseat_{{ $sj->id_sj }}"
                                                         class="col-sm-3 col-form-label form-label">Jumlah Seat</label>
@@ -468,9 +482,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <div class="col-md-6">
 
                                                 <!-- Kasbon BBM -->
                                                 <div class="row mb-3">

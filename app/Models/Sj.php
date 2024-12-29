@@ -12,6 +12,7 @@ class Sj extends Model
         'id_sp'
         ,'id_unit'
         , 'driver'
+        , 'driver2'
         , 'codriver'
         , 'jumlahseat'
         , 'kmsebelum'

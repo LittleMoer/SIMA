@@ -134,6 +134,7 @@ public function generate(Request $request)
     // get all records from sj that has id_sp equal to id_sp from spRecords and driver and codriver name column equal to nama
     $sjRecords = SJ::whereIn('id_sp', $spRecords->pluck('id_sp'))
                     ->where('driver', $nama)
+                    ->orWhere('driver2', $nama)
                     ->orWhere('codriver', $nama)
                     ->get();
     
