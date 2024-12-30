@@ -270,9 +270,17 @@
  
                     <tr>
                         <td>Driver</td>
-                        <td> {{ $sj->driver}} </td>
+                        @if($sj->driver2)
+                            <td>{{ $sj->driver }}</td>
+                            <td>Driver Cadangan</td>
+                            <td>{{ $sj->driver2 }}</td>
+                        @else
+                            <td colspan="3">{{ $sj->driver }}</td>
+                        @endif
+                    </tr>
+                    <tr>
                         <td>Co Driver</td>
-                        <td> {{ $sj->codriver}} </td>
+                        <td colspan="3"> {{ $sj->codriver}} </td>
                     </tr>
                     <!-- add automation for calculate workdays -->
                     <tr>

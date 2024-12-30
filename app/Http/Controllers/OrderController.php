@@ -423,6 +423,18 @@ public function getDriverCoDriver($id_unit)
     ]);
 }
 
+public function searchDriver(Request $request)
+{
+    $query = $request->get('query');
+    // get driver name from akun table where role is 2
+    $names = Akun::where('role_id', 2)
+        ->where('name', 'like', "%$query%")
+        ->get();
+
+    $driver = $names->pluck('name');
+        
+    return response()->json($driver);
+}
 
 public function update(Request $request, $id)
 {

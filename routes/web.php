@@ -59,6 +59,8 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::put('/pesanan/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');
     Route::put('/pesanan/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
     Route::get('/get-driver-codriver/{id}',[OrderController::class, 'getDriverCoDriver']);
+    Route::get('/search-driver', [OrderController::class, 'searchDriver'])->name('search.driver');
+
     //konsumbbm
     Route::get('/bbm/{id_spj}', [BbmController::class, 'index', 'detailPesanan'])->name('bbm.index');
     Route::post('/bbm/{id_spj}', [BbmController::class, 'create'])->name('bbm.create');

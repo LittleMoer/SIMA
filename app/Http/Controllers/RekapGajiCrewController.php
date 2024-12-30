@@ -181,7 +181,11 @@ public function generate(Request $request)
             $totalGaji = $sisaNilaiKontrak;
 
             foreach ($namauser as $user) {
-                $premiPercentage = $this->calculatePremiPercentage($seri, $posisi);
+                if ($sj->driver2 != null && ($sj->driver2 === $user->name || $sj->driver === $user->name)) {
+                    $premiPercentage = 10;
+                } else {
+                    $premiPercentage = $this->calculatePremiPercentage($seri, $posisi);
+                }
                 $premi = ($totalGaji * $premiPercentage) / 100;
 
                 // Prepare data to create

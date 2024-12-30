@@ -443,12 +443,17 @@
                                                 </div>
 
                                                 <div class="row mb-3">
-                                                    <label for="driver2_{{ $sj->id_sj }}"
-                                                        class="col-sm-3 col-form-label form-label">Driver Cadangan:</label>
+                                                    <label for="driver2_{{ $sj->id_sj }}" class="col-sm-3 col-form-label form-label">Driver Cadangan:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" name="driver2"
-                                                            placeholder="Masukkan Driver Cadangan (optional)" id="drive2r_{{ $sj->id_sj }}"
-                                                            maxlength="50" value="{{ old('driver2', $sj->driver2) }}">
+                                                        <input type="text" 
+                                                            class="form-control driver-autocomplete" 
+                                                            name="driver2"
+                                                            placeholder="Masukkan Driver Cadangan (optional)" 
+                                                            id="driver2_{{ $sj->id_sj }}"
+                                                            maxlength="50" 
+                                                            value="{{ old('driver2', $sj->driver2) }}"
+                                                            autocomplete="off">
+                                                        <div class="suggestion-box" id="suggestionBox_{{ $sj->id_sj }}"></div>
                                                     </div>
                                                 </div>
 
@@ -879,11 +884,94 @@
                 </div>
             </div>
         </div>
-
     </section>
 
-</script>
+    
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Debugging info
+    console.log("Starting autocomplete initialization");
+
+    $('.driver-autocomplete').each(function() {
+        let input = $(this);
+        let inputId = input.attr('id');
+        let suggestionBox = $('#suggestionBox_' + inputId);
+        
+        console.log("Setting up autocomplete for:", inputId);
+        console.log("Suggestion box found:", suggestionBox.length > 0);
+
+        let typingTimer;
+        const doneTypingInterval = 300;
+
+        input.on('input', function() {
+            clearTimeout(typingTimer);
+            let query = $(this).val();
+            console.log("Input value changed:", query);
+
+            if (query.length >= 2) {
+                typingTimer = setTimeout(function() {
+                    $.ajax({
+                        url: '/search-driver',
+                        method: 'GET',
+                        data: { query: query },
+                        beforeSend: function() {
+                            console.log("Sending request for:", query);
+                        },
+                        success: function(response) {
+                            console.log("Received response:", response);
+                            suggestionBox.empty();
+                            
+                            if (response.length > 0) {
+                                response.forEach(function(name) {
+                                    let item = $(`<div class="suggestion-item" data-name="${name}">${name}</div>`);
+                                    suggestionBox.append(item);
+                                });
+                                suggestionBox.show();
+                                console.log("Suggestions displayed");
+                            } else {
+                                suggestionBox.hide();
+                                console.log("No suggestions found");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Request failed:", error);
+                        }
+                    });
+                }, doneTypingInterval);
+            } else {
+                suggestionBox.hide();
+            }
+        });
+
+        // Log when events are bound
+        console.log("Events bound for input:", inputId);
+    });
+});
+</script>
+<style>
+    .suggestion-box {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    display: none;
+    z-index: 1000;
+}
+
+.suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f8f9fa;
+}
+
+</style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         function calculateTotalSisa(index) {
