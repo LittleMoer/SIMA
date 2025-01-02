@@ -116,7 +116,6 @@ window.addEventListener('scroll', function() {
           </div> --}}
         </div>
         <div id="heroDashboardAnimation" class="hero-animation-img">
-          <a href="../vertical-menu-template/app-ecommerce-dashboard.html" target="_blank">
             <div id="heroAnimationImg" class="position-relative hero-dashboard-img">
               <img src="{{ asset('sneat/assets/img/sima/bus-hd.png')}}" alt="hero dashboard" class="animation-img" />
               <img src="{{ asset('sneat/assets/img/sima/bus-hd.png')}}" alt="hero elements" class="position-absolute hero-elements-img animation-img top-0 start-0" />

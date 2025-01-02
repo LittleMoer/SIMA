@@ -452,7 +452,7 @@
                                                             id="driver2_{{ $sj->id_sj }}"
                                                             maxlength="50" 
                                                             value="{{ old('driver2', $sj->driver2) }}"
-                                                            autocomplete="off">
+                                                            autocomplete="on">
                                                         <div class="suggestion-box" id="suggestionBox_{{ $sj->id_sj }}"></div>
                                                     </div>
                                                 </div>
@@ -901,9 +901,42 @@ $(document).ready(function() {
         console.log("Setting up autocomplete for:", inputId);
         console.log("Suggestion box found:", suggestionBox.length > 0);
 
+        // Pastikan suggestion box memiliki style yang tepat
+        suggestionBox.css({
+            'position': 'absolute',
+            'background': 'white',
+            'border': '1px solid #ccc',
+            'max-height': '200px',
+            'overflow-y': 'auto',
+            'width': '100%',
+            'z-index': '1000',
+            'margin-top': '2px'
+        });
+
         let typingTimer;
         const doneTypingInterval = 300;
 
+        // Fungsi untuk menampilkan suggestions
+        function displaySuggestions(suggestions) {
+            console.log('Displaying suggestions:', suggestions);
+            suggestionBox.empty();
+            
+            if (suggestions.length > 0) {
+                suggestions.forEach(function(name) {
+                    let item = $(`<div class="suggestion-item" data-name="${name}">${name}</div>`);
+                    suggestionBox.append(item);
+                });
+                
+                // Gunakan .css() untuk mengatur display secara eksplisit
+                suggestionBox.css('display', 'block');
+                
+                console.log("Suggestion box display style:", suggestionBox.css('display'));
+                console.log("Suggestions displayed");
+            } else {
+                suggestionBox.css('display', 'none');
+                console.log("No suggestions found");
+            }
+        }
         input.on('input', function() {
             clearTimeout(typingTimer);
             let query = $(this).val();
@@ -920,27 +953,24 @@ $(document).ready(function() {
                         },
                         success: function(response) {
                             console.log("Received response:", response);
-                            suggestionBox.empty();
-                            
-                            if (response.length > 0) {
-                                response.forEach(function(name) {
-                                    let item = $(`<div class="suggestion-item" data-name="${name}">${name}</div>`);
-                                    suggestionBox.append(item);
-                                });
-                                suggestionBox.show();
-                                console.log("Suggestions displayed");
-                            } else {
-                                suggestionBox.hide();
-                                console.log("No suggestions found");
-                            }
+                            displaySuggestions(response);
                         },
                         error: function(xhr, status, error) {
                             console.error("Request failed:", error);
+                            suggestionBox.css('display', 'none');
                         }
                     });
                 }, doneTypingInterval);
             } else {
-                suggestionBox.hide();
+                suggestionBox.css('display', 'none');
+            }
+        });
+
+        // Click outside handler
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest(input).length && 
+                !$(event.target).closest(suggestionBox).length) {
+                suggestionBox.css('display', 'none');
             }
         });
 
@@ -950,16 +980,18 @@ $(document).ready(function() {
 });
 </script>
 <style>
-    .suggestion-box {
+.suggestion-box {
+    display: none;
     position: absolute;
     background: white;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 4px;
     max-height: 200px;
     overflow-y: auto;
     width: 100%;
-    display: none;
     z-index: 1000;
+    margin-top: 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .suggestion-item {
@@ -968,7 +1000,7 @@ $(document).ready(function() {
 }
 
 .suggestion-item:hover {
-    background-color: #f8f9fa;
+    background-color: #f5f5f5;
 }
 
 </style>
