@@ -19,10 +19,24 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $sp = SP::all(); 
-        return view('pesanan', compact('sp'));  // Mengirimkan data ke view
+        $allSp = SP::all();
+       
+        foreach($allSp as $sp) {
+            $unitNames = [];  // Array untuk menyimpan nama unit
+            $sjList = SJ::where('id_sp', $sp->id_sp)->get();
+           
+            foreach($sjList as $sj) {
+                $unit = Unit::find($sj->id_unit);  // Menggunakan find() alih-alih where()
+                if($unit !== null) {  // Periksa apakah unit ditemukan
+                    $unitNames[] = $unit->nama_unit;
+                }
+            }
+           
+            $sp->unit_names = $unitNames;  // Simpan array nama unit ke SP
+        }
+   
+        return view('pesanan', compact('allSp'));
     }
-
     public function getkasbon( $id_spj) {
         //fetch kasbonbbm,kasbonmakan,lainlain,nilai_kontrak from sj and sp that related to spj
         $spj = SPJ::where('id_spj', $id_spj)->first();

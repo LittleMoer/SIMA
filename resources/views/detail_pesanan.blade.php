@@ -658,8 +658,8 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- <!-- KM sebelum -->
-                                                <div class="form-group row mb-3">
+                                                    <!-- KM sebelum -->
+                                                    <div class="form-group row mb-3">
                                                     <label for="kmsebelum_{{ $index }}"
                                                         class="col-sm-4 col-form-label">
                                                         KM sebelum
@@ -671,6 +671,7 @@
                                                             value="{{ old('kmsebelum', $sjs[$index]->kmsebelum) }}">
                                                     </div>
                                                 </div>
+
 
                                                 <!-- KM tiba -->
                                                 <div class="form-group row mb-3">
@@ -686,46 +687,6 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- KM Tempuh -->
-                                                <div class="form-group row mb-3">
-                                                    <label for="kmtempuh_{{ $index }}"
-                                                        class="col-sm-4 col-form-label">
-                                                        KM Tempuh
-                                                    </label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" id="kmtempuh_{{ $index }}"
-                                                            name="kmtempuh" class="form-control"
-                                                            placeholder="Masukkan KM Tempuh"
-                                                            value="{{ old('kmtempuh', $sjs[$index]->kmtempuh) }}">
-                                                    </div>
-                                                </div> --}}
-                                                <!-- KM sebelum -->
-                                                <div class="form-group row mb-3">
-                                                    <label for="kmsebelum_{{ $index }}"
-                                                        class="col-sm-4 col-form-label">
-                                                        KM sebelum
-                                                    </label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" id="kmsebelum_{{ $index }}"
-                                                            name="kmsebelum" class="form-control currency-input"
-                                                            placeholder="Masukkan KM sebelum"
-                                                            value="{{ old('kmsebelum', $sjs[$index]->kmsebelum) }}">
-                                                    </div>
-                                                </div>
-
-                                                <!-- KM tiba -->
-                                                <div class="form-group row mb-3">
-                                                    <label for="kmtiba_{{ $index }}"
-                                                        class="col-sm-4 col-form-label">
-                                                        KM tiba
-                                                    </label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" id="kmtiba_{{ $index }}"
-                                                            name="kmtiba" class="form-control"
-                                                            placeholder="Masukkan KM tiba"
-                                                            value="{{ old('kmtiba', $sjs[$index]->kmtiba) }}">
-                                                    </div>
-                                                </div>
 
                                                 <!-- KM Tempuh -->
                                                 <div class="form-group row mb-3">
@@ -1062,41 +1023,33 @@ $(document).ready(function() {
     });
 </script>
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Fungsi untuk menghitung KM Tempuh
-            function calculateKmTempuh(index) {
-                // Ambil elemen input
-                const kmSebelum = document.getElementById(kmsebelum_${index});
-                const kmTiba = document.getElementById(kmtiba_${index});
-                const kmTempuh = document.getElementById(kmtempuh_${index});
-    
-                if (!kmSebelum || !kmTiba || !kmTempuh) return;
-    
-                // Fungsi untuk mengupdate KM Tempuh
-                function updateKmTempuh() {
-                    // Konversi nilai ke angka, gunakan 0 jika kosong
-                    const sebelumValue = parseFloat(kmSebelum.value) || 0;
-                    const tibaValue = parseFloat(kmTiba.value) || 0;
-    
-                    // Hitung KM Tempuh
-                    const tempuhValue = tibaValue - sebelumValue;
-    
-                    // Set nilai KM Tempuh (pastikan tidak negatif)
-                    kmTempuh.value = tempuhValue >= 0 ? tempuhValue : 0;
-                }
-    
-                // Pasang event listener pada kedua input
-                kmSebelum.addEventListener('input', updateKmTempuh);
-                kmTiba.addEventListener('input', updateKmTempuh);
+    document.addEventListener('DOMContentLoaded', function() {
+        function calculateKmTempuh(index) {
+            const kmSebelumInput = document.getElementById(`kmsebelum_${index}`);
+            const kmTibaInput = document.getElementById(`kmtiba_${index}`);
+            const kmTempuhInput = document.getElementById(`kmtempuh_${index}`);
+
+
+            function calculate() {
+                const kmSebelum = parseFloat(kmSebelumInput.value) || 0;
+                const kmTiba = parseFloat(kmTibaInput.value) || 0;
+                const kmTempuh = kmTiba - kmSebelum;
+               
+                kmTempuhInput.value = kmTempuh;
             }
-    
-            // Inisialisasi fungsi untuk setiap baris (gunakan loop jika ada banyak index)
-            const allIndices = document.querySelectorAll('[id^="kmsebelum_"]').length;
-            for (let i = 0; i < allIndices; i++) {
-                calculateKmTempuh(i);
-            }
+
+
+            kmSebelumInput.addEventListener('input', calculate);
+            kmTibaInput.addEventListener('input', calculate);
+        }
+
+
+        document.querySelectorAll('[id^="kmsebelum_"]').forEach(element => {
+            const index = element.id.split('_')[1];
+            calculateKmTempuh(index);
         });
-    </script>
+    });
+</script>
     <script>
         function tarikTotalBBM(index, idSpj) {
             fetch(`/total-bbm/${idSpj}`)

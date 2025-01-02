@@ -24,7 +24,8 @@ class RekapGajiCrew extends Model
         'sisa_nilai_kontrak', 
         'premi', 
         'subsidi', 
-        'total_gaji'
+        'total_gaji',
+        'presentase_premi'
     ];
 
     public function armada()

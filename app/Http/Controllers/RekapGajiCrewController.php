@@ -205,6 +205,7 @@ public function generate(Request $request)
                     'total_operasional' => $totalOperasional,
                     'sisa_nilai_kontrak' => $sisaNilaiKontrak,
                     'premi' => $premi,
+                    'presentase_premi' => $premiPercentage,
                     'subsidi' => null, 
                     'total_gaji' => $premi,
                 ];

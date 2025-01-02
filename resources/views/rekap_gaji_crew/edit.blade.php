@@ -106,7 +106,7 @@
                                 <td>
                                     <input type="text" name="data[{{ $index }}][premium_percentage]"
                                         list="premium-options"
-                                        value="{{ old('data.' . $index . '.premium_percentage', !in_array($gaji->premium_percentage, [6, 7, 10, 12, 14, 21]) ? $gaji->premium_percentage : '') }}"
+                                        value="{{ $gaji->presentase_premi }}"
                                         class="form-control premium-input" placeholder="Select or enter custom %"
                                         required>
                                     <datalist id="premium-options">
