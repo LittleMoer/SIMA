@@ -34,6 +34,6 @@ class Sj extends Model
     }
     public function spj()
     {
-        return $this->hasOne(Spj::class);
-    }
+        return $this->hasOne(Spj::class, 'id_sj', 'id_sj'); // Foreign key: id_sj, Local key: id_sj
+    }    
 }

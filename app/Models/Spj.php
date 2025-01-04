@@ -17,13 +17,14 @@ class Spj extends Model
         'totalisibbm',
         'sisabbm',
         'sisasaku',
-        'totalsisa'
+        'totalsisa',
+        'isvalid'
     ];
     public $timestamps = true;
 
     public function sj()
     {
-        return $this->belongsTo(SJ::class);
+        return $this->belongsTo(Sj::class, 'id_sj', 'id_sj'); // Foreign key: id_sj, Owner key: id_sj
     }
     public function konsumbbm()
     {

@@ -373,10 +373,12 @@ public function updateSPJ(Request $request, $id)
         'kmsebelum' => 'nullable',
         'kmtiba' => 'nullable',
         'kmtempuh' => 'nullable',
+        'isvalid' => 'nullable',
     ]);
 
     // Update SPJ
     $spj->update([
+        'isvalid' => $request->isvalid,
         'SaldoEtollawal' => $request->SaldoEtollawal,
         'SaldoEtollakhir' => $request->SaldoEtollakhir,
         'PenggunaanToll' => $request->PenggunaanToll,

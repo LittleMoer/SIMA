@@ -718,7 +718,20 @@
                                             <a href="{{ route('pengeluaran.index', $spj->id_spj) }}"
                                                 class="btn btn-primary mb-4"> <i class='bx bx-gas-pump'> </i>
                                                 Pengeluaran Uang Saku</a>
-
+                                            <!-- buatlah cek box untuk input data is valid jika terisi maka input 1 jika tidak 0 -->
+                                            <div class="form-group row mb-3">
+                                                <label for="isvalid_{{ $spj->id_sj }}"
+                                                    class="col-sm-4 col-form-label form">Valid</label>
+                                                <div class="col-sm-8">
+                                                    <select id="isvalid_{{ $index }}" name="isvalid" class="form-control">
+                                                        <option value="1" {{ old('isvalid', $spj->isvalid) == 1 ? 'selected' : '' }}>Valid</option>
+                                                        <option value="0" {{ old('isvalid', $spj->isvalid) == 0 ? 'selected' : '' }}>Tidak Valid</option>
+                                                    </select>
+                                                    @error('isvalid')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group row mb-3">
                                             <label for="totalisibbm_{{ $spj->id_sj }}"

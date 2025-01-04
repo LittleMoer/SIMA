@@ -23,19 +23,21 @@ class CrewController extends Controller
     public function pesanan()
     {
         $user = Auth::user(); // Mendapatkan user yang sedang login
-
-        // Mencari data pesanan yang sesuai dengan driver atau codriver
-        $sj = Sj::where('driver', $user->name) // Sesuaikan dengan field yang digunakan untuk menyimpan nama driver
-            ->orWhere('codriver', $user->name) // Sesuaikan dengan field yang digunakan untuk menyimpan nama codriver
+    
+        // Cari data SJ berdasarkan driver atau codriver
+        $sj = Sj::where('driver', $user->name)
+            ->orWhere('codriver', $user->name)
             ->get();
-
+    
         // Ambil semua id_sp dari SJ
         $id_sp = $sj->pluck('id_sp')->toArray();
+    
+        // Ambil data SP beserta relasi SJ dan SPJ
+        $sp = SP::whereIn('id_sp', $id_sp)
+            ->with(['sj.spj']) // Load relasi SJ dan SPJ
+            ->get();
 
-        // Ambil data SP berdasarkan id_sp yang ditemukan
-        $sp = SP::whereIn('id_sp', $id_sp)->get();
-
-        return view('crew.pesanan', compact('sj', 'sp')); // Mengirimkan data ke view
+        return view('crew.pesanan', compact('sp')); // Kirim data ke view
     }
 
     public function detail($id)

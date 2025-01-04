@@ -89,22 +89,22 @@
                                             <td class="text-center">{{ $order->alamat_penjemputan }}</td>
                                             <td class="text-center status-pembayaran">{{ $order->status_pembayaran }}</td>
                                             <td class="text-center col-1">{{ $order->jumlah_armada }}</td>
-                                            <td> <a href="{{ route('crew.detail_pesanan', [$order->id_sp]) }}"
-                                                    class="btn btn-outline-warning btn-sm view-btn"><i
-                                                        class='bx bx-show'></i>Detail</a>
+                                            <td>
+                                            @php
+                                                // Ambil SPJ dari relasi SJ
+                                                $spj = $order->sj->first()?->spj; // Mengambil SPJ pertama dari SJ
+                                            @endphp
 
-                                                <script>
-                                                    document.addEventListener('DOMContentLoaded', function() {
-                                                        // Tangani pengiriman form
-                                                        var deleteForm = document.querySelector('#deleteOrderModal{{ $order->id_sp }} form');
-                                                        deleteForm.addEventListener('submit', function(event) {
-                                                            event.preventDefault();
-                                                            // Di sini Anda bisa menambahkan logika tambahan jika diperlukan
-                                                            this.submit();
-                                                        });
-                                                    });
-                                                </script>
-                                            </td>
+                                            @if ($spj && $spj->isvalid == 1)
+                                                <button class="btn btn-outline-success btn-sm view-btn" disabled>
+                                                    <i class='bx bx-check'></i>Terverifikasi
+                                                </button>
+                                            @else
+                                                <a href="{{ route('crew.detail_pesanan', [$order->id_sp]) }}" class="btn btn-outline-warning btn-sm view-btn">
+                                                    <i class='bx bx-show'></i>Detail
+                                                </a>
+                                            @endif
+                                        </td>
                                         </tr>
                                     @endforeach
                             </table>
