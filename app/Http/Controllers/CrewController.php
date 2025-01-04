@@ -34,13 +34,13 @@ class CrewController extends Controller
     
         // Ambil data SP beserta relasi SJ dan SPJ, hanya tampilkan data yang berada dalam rentang waktu 1 bulan terakhir dimulai dari tanggal 4,gunakan tgl_keberangkatan sebagai acuan
         $sp = SP::whereIn('id_sp', $id_sp)
-            ->where('tgl_keberangkatan', '>=', now()->subMonth()->startOfMonth()->addDays(4))
-            ->where('tgl_keberangkatan', '<=', now()->subMonth()->endOfMonth()->addDays(4))
-            ->with(['sj.spj'])
-            ->get();
-            
-            // ->with(['sj.spj']) // Load relasi SJ dan SPJ
+            // ->where('tgl_keberangkatan', '>=', now()->subMonth()->startOfMonth()->addDays(4))
+            // ->where('tgl_keberangkatan', '<=', now()->subMonth()->endOfMonth()->addDays(4))
+            // ->with(['sj.spj'])
             // ->get();
+            
+            ->with(['sj.spj']) // Load relasi SJ dan SPJ
+            ->get();
         return view('crew.pesanan', compact('sp')); // Kirim data ke view
     }
 
