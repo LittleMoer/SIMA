@@ -1493,7 +1493,7 @@ function tarikTotalUangSaku(index, idSpj) {
         });
     });
 </script>
-
+<!-- 
 <script>
     $(document).ready(function() {
         $(document).on('submit', '.form-update', function(e) {
@@ -1547,7 +1547,7 @@ function tarikTotalUangSaku(index, idSpj) {
             });
         });
     });
-</script>
+</script> -->
 <!-- kalkulasi toll -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
