@@ -786,14 +786,14 @@
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                 <input type="text"
-                                                                    id="totalisiuangsaku_{{ $index }}"
-                                                                    name="totalisiuangsakuhidden"
+                                                                    id="uanglainlain_{{ $index }}"
+                                                                    name="uanglainlainhidden"
                                                                     class="form-control currency-input"
-                                                                    value="{{ old('totalisiuangsaku', $spj->totalisiuangsaku ?? 0) }}"
+                                                                    value="{{ old('uanglainlain', $spj->uanglainlain ?? 0) }}"
                                                                     placeholder="Masukkan Total Pengeluaran Uang Saku">
-                                                                <input type="hidden" name="totalisiuangsaku"
-                                                                    id="totalisiuangsaku_{{ $index }}_hiddens"
-                                                                    value="{{ old('totalisiuangsaku', $spj->totalisiuangsaku) }}">
+                                                                <input type="hidden" name="uanglainlain"
+                                                                    id="uanglainlain_{{ $index }}_hiddens"
+                                                                    value="{{ old('uanglainlain', $spj->uanglainlain) }}">
                                                    
                                                                 <button type="button" class="btn btn-primary"
                                                                     id="tarik-total-uang-saku-{{ $index }}"
@@ -877,8 +877,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -1108,8 +1106,8 @@ function tarikTotalUangSaku(index, idSpj) {
     fetch(`/total-uang-saku/${idSpj}`)
         .then(response => response.json())
         .then(data => {
-            const totalInput = document.getElementById(`totalisiuangsaku_${index}`);
-            const hiddensInput = document.getElementById(`totalisiuangsaku_${index}_hiddens`);
+            const totalInput = document.getElementById(`uanglainlain_${index}`);
+            const hiddensInput = document.getElementById(`uanglainlain_${index}_hiddens`);
             const sisaInput = document.getElementById(`sisasaku_${index}`);
             const sisaHiddensInput = document.getElementById(`sisasaku_${index}_hiddens`);
 

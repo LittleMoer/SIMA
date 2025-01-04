@@ -250,28 +250,69 @@
                                                         </div>
 
                                                         @error('totalisibbm')
-                                                            <div class="text-danger">{{ $message }}</div>
+                                                        <div class="text-danger">{{ $message }}</div>
                                                         @enderror
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row mb-3">
+                                                    <label for="sisabbm_{{ $spj->id_sj }}"
+                                                        class="col-sm-4 col-form-label form">Sisa Bbm</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" id="sisabbm_{{ $index }}"
+                                                            class="form-control currency-input"
+                                                            placeholder="Masukkan Sisa bbm"
+                                                            value="{{ old('sisabbm', $spj->sisabbm) }}">
+                                                            <input type="hidden" name="sisabbm"
+                                                            id="sisabbm_{{ $index }}_hiddens"
+                                                            value="{{ old('sisabbm', $spj->sisabbm) }}">
+                                                            @error('sisabbm')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                <div class="form-group row mb-3">
                                                     <label for="uanglainlain_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Pengeluaran Uang Saku</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" id="uanglainlain_{{ $index }}"
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <input type="text"
+                                                                    id="uanglainlain_{{ $index }}"
+                                                                    name="uanglainlainhidden"
+                                                                    class="form-control currency-input"
+                                                                    value="{{ old('uanglainlain', $spj->uanglainlain ?? 0) }}"
+                                                                    placeholder="Masukkan Total Pengeluaran Uang Saku">
+                                                                <input type="hidden" name="uanglainlain"
+                                                                    id="uanglainlain_{{ $index }}_hiddens"
+                                                                    value="{{ old('uanglainlain', $spj->uanglainlain) }}">
+                                                   
+                                                                <button type="button" class="btn btn-primary"
+                                                                    id="tarik-total-uang-saku-{{ $index }}"
+                                                                    onclick="tarikTotalUangSaku('{{ $index }}', '{{ $spj->id_spj }}')">Tarik Total</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row mb-3">
+                                                    <label for="sisasaku_{{ $spj->id_sj }}"
+                                                        class="col-sm-4 col-form-label form">Sisa Saku</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" id="sisasaku_{{ $index }}"
                                                             class="form-control currency-input"
-                                                            placeholder="Masukkan Uang Saku"
-                                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}">
-                                                        <input type="hidden" name="uanglainlain"
-                                                            id="uanglainlain_{{ $index }}_hiddens"
-                                                            value="{{ old('uanglainlain', $spj->uanglainlain) }}">
-                                                        @error('uanglainlain')
+                                                            placeholder="Masukkan Sisa Saku"
+                                                            value="{{ old('sisasaku', $spj->sisasaku) }}">
+                                                        <input type="hidden" name="sisasaku"
+                                                            id="sisasaku_{{ $index }}_hiddens"
+                                                            value="{{ old('sisasaku', $spj->sisasaku) }}">
+                                                        @error('sisasaku')
                                                             <div class="text-danger">{{ $message }}</div>
                                                         @enderror
                                                     </div>
                                                 </div>
-
+                                                
                                                 <div class="form-group row mb-3">
                                                     <label for="uangmakan_{{ $spj->id_sj }}"
                                                         class="col-sm-4 col-form-label form">Pengeluaran Uang Makan</label>
@@ -289,55 +330,31 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="form-group row mb-3">
-                                                    <label for="sisabbm_{{ $spj->id_sj }}"
-                                                        class="col-sm-4 col-form-label form">Sisa Bbm</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" id="sisabbm_{{ $index }}"
-                                                            class="form-control currency-input"
-                                                            placeholder="Masukkan Sisa bbm"
-                                                            value="{{ old('sisabbm', $spj->sisabbm) }}">
-                                                        <input type="hidden" name="sisabbm"
-                                                            id="sisabbm_{{ $index }}_hiddens"
-                                                            value="{{ old('sisabbm', $spj->sisabbm) }}">
-                                                        @error('sisabbm')
-                                                            <div class="text-danger">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
 
-                                                <div class="form-group row mb-3">
-                                                    <label for="sisasaku_{{ $spj->id_sj }}"
-                                                        class="col-sm-4 col-form-label form">Sisa Saku</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" id="sisasaku_{{ $index }}"
-                                                            class="form-control currency-input"
-                                                            placeholder="Masukkan Sisa Saku"
-                                                            value="{{ old('sisasaku', $spj->sisasaku) }}">
-                                                        <input type="hidden" name="sisasaku"
-                                                            id="sisasaku_{{ $index }}_hiddens"
-                                                            value="{{ old('sisasaku', $spj->sisasaku) }}">
-                                                        @error('sisasaku')
-                                                            <div class="text-danger">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
 
-                                                <div class="form-group row mb-3">
-                                                    <label for="totalsisa_{{ $spj->id_sj }}"
-                                                        class="col-sm-4 col-form-label form">Total Sisa</label>
-
-                                                    <div class="col-sm-8">
-                                                        <input type="text" id="totalsisa_{{ $index }}"
-                                                            class="form-control currency-input"
-                                                            placeholder="Masukkan Total Sisa"
-                                                            value="{{ old('totalsisa', $spj->totalsisa) }}">
-                                                        <input type="hidden" name="totalsisa"
-                                                            id="totalsisa_{{ $index }}_hiddens"
-                                                            value="{{ old('totalsisa', $spj->totalsisa) }}">
-                                                        @error('totalsisa')
-                                                            <div class="text-danger">{{ $message }}</div>
-                                                        @enderror
+                                        <div class="form-group row mb-3">
+                                            <label for="totalsisa_{{ $spj->id_sj }}"
+                                                class="col-sm-4 col-form-label form">Total Sisa</label>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                id="totalsisa_{{ $index }}"
+                                                                name="totalsisa"
+                                                                class="form-control currency-input"
+                                                                value="{{ old('totalsisa', $spj->totalsisa ?? 0) }}"
+                                                                placeholder="Masukkan Total Sisa">
+                                                            <input type="hidden"
+                                                                id="totalsisa_{{ $index }}_hiddens"
+                                                                name="totalsisa"
+                                                                value="{{ old('totalsisa_hiddens', $spj->totalsisa ?? 0) }}">
+                                                            <button type="button"
+                                                                class="btn btn-primary"
+                                                                id="tarik-sisa-{{ $index }}"
+                                                                onclick="tarikTotalSisa('{{ $index }}', '{{ $spj->id_spj }}')">
+                                                                Tarik Total Sisa
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -431,57 +448,76 @@
     });
 </script>
 <script>
-function calculateTotalSisa(index) {
-    // Mengambil nilai dari input fields
-    const kasbonBBM = parseFloat(document.getElementById('kasbon_bbm_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-    const kasbonMakan = parseFloat(document.getElementById('kasbon_makan_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-    const uangSaku = parseFloat(document.getElementById('uang_saku_' + index).innerText.replace(/[^0-9.-]+/g, '')) || 0;
-    const uangMakan = parseFloat(document.getElementById('uangmakan_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-    const uangLainLain = parseFloat(document.getElementById('uanglainlain_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-    const totalisiBBM = parseFloat(document.getElementById('totalisibbm_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
-    const sisasaku = parseFloat(document.getElementById('sisasaku_' + index).value.replace(/[^0-9.-]+/g, '')) || 0;
+function tarikTotalUangSaku(index, idSpj) {
+    fetch(`/total-uang-saku/${idSpj}`)
+        .then(response => response.json())
+        .then(data => {
+            const totalInput = document.getElementById(`uanglainlain_${index}`);
+            const hiddensInput = document.getElementById(`uanglainlain_${index}_hiddens`);
+            const sisaInput = document.getElementById(`sisasaku_${index}`);
+            const sisaHiddensInput = document.getElementById(`sisasaku_${index}_hiddens`);
 
-    // Menghitung total sisa
-    const totalSisa = (kasbonBBM + kasbonMakan + uangSaku + sisasaku) - (totalisiBBM + uangMakan + uangLainLain);
 
-    function formatToRupiah(angka) {
-                const isNegative = parseFloat(angka) < 0;
-                let numberString = Math.abs(parseFloat(angka)).toString();
-                let split = numberString.split('.');
-                let sisa = split[0].length % 3;
-                let rupiah = split[0].substr(0, sisa);
-                let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+            // Format ke Rupiah untuk total uang saku
+            const formattedTotal = convertToRupiah(data.totalUangSaku.toString());
+            totalInput.value = formattedTotal;
+            hiddensInput.value = data.totalUangSaku; // Tetap angka untuk backend
 
-                if (ribuan) {
-                    rupiah += (sisa ? '.' : '') + ribuan.join('.');
-                }
 
-                return (isNegative ? '-Rp ' : 'Rp ') + rupiah;
-            }
-
-    // Menampilkan hasil ke input field total sisa
-    document.getElementById('totalsisa_' + index).value = formatToRupiah(totalSisa);
-    document.getElementById('totalsisa_' + index + '_hiddens').value = totalSisa;
+            // Format ke Rupiah untuk sisa saku
+            const formattedSisa = convertToRupiah(data.sisa.toString());
+            sisaInput.value = formattedSisa;
+            sisaHiddensInput.value = data.sisa; // Tetap angka untuk backend
+        })
+        .catch(error => console.error('Error:', error));
 }
+</script>
 
-// Menambahkan event listener untuk input fields yang berubah
-document.addEventListener('DOMContentLoaded', function() {
-    const index = '{{ $index }}'; // Pastikan $index tersedia di Blade view
+<script>
+    function tarikTotalBBM(index, idSpj) {
+        fetch(`/total-bbm/${idSpj}`)
+            .then(response => response.json())
+            .then(data => {
+                const totalInput = document.getElementById(`totalisibbm_${index}`);
+                const hiddensInput = document.getElementById(`totalisibbm_${index}_hiddens`);
+                const sisaInput = document.getElementById(`sisabbm_${index}`);
+                const sisaHiddensInput = document.getElementById(`sisabbm_${index}_hiddens`);
 
-    document.getElementById('uangmakan_' + index).addEventListener('input', function() {
-        calculateTotalSisa(index);
-    });
-    document.getElementById('uanglainlain_' + index).addEventListener('input', function() {
-        calculateTotalSisa(index);
-    });
+                // Format ke Rupiah
+                const formattedTotal = convertToRupiah(data.totalBBM.toString());
+                totalInput.value = formattedTotal;
+                hiddensInput.value = data.totalBBM; // Tetap angka untuk backend
 
-    document.getElementById('totalisibbm_' + index).addEventListener('input', function() {
-        calculateTotalSisa(index);
-    });
-    document.getElementById('sisasaku_' + index).addEventListener('input', function() {
-        calculateTotalSisa(index);
-    });
-});
+                // Format ke Rupiah
+                const formattedSisa = convertToRupiah(data.sisaBBM.toString());
+                sisaInput.value = formattedSisa;
+                sisaHiddensInput.value = data.sisaBBM; // Tetap angka untuk backend
+       
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+<script>
+    function tarikTotalSisa(index, idSpj) {
+        fetch(`/total-sisa/${idSpj}`)
+            .then(response => response.json())
+            .then(data => {
+                const totalInput = document.getElementById(`totalsisa_${index}`);
+                const hiddensInput = document.getElementById(`totalsisa_${index}_hiddens`);
+
+
+                // Format ke Rupiah
+                const formattedValue = convertToRupiah(data.totalSisa.toString());
+
+
+                // Set nilai untuk input dan hiddens
+                totalInput.value = formattedValue;
+                hiddensInput.value = data.totalSisa; // Tetap angka untuk backend
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+
 </script>
 <script>
         // Fungsi untuk Memformat Input sebagai Rupiah
@@ -524,26 +560,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     </script>
-<script>
-    function tarikTotalBBM(index, idSpj) {
-        fetch(`/total-bbm/${idSpj}`)
-            .then(response => response.json())
-            .then(data => {
-                const totalInput = document.getElementById(`totalisibbm_${index}`);
-                const hiddensInput = document.getElementById(`totalisibbm_${index}_hiddens`);
-
-
-                // Format ke Rupiah
-                const formattedValue = convertToRupiah(data.totalBBM.toString());
-
-
-                // Set nilai untuk input dan hiddens
-                totalInput.value = formattedValue;
-                hiddensInput.value = data.totalBBM; // Tetap angka untuk backend
-            })
-            .catch(error => console.error('Error:', error));
-    }
-</script>
 
     <!-- kalkulasi toll -->
     <script>

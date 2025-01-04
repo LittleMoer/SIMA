@@ -27,9 +27,7 @@
     <h3>SPJ: {{ $spj->id_spj }}</h3> --}}
     <br>
     
-    @if($pengeluaran->count() == 0)
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">Tambah Pengeluaran</button>
-    @endif
 
     @if(session('success'))
         <div class="alert alert-success">

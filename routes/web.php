@@ -49,9 +49,8 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
     //detail pesanan
     Route::get('/pesanan/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
-    Route::get('/total-uang-saku/{id_spj}', [OrderController::class, 'TotalPengeluaranUangSaku']);
-
-
+    
+    
     
     //view data pesanan
     Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
@@ -63,14 +62,14 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::put('/pesanan/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
     Route::get('/get-driver-codriver/{id}',[OrderController::class, 'getDriverCoDriver']);
     Route::get('/search-driver', [OrderController::class, 'searchDriver'])->name('search.driver');
-
+    
     //konsumbbm
     Route::get('/bbm/{id_spj}', [BbmController::class, 'index', 'detailPesanan'])->name('bbm.index');
     Route::post('/bbm/{id_spj}', [BbmController::class, 'create'])->name('bbm.create');
     Route::get('/bbm/{idkonsumbbm}/edit-data', [BbmController::class, 'getEditData'])->name('bbm.getEditData');
     Route::post('/bbm/{idkonsumbbm}/edit', [BbmController::class, 'edit'])->name('bbm.edit');
     Route::delete('/bbm/{id}', [BbmController::class, 'destroy'])->name('bbm.destroy');
-   
+    
     //RekapGajiCrew
     Route::get('/manajemen_armada/{id_armada}/rekap_gaji', [RekapGajiCrewController::class, 'showRekapGaji'])->name('manajemen_armada.rekap_gaji');
     Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
@@ -140,6 +139,7 @@ Route::middleware([isViewer::class])->group(function () {
     //view data pesanan
 });
 Route::get('/total-bbm/{id_spj}', [OrderController::class, 'TotalBBM']);
+Route::get('/total-uang-saku/{id_spj}', [OrderController::class, 'TotalPengeluaranUangSaku']);
 Route::get('/total-sisa/{id_spj}', [OrderController::class, 'TotalSisa']);
 Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
 Route::get('/viewSJ/{id}', [OrderController::class, 'viewSJ'])->name('viewSJ');
