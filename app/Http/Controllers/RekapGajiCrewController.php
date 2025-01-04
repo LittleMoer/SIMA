@@ -299,6 +299,7 @@ public function update(Request $request)
             'total_operasional' => $totalOperasional,
             'sisa_nilai_kontrak' => $sisaNilaiKontrak,
             'premi' => $premi,
+            'presentase_premi' => $premiPercentage
         ]));
     }
 
