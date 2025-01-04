@@ -770,6 +770,8 @@
                                             <label for="uanglainlain_{{ $spj->id_sj }}"
                                                 class="col-sm-4 col-form-label form">Pengeluaran Uang Saku</label>
                                             <div class="col-sm-8">
+                                                <div class="form-group">
+                                                    <div class="input-group">
                                                 <input type="text" id="uanglainlain_{{ $index }}"
                                                     class="form-control currency-input"
                                                     placeholder="Masukkan Uang Saku"
@@ -777,9 +779,12 @@
                                                 <input type="hidden" name="uanglainlain"
                                                     id="uanglainlain_{{ $index }}_hiddens"
                                                     value="{{ old('uanglainlain', $spj->uanglainlain) }}">
-                                                @error('uanglainlain')
-                                                <div class="text-danger">{{ $message }}</div>
-                                                @enderror
+                                                <button type="button" class="btn btn-primary"
+                                                        id="tarik-total-{{ $index }}"
+                                                        onclick="tarikTotalBBM('{{ $index }}', '{{ $spj->id_spj }}')">Tarik
+                                                        Total Saku</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
