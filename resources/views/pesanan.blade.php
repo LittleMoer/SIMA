@@ -379,13 +379,65 @@
                                             <td class="text-center col-1">
                                                 {{ implode(', ', $order->unit_names) }}
                                             </td>
-                                            <td>
-                                                <a href="{{ route('detail_pesanan', [$order->id_sp]) }}" class="btn btn-outline-warning btn-sm view-btn">
-                                                    <i class='bx bx-show'></i>Detail
-                                                </a>
-                                                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ $order->id_sp }}">
+                                            <td> <a href="{{ route('detail_pesanan', [$order->id_sp]) }}"
+                                                    class="btn btn-outline-warning btn-sm view-btn"><i
+                                                        class='bx bx-show'></i>Detail</a>
+                                                {{-- <form action="{{ route('order.destroy', $order->id_sp) }}" method="POST"
+                                                    style="display:inline-block;"> @csrf @method('DELETE') <button
+                                                        type="submit" class="btn btn-outline-danger btn-sm"
+                                                        onclick="return confirm('Are you sure you want to delete this order?')">
+                                                        <i class='bx bx-trash'></i>Delete</button>
+                                                </form> --}}
+                                                <!-- Tombol Delete yang memicu modal -->
+                                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteOrderModal{{ $order->id_sp }}">
                                                     <i class='bx bx-trash'></i>Delete
                                                 </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="deleteOrderModal{{ $order->id_sp }}"
+                                                    tabindex="-1"
+                                                    aria-labelledby="deleteOrderModalLabel{{ $order->id_sp }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="deleteOrderModalLabel{{ $order->id_sp }}">Confirm
+                                                                    Deletion</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure you want to delete this order?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Cancel</button>
+                                                                <form action="{{ route('order.destroy', $order->id_sp) }}"
+                                                                    method="POST" style="display:inline-block;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger">OK</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                        // Tangani pengiriman form
+                                                        var deleteForm = document.querySelector('#deleteOrderModal{{ $order->id_sp }} form');
+                                                        deleteForm.addEventListener('submit', function(event) {
+                                                            event.preventDefault();
+                                                            // Di sini Anda bisa menambahkan logika tambahan jika diperlukan
+                                                            this.submit();
+                                                        });
+                                                    });
+                                                </script>
                                             </td>
                                         </tr>
                                     @endforeach

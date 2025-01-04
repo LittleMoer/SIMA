@@ -783,6 +783,25 @@
                                             </div>
                                         </div>
 
+                                        
+                                        <div class="form-group row mb-3">
+                                            <label for="sisasaku_{{ $spj->id_sj }}"
+                                            class="col-sm-4 col-form-label form">Sisa Saku</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="sisasaku_{{ $index }}"
+                                                class="form-control currency-input"
+                                                placeholder="Masukkan Sisa Saku"
+                                                value="{{ old('sisasaku', $spj->sisasaku) }}">
+                                                <input type="hidden" name="sisasaku"
+                                                id="sisasaku_{{ $index }}_hiddens"
+                                                value="{{ old('sisasaku', $spj->sisasaku) }}">
+                                                @error('sisasaku')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            
+                                        </div>
                                         <div class="form-group row mb-3">
                                             <label for="uangmakan_{{ $spj->id_sj }}"
                                                 class="col-sm-4 col-form-label form">Pengeluaran Uang Makan</label>
@@ -795,23 +814,6 @@
                                                     id="uangmakan_{{ $index }}_hiddens"
                                                     value="{{ old('uangmakan', $spj->uangmakan) }}">
                                                 @error('uangmakan')
-                                                <div class="text-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mb-3">
-                                            <label for="sisasaku_{{ $spj->id_sj }}"
-                                                class="col-sm-4 col-form-label form">Sisa Saku</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" id="sisasaku_{{ $index }}"
-                                                    class="form-control currency-input"
-                                                    placeholder="Masukkan Sisa Saku"
-                                                    value="{{ old('sisasaku', $spj->sisasaku) }}">
-                                                <input type="hidden" name="sisasaku"
-                                                    id="sisasaku_{{ $index }}_hiddens"
-                                                    value="{{ old('sisasaku', $spj->sisasaku) }}">
-                                                @error('sisasaku')
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
