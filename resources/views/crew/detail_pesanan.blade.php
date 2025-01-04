@@ -537,6 +537,7 @@ function tarikTotalUangSaku(index, idSpj) {
 
         // Fungsi untuk Mengubah Angka Menjadi Format Rupiah
         function convertToRupiah(angka) {
+            const isNegative = parseFloat(angka) < 0; // Cek apakah nilai negatif
             let numberString = angka.replace(/[^\d]/g, '').toString();
             let sisa = numberString.length % 3;
             let rupiah = numberString.substr(0, sisa);
@@ -546,7 +547,7 @@ function tarikTotalUangSaku(index, idSpj) {
                 rupiah += (sisa ? '.' : '') + ribuan.join('.');
             }
 
-            return 'Rp ' + rupiah;
+            return (isNegative ? '-Rp ' : 'Rp ') + rupiah;
         }
 
         // Inisialisasi Semua Input dengan Kelas "currency-input"

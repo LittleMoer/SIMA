@@ -1470,16 +1470,17 @@ function tarikTotalUangSaku(index, idSpj) {
 
     // Fungsi untuk Mengubah Angka Menjadi Format Rupiah
     function convertToRupiah(angka) {
-        let numberString = angka.replace(/[^\d]/g, '').toString();
-        let sisa = numberString.length % 3;
-        let rupiah = numberString.substr(0, sisa);
-        let ribuan = numberString.substr(sisa).match(/\d{3}/g);
+        const isNegative = parseFloat(angka) < 0; // Cek apakah nilai negatif
+            let numberString = angka.replace(/[^\d]/g, '').toString();
+            let sisa = numberString.length % 3;
+            let rupiah = numberString.substr(0, sisa);
+            let ribuan = numberString.substr(sisa).match(/\d{3}/g);
 
-        if (ribuan) {
-            rupiah += (sisa ? '.' : '') + ribuan.join('.');
-        }
+            if (ribuan) {
+                rupiah += (sisa ? '.' : '') + ribuan.join('.');
+            }
 
-        return 'Rp ' + rupiah;
+            return (isNegative ? '-Rp ' : 'Rp ') + rupiah;
     }
 
     // Inisialisasi Semua Input dengan Kelas "currency-input"
