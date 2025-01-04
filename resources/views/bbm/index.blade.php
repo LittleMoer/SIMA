@@ -311,18 +311,17 @@
         </div>
         <!-- Modal untuk menampilkan gambar -->
         <div class="modal fade" id="modalViewStruk" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Bukti Pembayaran</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Tempat untuk menampilkan gambar -->
-                        <img id="strukImage" src="" alt="Bukti Pembayaran" class="img-fluid">
-                    </div>
-                </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Preview Struk</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <img src="" id="previewStruk" class="img-fluid">
+            </div>
+            </div>
+        </div>
         </div>
 
 
@@ -371,6 +370,17 @@
             modalImage.src = strukUrl; // Set gambar dengan URL struk
         });
     </script>
+
+<script>
+document.getElementById('modalViewStruk').addEventListener('show.bs.modal', function (event) {
+  // Ambil URL gambar dari data-struk
+  var button = event.relatedTarget;
+  var struk = button.getAttribute('data-struk');
+  
+  // Set URL gambar ke elemen img
+  document.getElementById('previewStruk').src = struk;
+});
+</script>
 
     <script>
         // Fungsi untuk Memformat Input sebagai Rupiah
