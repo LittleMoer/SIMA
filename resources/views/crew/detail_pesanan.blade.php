@@ -350,7 +350,6 @@
                                     </form>
                             <hr>
                         @endforeach
-
                     </div>
                 </div>
 
@@ -404,7 +403,32 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-//calculate sisa saku
+    document.addEventListener('DOMContentLoaded', function() {
+        function calculateKmTempuh(index) {
+            const kmSebelumInput = document.getElementById(`kmsebelum_${index}`);
+            const kmTibaInput = document.getElementById(`kmtiba_${index}`);
+            const kmTempuhInput = document.getElementById(`kmtempuh_${index}`);
+
+
+            function calculate() {
+                const kmSebelum = parseFloat(kmSebelumInput.value) || 0;
+                const kmTiba = parseFloat(kmTibaInput.value) || 0;
+                const kmTempuh = kmTiba - kmSebelum;
+
+                kmTempuhInput.value = kmTempuh;
+            }
+
+
+            kmSebelumInput.addEventListener('input', calculate);
+            kmTibaInput.addEventListener('input', calculate);
+        }
+
+
+        document.querySelectorAll('[id^="kmsebelum_"]').forEach(element => {
+            const index = element.id.split('_')[1];
+            calculateKmTempuh(index);
+        });
+    });
 </script>
 <script>
 function calculateTotalSisa(index) {
@@ -500,43 +524,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     </script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Fungsi untuk menghitung KM Tempuh
-        function calculateKmTempuh(index) {
-            // Ambil elemen input
-            const kmSebelum = document.getElementById(kmsebelum_${index});
-            const kmTiba = document.getElementById(kmtiba_${index});
-            const kmTempuh = document.getElementById(kmtempuh_${index});
-
-            if (!kmSebelum || !kmTiba || !kmTempuh) return;
-
-            // Fungsi untuk mengupdate KM Tempuh
-            function updateKmTempuh() {
-                // Konversi nilai ke angka, gunakan 0 jika kosong
-                const sebelumValue = parseFloat(kmSebelum.value) || 0;
-                const tibaValue = parseFloat(kmTiba.value) || 0;
-
-                // Hitung KM Tempuh
-                const tempuhValue = tibaValue - sebelumValue;
-
-                // Set nilai KM Tempuh (pastikan tidak negatif)
-                kmTempuh.value = tempuhValue >= 0 ? tempuhValue : 0;
-            }
-
-            // Pasang event listener pada kedua input
-            kmSebelum.addEventListener('input', updateKmTempuh);
-            kmTiba.addEventListener('input', updateKmTempuh);
-        }
-
-        // Inisialisasi fungsi untuk setiap baris (gunakan loop jika ada banyak index)
-        const allIndices = document.querySelectorAll('[id^="kmsebelum_"]').length;
-        for (let i = 0; i < allIndices; i++) {
-            calculateKmTempuh(i);
-        }
-    });
-</script>
 <script>
     function tarikTotalBBM(index, idSpj) {
         fetch(`/total-bbm/${idSpj}`)
