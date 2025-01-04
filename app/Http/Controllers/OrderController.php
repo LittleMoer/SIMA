@@ -475,4 +475,38 @@ public function update(Request $request, $id)
     return response()->json(['html' => $html]);
 }
 
+public function TotalSisa($id_spj)
+{
+    $spj = Spj::find($id_spj);
+
+
+    if (!$spj) {
+        return response()->json(['error' => 'Data SPJ tidak ditemukan.'], 404);
+    }
+
+
+    $sj = Sj::find($spj->id_sj);
+    if (!$sj) {
+        return response()->json(['error' => 'Data SJ tidak ditemukan.'], 404);
+    }
+
+
+    $pengeluaranSaku = $spj -> uanglainlain ?? 0;
+    $kasbonBBM = $sj->kasbonbbm ?? 0;
+    $totalIsiBBM = $spj->totalisibbm ?? 0;
+    $kasbonMakan = $sj->kasbonmakan ?? 0;
+    $uangMakan = $spj->uangmakan ?? 0;
+    $kasbonSaku = $sj->lainlain ?? 0;
+
+
+    $totalSisa =
+        ($kasbonBBM - $totalIsiBBM) +
+        ($kasbonMakan - $uangMakan) +
+        ($kasbonSaku - $pengeluaranSaku);
+
+
+    return response()->json(['totalSisa' => $totalSisa]);
+}
+
+
 }

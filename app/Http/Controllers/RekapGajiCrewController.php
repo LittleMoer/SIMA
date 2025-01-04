@@ -256,7 +256,7 @@ public function update(Request $request)
         'data.*.cuci_hidden' => 'nullable|numeric|min:0', // Validate the hidden input for cuci
         'data.*.toll_hidden' => 'nullable|numeric|min:0', // Validate the hidden input for toll
         'data.*.subsidi_hidden' => 'nullable|numeric|min:0', // Validate the hidden input for subsidi
-        'data.*.premium_percentage' => 'nullable|integer',
+        'data.*.premium_percentage' => 'nullable',
     ]);
 
     // Loop through the submitted data to update each record
