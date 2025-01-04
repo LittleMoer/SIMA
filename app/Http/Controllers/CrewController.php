@@ -32,12 +32,9 @@ class CrewController extends Controller
         // Ambil semua id_sp dari SJ
         $id_sp = $sj->pluck('id_sp')->toArray();
     
-        // Ambil data SP beserta relasi SJ dan SPJ, hanya tampilkan data yang berada dalam rentang waktu 1 bulan terakhir dimulai dari tanggal 4,gunakan tgl_keberangkatan sebagai acuan
+        // Ambil data SP beserta relasi SJ dan SPJ, hanya tampilkan data yang ada di masa yang akan datang,tiap tanggal 4 pada setiap bulan sembunyikan data yang ada sebelum tanggal 4,gunakan tgl_keberangkatan sebagai acuan
         $sp = SP::whereIn('id_sp', $id_sp)
-            // ->where('tgl_keberangkatan', '>=', now()->subMonth()->startOfMonth()->addDays(4))
-            // ->where('tgl_keberangkatan', '<=', now()->subMonth()->endOfMonth()->addDays(4))
-            // ->with(['sj.spj'])
-            // ->get();
+
             
             ->with(['sj.spj']) // Load relasi SJ dan SPJ
             ->get();
