@@ -49,6 +49,8 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
     //detail pesanan
     Route::get('/pesanan/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
+    Route::get('/total-uang-saku/{id_spj}', [OrderController::class, 'TotalPengeluaranUangSaku']);
+
 
     
     //view data pesanan

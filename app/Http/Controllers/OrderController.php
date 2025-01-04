@@ -302,21 +302,6 @@ public function updateSP(Request $request, $id)
     return redirect()->route('detail_pesanan', ['id' => $id])->with('success', 'Surat Pemesanan berhasil diupdate!');
 }
 
-public function TotalBBM($id_spj)
-{
-    // Mengambil semua data konsumsi BBM berdasarkan id_spj
-    $bbms = KonsumBbm::where('id_spj', $id_spj)->get();
-
-
-    // Menghitung total dari kolom totalbayar
-    $totalBBM = $bbms->sum('totalbayar');
-
-
-    // Return data JSON agar bisa digunakan oleh JavaScript
-    return response()->json([
-        'totalBBM' => $totalBBM,
-    ]);
-}
 
 public function show($id)
     {
@@ -493,22 +478,66 @@ public function TotalSisa($id_spj)
     }
 
 
-    $pengeluaranSaku = $spj -> uanglainlain ?? 0;
-    $kasbonBBM = $sj->kasbonbbm ?? 0;
-    $totalIsiBBM = $spj->totalisibbm ?? 0;
-    $kasbonMakan = $sj->kasbonmakan ?? 0;
-    $uangMakan = $spj->uangmakan ?? 0;
-    $kasbonSaku = $sj->lainlain ?? 0;
+   $sisasaku = $spj->sisasaku;
+    $sisabbm = $spj->sisabbm;
 
 
-    $totalSisa =
-        ($kasbonBBM - $totalIsiBBM) +
-        ($kasbonMakan - $uangMakan) +
-        ($kasbonSaku - $pengeluaranSaku);
+    $totalSisa = $sisasaku + $sisabbm;
 
 
     return response()->json(['totalSisa' => $totalSisa]);
 }
 
+
+public function TotalPengeluaranUangSaku($id_spj)
+{
+    // Ambil data SPJ berdasarkan id_spj atau return 404 jika tidak ditemukan
+    $spj = Spj::findOrFail($id_spj);
+
+    // Ambil data SJ berdasarkan id_sj di tabel SPJ atau return 404 jika tidak ditemukan
+    $sj = Sj::findOrFail($spj->id_sj);
+
+    // Ambil nilai 'lainlain' dari tabel SJ
+    $lainlain = $sj->lainlain;
+
+    // Hitung total pengeluaran uang saku dari tabel PengeluaranUangSaku
+    $totalUangSaku = PengeluaranUangSaku::where('id_spj', $id_spj)->sum('nominal');
+
+    // Set nilai uanglainlain sama dengan total pengeluaran uang saku
+    $uanglainlain = $totalUangSaku;
+
+    // Hitung sisa
+    $sisa = $lainlain - $uanglainlain;
+
+    // Return data JSON
+    return response()->json([
+        'totalUangSaku' => $totalUangSaku,
+        'uanglainlain' => $uanglainlain,
+        'lainlain' => $lainlain,
+        'sisa' => $sisa,
+    ]);
+}
+
+public function TotalBBM($id_spj)
+{
+    // Mengambil semua data konsumsi BBM berdasarkan id_spj
+    $bbms = KonsumBbm::where('id_spj', $id_spj)->get();
+
+
+    // Menghitung total dari kolom totalbayar
+    $totalBBM = $bbms->sum('totalbayar');
+
+    //menghitung sisa penggunaan bbm
+    $spj = Spj::where('id_spj', $id_spj)->first();
+    $sj = Sj::where('id_sj', $spj->id_sj)->first();
+    $sisaBBM = $sj->kasbonbbm - $totalBBM;
+
+
+    // Return data JSON agar bisa digunakan oleh JavaScript
+    return response()->json([
+        'totalBBM' => $totalBBM,
+        'sisaBBM' => $sisaBBM
+    ]);
+}
 
 }
