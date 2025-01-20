@@ -36,7 +36,7 @@
                             <th>Nilai Kontrak</th>
                             <th>BBM</th>
                             <th>Uang Makan</th>
-                            <th>Parkir</th>
+                            <th>Saku</th>
                             <th>Cuci</th>
                             <th>Toll</th>
                             <th>Premium Percentage</th>

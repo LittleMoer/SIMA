@@ -199,7 +199,7 @@ public function generate(Request $request)
                     'nilai_kontrak' => $nilaiKontrak,
                     'bbm' => $spj->totalisibbm,
                     'uang_makan' => $spj->uangmakan,
-                    'parkir' => null,
+                    'parkir' => $spj->uanglainlain,
                     'cuci' => null,
                     'toll' => $spj->PenggunaanToll,
                     'total_operasional' => $totalOperasional,

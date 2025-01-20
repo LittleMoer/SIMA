@@ -88,7 +88,7 @@
                         <tr>
                             <th>BBM</th>
                             <th>Uang Makan</th>
-                            <th>Parkir</th>
+                            <th>Saku</th>
                             <th>Cuci</th>
                             <th>Tol</th>
                         </tr>
