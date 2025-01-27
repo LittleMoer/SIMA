@@ -187,8 +187,9 @@
         .gambar-status {
             position: absolute;
             /* Posisi absolut untuk gambar */
-            margin-left: 90px;
+            margin-left: 190px;
             /* Memberikan jarak antara teks dan gambar */
+            top: 530px;
             width: 150px;
             /* Ukuran gambar */
             opacity: 0.5;
@@ -196,7 +197,6 @@
             z-index: 1;
             /* Pastikan gambar berada di atas tabel */
         }
-
 
         @media print {
             #element-to-print {

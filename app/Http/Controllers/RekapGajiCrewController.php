@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use Illuminate\Support\Carbon; // Pastikan Carbon sudah diimport
 use App\Models\Akun;
 use App\Models\Rekapgajicrew;
 use App\Models\Armada;
@@ -7,14 +8,13 @@ use App\Models\Sp;
 use App\Models\Sj;
 use App\Models\Spj;
 use App\Models\Unit;
+use App\Models\insentif;
 use Illuminate\Http\Request;
 
 class RekapGajiCrewController extends Controller
 {
     public function showRekapGaji($id_armada)
 {
-    // Start the session
-    session_start();
 
     // Fetch the armada by ID with related akun and unit
     $armada = Armada::with('akun', 'unit')->findOrFail($id_armada);
@@ -25,28 +25,56 @@ class RekapGajiCrewController extends Controller
     // Calculate totals
     $totalpremi = $rekapGajiCrew->sum('total_gaji');
     $totalharikerja = $rekapGajiCrew->sum('hari_kerja');
-
-    // Get insentif from session or default to 0
-    $insentif = isset($_SESSION['insentif']) ? $_SESSION['insentif'] : 0;
-
-    // Calculate total bulanan
+    $datainsentif = insentif::where('nama', $rekapGajiCrew->pluck('nama')->first())
+                            ->where('bulan', $rekapGajiCrew->pluck('bulan')->first())
+                            ->where('tahun', Carbon::parse($rekapGajiCrew->pluck('tanggal')->first())->year)
+                            ->first();
+    $insentif = $datainsentif ? $datainsentif->insentif : null;
+    // dd($insentif, $datainsentif);
+    // Calculate total bulanan then add insentif column from insentif table
     $totalbulanan = $rekapGajiCrew->sum('total_gaji') + $insentif;
     
-    return view('rekap_gaji_crew.index', compact('armada', 'rekapGajiCrew', 'totalbulanan', 'totalpremi', 'totalharikerja', 'insentif'));
+    return view('rekap_gaji_crew.index', compact('armada', 'rekapGajiCrew', 'totalbulanan', 'totalpremi', 'totalharikerja', 'datainsentif'));
 }
     
-    public function updateint(Request $request, $id_armada)
+public function saveinsentif(Request $request, $id_armada)
 {
     // Validate incoming request data
     $request->validate([
-        'insentif' => 'nullable|integer',
+        'insentif' => 'required|numeric|min:0',
     ]);
-
-    // Store insentif in session
-    session(['insentif' => $request->insentif]);
-
-    // Return a JSON response
-    return response()->json(['success' => true, 'insentif' => session('insentif')]);
+    
+    $rekapGajiCrew = Rekapgajicrew::where('id_armada', $id_armada)->get();
+    //if insentif data is exist then update the insentif column else generate based on rekapgajicrew data
+    $insentif = insentif::where('nama', $rekapGajiCrew->pluck('nama')->first())
+                        ->where('bulan', $rekapGajiCrew->pluck('bulan')->first())
+                        ->where('tahun', Carbon::parse($rekapGajiCrew->pluck('tanggal')->first())->year)
+                        ->first();
+    if ($insentif) {
+        $insentif->update(['insentif' => $request->insentif]);
+    } else {
+        $distinctUsers = RekapGajiCrew::select('nama', 'bulan', 'tanggal')
+                                      ->distinct()
+                                      ->where('id_armada', $id_armada)
+                                      ->get();
+        
+        foreach ($distinctUsers as $user) {
+            $year = Carbon::parse($user->tanggal)->year; // Ambil tahun dari kolom tanggal
+            
+            Insentif::updateOrCreate(
+                [
+                    'nama' => $user->nama, 
+                    'bulan' => $user->bulan, 
+                    'tahun' => $year // Tambahkan kolom tahun
+                ],
+                [
+                    'insentif' => $request->insentif
+                ]
+            );
+        }
+    }
+    return redirect()->route('manajemen_armada.rekap_gaji', ['id_armada' => $id_armada])
+                     ->with('success', 'Insentif berhasil disimpan.');
 }
 
 public function countWorkDays($startDate, $endDate)
@@ -219,6 +247,23 @@ public function generate(Request $request)
         }
     }
 
+    // Insert data into insentif table
+$distinctUsers = RekapGajiCrew::select('nama', 'bulan', 'tanggal')
+                              ->distinct()
+                              ->where('bulan', $selectedMonth)
+                              ->get();
+
+foreach ($distinctUsers as $user) {
+    $year = Carbon::parse($user->tanggal)->year; // Ambil tahun dari kolom tanggal
+    
+    Insentif::updateOrCreate(
+        [
+            'nama' => $user->nama, 
+            'bulan' => $user->bulan, 
+            'tahun' => $year // Tambahkan kolom tahun
+        ]
+    );
+}
     return redirect()->route('manajemen_armada.rekap_gaji', ['id_armada' => $request->id_armada])
                      ->with('success', 'Rekap Gaji Crew berhasil di-generate');
 }
@@ -230,10 +275,13 @@ public function edit($id_armada)
 
     // Fetch the rekap gaji crew related to this armada using the correct property
     $rekapGajiCrew = Rekapgajicrew::where('id_armada', $id_armada)->get();
-
+    //fetch insentif data from insentif table where nama is equal to nama from rekapgajicrew and bulan is equal to bulan and tahun is equal to tahun from rekapgajicrew
+    $insentif = Insentif::where('nama', $rekapGajiCrew->pluck('nama')->toArray())
+                        ->where('bulan', $rekapGajiCrew->pluck('bulan')->toArray())
+                        ->where('tahun', $rekapGajiCrew->pluck('tahun')->toArray())
+                        ->get();
     $totalpremi = Rekapgajicrew::where('id_armada', $id_armada)->sum('premi');
     $totalharikerja = Rekapgajicrew::where('id_armada', $id_armada)->sum('hari_kerja');
-    $insentif = 0;
     $totalbulanan = Rekapgajicrew::where('id_armada', $id_armada)->sum('total_gaji') + $insentif;
     
     return view('rekap_gaji_crew.edit', compact('armada', 'rekapGajiCrew', 'totalbulanan', 'totalpremi', 'totalharikerja', 'insentif'));

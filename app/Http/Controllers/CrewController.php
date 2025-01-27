@@ -167,6 +167,7 @@ class CrewController extends Controller
         'SaldoEtollakhir' => $request->SaldoEtollakhir,
         'PenggunaanToll' => $request->PenggunaanToll,
         'totalisibbm'  => $request-> totalisibbm,
+        'sisabbm'  => $request-> sisabbm,
         'sisasaku'  => $request-> sisasaku,
         'totalsisa'  => $request->totalsisa,
         'uanglainlain' => $request->uanglainlain,

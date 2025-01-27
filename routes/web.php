@@ -76,7 +76,7 @@ Route::middleware([isAdmin::class])->group(function () {
     Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generate'])->name('rekap.gaji.generate');
     Route::get('/rekap-gaji/edit/{id_armada}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
     Route::post('/rekap-gaji/update', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update'); // Change to POST without {id}
-    Route::post('/rekap-gaji/intensif/{id}', [RekapGajiCrewController::class, 'updateint'])->name('rekap.gaji.intensif');
+    Route::post('/rekap-gaji/intensif/{id_armada}', [RekapGajiCrewController::class, 'saveinsentif'])->name('rekap.gaji.insentif');
     
     // pengeluaran
     Route::get('/pengeluaran/{id_spj}', [PengeluaranController::class, 'index'])->name('pengeluaran.index');

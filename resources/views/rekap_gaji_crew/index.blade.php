@@ -126,13 +126,16 @@
                         <tr>
                             <th colspan="4">Insentif:</th>
                             <td colspan="2">
-                            <div class="input-group">
-                                <input type="number" id="insentif" value="{{ old('insentif', session('insentif', 0)) }}" class="form-control" placeholder="Insentif" oninput="calculateTotalPendapatan()">
-                                <button type="button" class="btn btn-primary" onclick="saveInsentif()">Simpan</button>
-                            </div>
+                            <form method="POST" action="{{ route('rekap.gaji.insentif', ['id_armada' => $armada->id_armada]) }}">
+                                @csrf
+                                <div class="input-group">
+                                    <input type="number" name="insentif" class="form-control" id="insentif" value="{{ $datainsentif->insentif ?? 0 }}" oninput="calculateTotalPendapatan()">
+                                    <button type="submit" class="btn btn-primary" id="submintinsentif">Simpan</button>
+                                </div>
+                            </form>
                             </td>
                             <th colspan="4">Total Pendapatan:</th>
-                            <td colspan="2" id="totalPendapatan">{{ 'Rp ' . number_format($rekapGajiCrew->sum('total_gaji') + session('insentif', 0), 0, ',', '.') }}</td>
+                            <td colspan="2" id="totalPendapatan">{{ 'Rp ' . number_format($totalbulanan, 0, ',', '.') }}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -163,32 +166,9 @@
         const insentif = parseFloat(document.getElementById('insentif').value) || 0;
         const totalPendapatan = totalPremi + insentif;
 
-        document.getElementById('totalPendapatan').innerText = totalPendapatan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
+        document.getElementById('totalPendapatan').innerText = 'Rp ' + totalPendapatan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
     }
 
-    function saveInsentif() {
-        const insentif = $('#insentif').val();
-        const id_armada = {{ $armada->id_armada }};
-
-        $.ajax({
-            url: '{{ route("rekap.gaji.intensif", ":id") }}'.replace(':id', id_armada), // Use the named route
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}', // Include CSRF token
-                insentif: insentif
-            },
-            success: function(response) {
-                if (response.success) {
-                    alert('Insentif successfully updated to: ' + response.insentif);
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            },
-            error: function() {
-                alert('An error occurred while saving the insentif.');
-            }
-        });
-    }
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -208,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
         win.document.write('table { width: 100%; border-collapse: collapse; }');
         win.document.write('th, td { border: 1px solid black; padding: 8px; text-align: left; }');
         win.document.write('th { background-color: #f2f2f2; }');
-        win.document.write('#saveInsentif { display: none; }'); // Hide the save button when printing
+        win.document.write('#submintinsentif { display: none; }'); // Hide the save button when printing
         win.document.write('}');
         win.document.write('</style>');
         win.document.write('</head><body>');
