@@ -70,6 +70,4 @@ class ViewerController extends Controller
         return view('viewer.calendar', compact('daysInMonth', 'month', 'year', 'units', 'availability'));
     }
 
-
-
 }

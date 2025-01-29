@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Spj;
 use App\Models\Sj;
 use App\Models\Unit;
+use App\Models\UnitAvailability;
 use Carbon\Carbon;
 use App\Models\Armada;
 use App\Models\PengeluaranUangSaku;
@@ -297,4 +298,24 @@ class CrewController extends Controller
         return view('crew.events', compact('units', 'currentYear', 'currentMonth', 'availability'));
     }
     
+    public function showMonthlyCalendar(Request $request)
+    {
+        // Ambil bulan dan tahun dari request, defaultnya bulan dan tahun sekarang
+        $month = $request->input('month', Carbon::now()->month);
+        $year = $request->input('year', Carbon::now()->year);
+
+        // Dapatkan jumlah hari dalam bulan tersebut
+        $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
+        
+        // Dapatkan daftar unit
+        $units = Unit::all()->sortBy('seri_unit');
+
+        // Ambil data ketersediaan dari database untuk bulan tersebut
+        $availability = UnitAvailability::whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->get()
+            ->groupBy('date');
+
+        return view('crew.calendar', compact('daysInMonth', 'month', 'year', 'units', 'availability'));
+    }
 }

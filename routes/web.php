@@ -127,6 +127,7 @@ Route::middleware([isCrew::class])->group(function () {
     
     // Jadwal
     Route::get('crew/events', [CrewController::class, 'showCalendar'])->name('crew.events');
+    Route::get('crew/calendar', [CrewController::class, 'showMonthlyCalendar'])->name('crew.calendar');
 });
 
 Route::middleware([isViewer::class])->group(function () {

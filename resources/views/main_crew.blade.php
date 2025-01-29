@@ -55,7 +55,10 @@
                       <a class="nav-link fw-medium" href="{{ url('/crew/pesanan') }}">Data Pesanan</a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link fw-medium" href="{{ url('/crew/events') }}">Jadwal</a>
+                      <a class="nav-link fw-medium" href="{{ url('/crew/events') }}">Jadwal Crew</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link fw-medium" href="{{ url('crew/calendar') }}">Jadwal Ketersediaan Unit</a>
                   </li>
               </ul>
               <!-- Menu wrapper: End -->
@@ -88,6 +91,7 @@
 @yield('bbm_crew')
 @yield('pengeluaran_crew')
 @yield('jadwal_crew')
+@yield('crew_jadwalunit')
 <!-- / Sections dashboard:End -->
 <!-- Sections:Start -->
 
