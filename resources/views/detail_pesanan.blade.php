@@ -1269,33 +1269,33 @@ function tarikTotalUangSaku(index, idSpj) {
         const sisaPembayaranHidden = document.getElementById('sisa_pembayaran_hidden');
 
         // Function to update nilaiKontrak2 state
-        function updateNilaiKontrak2State(jumlahArmada) {
-            if (jumlahArmada == 1) {
-                nilaiKontrak2v.value = 0;
-                nilaiKontrak2v.disabled = true;
-                nilaiKontrak2v.required = false;
-                localStorage.setItem('nilaiKontrak2Disabled', 'true');
-                localStorage.setItem('jumlahArmada', '1');
-            } else if (jumlahArmada == 2) {
-                nilaiKontrak2v.disabled = false;
-                nilaiKontrak2v.required = true;
-                localStorage.setItem('nilaiKontrak2Disabled', 'false');
-                localStorage.setItem('jumlahArmada', '2');
-            }
-            nilaiKontrak2.dispatchEvent(new Event('input'));
-        }
+        //function updateNilaiKontrak2State(jumlahArmada) {
+        //   if (jumlahArmada == 1) {
+        //        nilaiKontrak2v.value = 0;
+        //        nilaiKontrak2v.disabled = true;
+        //        nilaiKontrak2v.required = false;
+        //        localStorage.setItem('nilaiKontrak2Disabled', 'true');
+        //        localStorage.setItem('jumlahArmada', '1');
+        //    } else if (jumlahArmada == 2) {
+        //        nilaiKontrak2v.disabled = false;
+        //        nilaiKontrak2v.required = true;
+        //        localStorage.setItem('nilaiKontrak2Disabled', 'false');
+        //        localStorage.setItem('jumlahArmada', '2');
+        //    }
+        //    nilaiKontrak2.dispatchEvent(new Event('input'));
+        //}
 
         // Check localStorage on page load and set initial state
-        const savedJumlahArmada = localStorage.getItem('jumlahArmada');
-        if (savedJumlahArmada) {
-            jumlahArmadaInput.value = savedJumlahArmada;
-            updateNilaiKontrak2State(savedJumlahArmada);
-        }
+        // const savedJumlahArmada = localStorage.getItem('jumlahArmada');
+        // if (savedJumlahArmada) {
+        //     jumlahArmadaInput.value = savedJumlahArmada;
+        //     updateNilaiKontrak2State(savedJumlahArmada);
+        // }
 
-        // Event listener for jumlah_armada changes
-        jumlahArmadaInput.addEventListener('input', function() {
-            updateNilaiKontrak2State(this.value);
-        });
+        // // Event listener for jumlah_armada changes
+        // jumlahArmadaInput.addEventListener('input', function() {
+        //     updateNilaiKontrak2State(this.value);
+        // });
 
         function calculateTotal() {
             const kontrak1 = parseFloat(nilaiKontrak1.value.replace(/[^\d]/g, '')) || 0;

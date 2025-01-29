@@ -77,30 +77,13 @@ public function saveinsentif(Request $request, $id_armada)
                      ->with('success', 'Insentif berhasil disimpan.');
 }
 
-public function countWorkDays($startDate, $endDate)
+public function countWorkDays($tgl_keberangkatan, $tgl_kepulangan)
 {
-    $start = new \DateTime($startDate);
-    $end = new \DateTime($endDate);
+    $start = Carbon::parse($tgl_keberangkatan);
+    $end = Carbon::parse($tgl_kepulangan);
+    $allDays = $start->diffInDays($end) + 1; // Include the start and end date
 
-    if ($start == $end) {
-        if ($start->format('N') < 6) {
-            return 1;
-        } else {
-            return 1;
-        }
-    }
-
-    $end->modify('+1 day');
-    $workdays = 0;
-
-    $period = new \DatePeriod($start, new \DateInterval('P1D'), $end);
-    foreach ($period as $dt) {
-        if ($dt->format('N') < 6) {
-            $workdays++;
-        }
-    }
-
-    return $workdays;
+    return $allDays;
 }
 
 public function calculatePremiPercentage($seri, $posisi)
@@ -155,8 +138,8 @@ public function generate(Request $request)
     $nama = $namauser->pluck('name')->toArray(); 
 
     // get from spRecords that has tgl_keberangkatan between selected month and year
-    $spRecords = SP::whereMonth('tgl_keberangkatan', $selectedMonth)
-                ->whereYear('tgl_keberangkatan', $selectedYear)
+    $spRecords = SP::whereMonth('tgl_kepulangan', $selectedMonth)
+                ->whereYear('tgl_kepulangan', $selectedYear)
                 ->get(); 
 
     // get all records from sj that has id_sp equal to id_sp from spRecords and driver and codriver name column equal to nama
@@ -237,7 +220,6 @@ public function generate(Request $request)
                     'subsidi' => null, 
                     'total_gaji' => $premi,
                 ];
-
                 try {
                     RekapGajiCrew::create($dataToCreate);
                 } catch (\Exception $e) {
