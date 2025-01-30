@@ -258,15 +258,15 @@ public function edit($id_armada)
     // Fetch the rekap gaji crew related to this armada using the correct property
     $rekapGajiCrew = Rekapgajicrew::where('id_armada', $id_armada)->get();
     //fetch insentif data from insentif table where nama is equal to nama from rekapgajicrew and bulan is equal to bulan and tahun is equal to tahun from rekapgajicrew
-    $insentif = Insentif::where('nama', $rekapGajiCrew->pluck('nama')->toArray())
-                        ->where('bulan', $rekapGajiCrew->pluck('bulan')->toArray())
-                        ->where('tahun', $rekapGajiCrew->pluck('tahun')->toArray())
-                        ->get();
-    $totalpremi = Rekapgajicrew::where('id_armada', $id_armada)->sum('premi');
-    $totalharikerja = Rekapgajicrew::where('id_armada', $id_armada)->sum('hari_kerja');
-    $totalbulanan = Rekapgajicrew::where('id_armada', $id_armada)->sum('total_gaji') + $insentif;
+    // $insentif = Insentif::where('nama', $rekapGajiCrew->pluck('nama')->toArray())
+    //                     ->where('bulan', $rekapGajiCrew->pluck('bulan')->toArray())
+    //                     ->where('tahun', $rekapGajiCrew->pluck('tahun')->toArray())
+    //                     ->get();
+    // $totalpremi = Rekapgajicrew::where('id_armada', $id_armada)->sum('premi');
+    // $totalharikerja = Rekapgajicrew::where('id_armada', $id_armada)->sum('hari_kerja');
+    // $totalbulanan = Rekapgajicrew::where('id_armada', $id_armada)->sum('total_gaji') + $insentif->insentif;
     
-    return view('rekap_gaji_crew.edit', compact('armada', 'rekapGajiCrew', 'totalbulanan', 'totalpremi', 'totalharikerja', 'insentif'));
+    return view('rekap_gaji_crew.edit', compact('armada', 'rekapGajiCrew'));
 }
 
 public function update(Request $request)
