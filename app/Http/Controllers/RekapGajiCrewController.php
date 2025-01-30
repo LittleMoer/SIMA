@@ -148,7 +148,7 @@ public function generate(Request $request)
                     ->orWhere('driver2', $nama)
                     ->orWhere('codriver', $nama)
                     ->get();
-    
+    dd($spRecords, $sjRecords);
 // before generate clear rekapgajicrew table that has id_armada equal to id_armada from request
     RekapGajiCrew::where('id_armada', $request->id_armada)->delete();
 
