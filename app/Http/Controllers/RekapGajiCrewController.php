@@ -187,7 +187,7 @@ public function generate(Request $request)
                 }
             }
 
-            $totalOperasional = $spj->totalisibbm + $spj->uangmakan + $spj->PenggunaanToll;
+            $totalOperasional = $spj->totalisibbm + $spj->uangmakan + $spj->PenggunaanToll + $spj->uanglainlain;
             $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
             $totalGaji = $sisaNilaiKontrak;
 
