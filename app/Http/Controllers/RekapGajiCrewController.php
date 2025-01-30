@@ -142,12 +142,14 @@ public function generate(Request $request)
                 ->whereYear('tgl_kepulangan', $selectedYear)
                 ->get(); 
 
-    // get all records from sj that has id_sp equal to id_sp from spRecords and driver and codriver name column equal to nama
-    $sjRecords = SJ::whereIn('id_sp', $spRecords->pluck('id_sp'))
-                    ->where('driver', $nama)
-                    ->orWhere('driver2', $nama)
-                    ->orWhere('codriver', $nama)
-                    ->get();
+    // get all records from sj that has id_sp equal to id_sp from spRecords, match the name in driver or driver2 or co_driver that equal to $nama 
+    $sjRecords = SJ::whereIn('id_sp', $spRecords->pluck('id_sp')->toArray())
+                ->where(function ($query) use ($nama) {
+                    $query->whereIn('driver', $nama)
+                          ->orWhereIn('driver2', $nama)
+                          ->orWhereIn('codriver', $nama);
+                })
+                ->get();
 
 // before generate clear rekapgajicrew table that has id_armada equal to id_armada from request
     RekapGajiCrew::where('id_armada', $request->id_armada)->delete();
@@ -204,7 +206,7 @@ public function generate(Request $request)
                     'id_armada' => $armada->id_armada,
                     'nama' => $user->name,
                     'bulan' => $selectedMonth,
-                    'tanggal' => $sp->tgl_keberangkatan,
+                    'tanggal' => $sp->tgl_kepulangan,
                     'hari_kerja' => $this->countWorkDays($sp->tgl_keberangkatan, $sp->tgl_kepulangan),
                     'nama_pemesanan' => $sp->nama_pemesan ?? 'Unknown',
                     'nilai_kontrak' => $nilaiKontrak,
