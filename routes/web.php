@@ -1,113 +1,41 @@
 <?php
-use Illuminate\Http\Request;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\CrewController;
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\RekapGajiCrewController;
-use App\Http\Controllers\ArmadaController;
-use App\Http\Controllers\UnitController;
-use App\Http\Controllers\HomepageController;
-use App\Http\Controllers\BbmController;
-use App\Models\RekapGajiCrew;
+use App\Http\Controllers\PropertyController;
 
-Route::get('/', function () {
-    return view('homepage');
+
+Route::resource('properties', PropertyController::class);
+
+
+Route::get('/properti', function () {
+    return view('/properti');
 });
 
-Route::get('/token', function (Request $request) {
-    $token = csrf_token();
-    return response()->json(['token' => $token]);
+Route::get('/detail_properti', function () {
+    return view('/detail_properti');
 });
 
-
-//auth
-Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('login', [AuthController::class, 'login']);
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+Route::get('/rayyan', function () {
+    return view('/rayyan');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('user/dashboard', [CrewController::class, 'index'])->name('user.dashboard');
+Route::get('/kontraktor', function () {
+    return view('/kontraktor'); 
 });
 
-
-//order
-Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan');
-Route::post('/store', [OrderController::class, 'store'])->name('order.store');
-//detail pesanan
-Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail_pesanan');
-
-//view data pesanan
-// Route::get('/view/{id}', [OrderController::class, 'view'])->name('view');
-
-//update order
-Route::post('/detail_pesanan/{id}/update-sp', [OrderController::class, 'updateSP'])->name('pesanan.updateSP');
-Route::put('/detail_pesanan/{id}/update-sj', [OrderController::class, 'updateSJ'])->name('pesanan.updateSJ');
-Route::put('/detail_pesanan/{id}/update-spj', [OrderController::class, 'updateSPJ'])->name('pesanan.updateSPJ');
-Route::delete('/pesanan/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
-
-//konsumbbm
-Route::get('/bbm/{id_spj}', [BbmController::class, 'index'])->name('bbm.index');
-Route::post('/bbm/{id_spj}', [BbmController::class, 'create'])->name('bbm.create');
-Route::post('/bbm/{idkonsumbbm}/edit', [BbmController::class, 'edit'])->name('bbm.edit');
-Route::delete('/bbm/{id}', [BbmController::class, 'destroy'])->name('bbm.destroy');
-
-
-
-Route::get('/manajemen_armada/{id_armada}/rekap_gaji', [RekapGajiCrewController::class, 'showRekapGaji'])->name('manajemen_armada.rekap_gaji');
-Route::get('/rekap-gaji-crew', [RekapGajiCrewController::class, 'show'])->name('rekap.gaji.show');
-Route::post('/rekap-gaji-crew/generate', [RekapGajiCrewController::class, 'generate'])->name('rekap.gaji.generate');
-// Route::get('rekap-gaji-crew/edit/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'edit'])->name('rekap.gaji.edit');
-// Route::put('rekap-gaji-crew/update/{no_rekap}/{nama}', [RekapGajiCrewController::class, 'update'])->name('rekap.gaji.update');
-
-//manajemen akun
-Route::post('/manajemen_akun',  [AuthController::class, 'register'])->name('manajemen_akun');
-Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('tambah_akun');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/manajemen_akun', [UserController::class, 'index'])->name('manajemen_akun');
-Route::post('/manajemen_akun/{id}', [UserController::class, 'update'])->name('user.update');
-Route::delete('/manajemen_akun/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-
-
-//Manajemen Armada
-Route::get('/manajemen_armada', [ArmadaController::class, 'index'])->name('manajemen_armada.index');
-Route::get('/manajemen_armada/create', [ArmadaController::class, 'create'])->name('manajemen_armada.create');
-Route::post('/manajemen_armada', [ArmadaController::class, 'store'])->name('manajemen_armada.store');
-Route::get('/manajemen_armada/{id_armada}/edit', [ArmadaController::class, 'edit'])->name('manajemen_armada.edit');
-Route::post('/manajemen_armada/{id_armada}', [ArmadaController::class, 'update'])->name('manajemen_armada.update');
-Route::delete('/manajemen_armada/{id_armada}', [ArmadaController::class, 'destroy'])->name('manajemen_armada.destroy');
-
-//unit kendaraan
-Route::get('/unit', [UnitController::class, 'index'])->name('unit.index');
-Route::post('/unit', [UnitController::class, 'store'])->name('unit.store');
-Route::put('/unit/{id_unit}', [UnitController::class, 'update'])->name('unit.update');
-Route::delete('/unit/{id_unit}', [UnitController::class, 'destroy'])->name('unit.destroy');
-
-
-
-
-//Bus
-Route::get('/bus/big_bus', function () {
-    return view('/bus/big_bus');
-});
-Route::get('/bus/micro_bus', function () {
-    return view('/bus/micro_bus');
-});
-Route::get('/bus/medium_bus', function () {
-    return view('/bus/medium_bus');
-});
-Route::get('/bus/mediumSE_bus', function () {
-    return view('/bus/mediumSE_bus');
+Route::get('/home', function () {
+    return view('/home');
 });
 
-
-//Api Fetch Events
-Route::get('/tes', function () {
-    return view('tes');
+Route::get('/about', function () {
+    return view('/about');
 });
-Route::get('/api/events', [HomepageController::class,'index']);
+
+Route::get('/', [PropertyController::class, 'home'])->name('properties.home');
+Route::get('/list', [PropertyController::class, 'list'])->name('properties.list');
+Route::get('/dashboard', [PropertyController::class, 'index'])->name('properties.index');
+Route::put('/properties/{id}', [PropertyController::class, 'update'])->name('properties.update');
+Route::delete('/properties/{id}', [PropertyController::class, 'destroy'])->name('properties.destroy');
+Route::get('/properties/filter', [PropertyController::class, 'filter'])->name('properties.filter');
+
+Route::get('/detail/{id}', [PropertyController::class, 'show'])->name('properties.show');
