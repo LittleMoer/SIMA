@@ -485,7 +485,7 @@
                 <br>
                 <ul class="small-text">
                 <li>Pemesan/penyewa wajib membayarkan uang muka (DP) minimal 25% dari total nilai kontrak.</li>
-                    <li>Pembayaran dapat ditransfer ke rekening: <br> <strong>A.n JAGAD SIMA PERKASYA</strong> <br> BRI: 136901000438301 <br> Mandiri: 1350019116597 </li>
+                    <li>Pembayaran dapat ditransfer ke rekening: <br> <strong>A.n JAGAD SIMA PERKASYA</strong> <br> BRI: 136901000438301 <br> Mandiri: 1350019116597 <br> BNI: 5758558820 </li>
                     <li>Pelunasan maksimal 7 hari sebelum pemberangkatan.</li>
                     <li>Jika terjadi pembatalan maka uang muka tidak bisa dikembalikan.</li>
                     <li>Kelebihan waktu sewa akan dikenakan biaya tambahan sebesar Rp. 200.000-Rp. 400.000/jam.</li>
