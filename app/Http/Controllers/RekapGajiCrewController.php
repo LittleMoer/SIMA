@@ -175,7 +175,7 @@ public function generate(Request $request)
 
             $jumlahArmada = $sp->jumlah_armada;
 
-            if ($jumlahArmada < 1) {
+            if ($jumlahArmada < 2) {
                 $nilaiKontrak = $sp->nilai_kontrak1; 
             } else {
                 $sjcompare = SJ::where('id_sp', $sp->id_sp)
