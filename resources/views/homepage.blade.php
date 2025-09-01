@@ -558,7 +558,7 @@ window.addEventListener('scroll', function() {
     const message = document.getElementById("contact-form-message").value;
 
     // Nomor WhatsApp tujuan (format internasional tanpa 0 di awal)
-    const phoneNumber = "6283169251172"; // Ganti dengan nomor WhatsApp tujuan
+    const phoneNumber = "6281237888789"; // Ganti dengan nomor WhatsApp tujuan
 
     // // Buat pesan yang akan dikirim
     const text = `Halo, saya ${name}.%0A${message}`;

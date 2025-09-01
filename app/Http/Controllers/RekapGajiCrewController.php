@@ -175,18 +175,17 @@ public function generate(Request $request)
 
             $jumlahArmada = $sp->jumlah_armada;
 
-            if ($jumlahArmada < 2) {
+            if ($jumlahArmada == 1) {
                 $nilaiKontrak = $sp->nilai_kontrak1; 
             } else {
-                $sjcompare = SJ::where('id_sp', $sp->id_sp)
-                    ->where('id_unit', $armada->id_unit)
-                    ->where('id_sj', '!=', $sj->id_sj)
-                    ->first();
-                if ($sjcompare > $sj->id_sj) {
-                    $nilaiKontrak = $sp->nilai_kontrak2;
-                } else {
-                    $nilaiKontrak = $sp->nilai_kontrak1;
-                }
+                    $maxIdSj = SJ::where('id_sp', $sp->id_sp)
+                        ->where('id_unit', $armada->id_unit)
+                        ->max('id_sj');
+                    if ($sj->id_sj == $maxIdSj) {
+                        $nilaiKontrak = $sp->nilai_kontrak2;
+                    } else {
+                        $nilaiKontrak = $sp->nilai_kontrak1;
+                    }
             }
 
             $totalOperasional = $spj->totalisibbm + $spj->uangmakan + $spj->PenggunaanToll + $spj->uanglainlain;
