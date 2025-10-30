@@ -188,6 +188,7 @@ public function generate(Request $request)
                     }
             }
 
+            // Calculate total operational without car wash first
             $totalOperasional = $spj->totalisibbm + $spj->uangmakan + $spj->PenggunaanToll + $spj->uanglainlain;
             $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
             $totalGaji = $sisaNilaiKontrak;
@@ -198,7 +199,21 @@ public function generate(Request $request)
                 } else {
                     $premiPercentage = $this->calculatePremiPercentage($seri, $posisi);
                 }
-                $premi = ($totalGaji * $premiPercentage) / 100;
+                // Calculate base premium
+                $basePremi = ($totalGaji * $premiPercentage) / 100;
+
+                // Determine car wash price based on unit series
+                $cuci = 0;
+                if ($seri == 1) {
+                    $cuci = 10000; // Seri 1: Rp 10.000
+                } elseif ($seri == 2) {
+                    $cuci = 5000;  // Seri 2: Rp 5.000
+                } elseif ($seri == 3) {
+                    $cuci = 7500;  // Seri 3: Rp 7.500
+                }
+
+                // Deduct car wash cost from premium
+                $premi = max(0, $basePremi - $cuci); // Ensure premium doesn't go below 0
 
                 // Prepare data to create
                 $dataToCreate = [
@@ -212,14 +227,14 @@ public function generate(Request $request)
                     'bbm' => $spj->totalisibbm,
                     'uang_makan' => $spj->uangmakan,
                     'parkir' => $spj->uanglainlain,
-                    'cuci' => null,
+                    'cuci' => $cuci,
                     'toll' => $spj->PenggunaanToll,
-                    'total_operasional' => $totalOperasional,
+                    'total_operasional' => $totalOperasional + $cuci,
                     'sisa_nilai_kontrak' => $sisaNilaiKontrak,
-                    'premi' => $premi,
+                    'premi' => $basePremi,
                     'presentase_premi' => $premiPercentage,
                     'subsidi' => null, 
-                    'total_gaji' => $premi,
+                    'total_gaji' => $premi, // This already includes the car wash deduction
                 ];
                 try {
                     RekapGajiCrew::create($dataToCreate);
@@ -313,9 +328,17 @@ public function update(Request $request)
             ? (int)$rekapData['custom_premium'] // Ensure custom_premium is treated as an integer
             : (int)($rekapData['premium_percentage'] ?? 0); // Fallback to 0 if not set
 
-        // Calculate the premium based on total gaji from the form
-        $premi = ($sisaNilaiKontrak * $premiPercentage) / 100; 
-        $totalGaji = $premi + ($rekapData['subsidi_hidden'] ?? 0); // Use hidden value for subsidi
+        // Calculate base premium
+        $basePremi = ($sisaNilaiKontrak * $premiPercentage) / 100;
+        
+        // Get car wash cost
+        $cuci = (int)($rekapData['cuci_hidden'] ?? 0);
+        
+        // Deduct car wash cost from premium (ensure it doesn't go below 0)
+        $premi = max(0, $basePremi - $cuci);
+        
+        // Calculate total gaji including subsidy
+        $totalGaji = $premi + ($rekapData['subsidi_hidden'] ?? 0);
 
         // Update the record
         $rekapGaji->update(array_merge($rekapData, [

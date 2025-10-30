@@ -90,6 +90,12 @@
                                         name="data[{{ $index }}][parkir_hidden]" value="{{ $gaji->parkir }}">
                                 </td>
                                 <td>
+                                    <select class="form-control mb-2 service-series" data-index="{{ $index }}" style="width: 100%;">
+                                        <option value="">Pilih Seri</option>
+                                        <option value="101">Seri 1 (Rp 10.000)</option>
+                                        <option value="201">Seri 2 (Rp 5.000)</option>
+                                        <option value="301">Seri 3 (Rp 7.500)</option>
+                                    </select>
                                     <input type="text" id="cuci_{{ $index }}" name="data[{{ $index }}][cuci]"
                                         value="{{ number_format($gaji->cuci, 0, ',', '.') }}"
                                         class="form-control currency-input" required placeholder="Cuci">
@@ -157,6 +163,33 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Function to handle service series selection
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('service-series')) {
+                const index = e.target.dataset.index;
+                const cuciInput = document.getElementById('cuci_' + index);
+                const cuciHidden = document.getElementById('cuci_' + index + '_hidden');
+                let price = 0;
+                
+                switch(e.target.value) {
+                    case '101':
+                        price = 10000; // Seri 1: Rp 10.000
+                        break;
+                    case '201':
+                        price = 5000;  // Seri 2: Rp 5.000
+                        break;
+                    case '301':
+                        price = 7500;  // Seri 3: Rp 7.500
+                        break;
+                }
+                
+                if (price > 0) {
+                    cuciHidden.value = price;
+                    cuciInput.value = 'Rp ' + price.toLocaleString('id-ID');
+                }
+            }
+        });
+
         // Function to format numbers to Rupiah
         function formatToRupiah(angka) {
             const isNegative = parseFloat(angka) < 0; // Check if the value is negative

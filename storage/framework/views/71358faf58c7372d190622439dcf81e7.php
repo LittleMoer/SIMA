@@ -3,15 +3,15 @@
 </head>
 
 <body>
-    @section('rekap_gaji_crew')
+    <?php $__env->startSection('rekap_gaji_crew'); ?>
     <section class="section-py first-section-pt help-center-header position-relative overflow-hidden">
-    <img class="banner-bg-img" src="{{ asset('sneat/assets/img/sima/header.png') }}"
+    <img class="banner-bg-img" src="<?php echo e(asset('sneat/assets/img/sima/header.png')); ?>"
         alt="Help center header" style="position: absolute; top: 0; left: 0; width: 100%; height: auto; z-index: -1;">
     <div class="container">
         <nav aria-label="breadcrumb" style="border-bottom: 1px solid #94acc6;">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item ">
-                    <a href="{{ url()->previous() }}">Rekap Gaji Crew</a>
+                    <a href="<?php echo e(url()->previous()); ?>">Rekap Gaji Crew</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <a href="javascript:void(0);">Rekap gaji Karyawan dan Crew</a>
@@ -23,38 +23,40 @@
 
 <div class="container mb-3 mt-4">
     <section>
-        <form action="{{ route('rekap.gaji.generate') }}" method="POST">
-            @csrf
-            <input type="hidden" name="id_armada" value="{{ $armada->id_armada }}">
+        <form action="<?php echo e(route('rekap.gaji.generate')); ?>" method="POST">
+            <?php echo csrf_field(); ?>
+            <input type="hidden" name="id_armada" value="<?php echo e($armada->id_armada); ?>">
 
-            @php
+            <?php
                 $currentMonth = date('m');
                 $earliestYear = \App\Models\Sp::min(\DB::raw('YEAR(tgl_keberangkatan)')) ?? date('Y');
                 $currentYear = date('Y');
-            @endphp
+            ?>
 
             <div class="form-group row mb-3">
                 <div class="col-md-4">
                     <label for="bulan">Pilih Bulan:</label>
                     <select name="bulan" id="bulan" class="form-control">
-                        @foreach(range(1, 12) as $month)
-                            <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}"
-                                {{ old('bulan', $currentMonth) == str_pad($month, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                {{ DateTime::createFromFormat('!m', $month)->format('F') }}
+                        <?php $__currentLoopData = range(1, 12); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $month): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e(str_pad($month, 2, '0', STR_PAD_LEFT)); ?>"
+                                <?php echo e(old('bulan', $currentMonth) == str_pad($month, 2, '0', STR_PAD_LEFT) ? 'selected' : ''); ?>>
+                                <?php echo e(DateTime::createFromFormat('!m', $month)->format('F')); ?>
+
                             </option>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
 
                 <div class="col-md-4">
                     <label for="tahun">Pilih Tahun:</label>
                     <select name="tahun" id="tahun" class="form-control">
-                         @for($year = $earliestYear; $year <= $currentYear; $year++)
-                            <option value="{{ $year }}"
-                                {{ old('tahun', $currentYear) == $year ? 'selected' : '' }}>
-                                {{ $year }}
+                         <?php for($year = $earliestYear; $year <= $currentYear; $year++): ?>
+                            <option value="<?php echo e($year); ?>"
+                                <?php echo e(old('tahun', $currentYear) == $year ? 'selected' : ''); ?>>
+                                <?php echo e($year); ?>
+
                             </option>
-                        @endfor
+                        <?php endfor; ?>
                     </select>
                 </div>
 
@@ -65,11 +67,11 @@
         </form>
 </div>
         <div id="rekapgaji" class="container mb-3 mt-4">
-            <h4>Armada: {{ $armada->unit->nama_unit }}</h4>
-            <h4>Nama: {{ $armada->akun->name }}</h4>
+            <h4>Armada: <?php echo e($armada->unit->nama_unit); ?></h4>
+            <h4>Nama: <?php echo e($armada->akun->name); ?></h4>
 
 
-            @if($rekapGajiCrew->count())
+            <?php if($rekapGajiCrew->count()): ?>
                 <table class="table table-bordered align-items-center">
                     <thead>
                         <tr>
@@ -94,62 +96,62 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($rekapGajiCrew as $gaji)
+                    <?php $__currentLoopData = $rekapGajiCrew; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $gaji): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $gaji->tanggal }}</td>
-                            <td>{{ $gaji->hari_kerja }}</td>
-                            <td>{{ $gaji->nama_pemesanan }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->nilai_kontrak, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->bbm, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->uang_makan, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->parkir, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->toll, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->total_operasional, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->sisa_nilai_kontrak, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->premi, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->cuci, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->subsidi, 0, ',', '.') }}</td>
-                            <td>{{ 'Rp ' . number_format($gaji->total_gaji, 0, ',', '.') }}</td>
+                            <td><?php echo e($loop->iteration); ?></td>
+                            <td><?php echo e($gaji->tanggal); ?></td>
+                            <td><?php echo e($gaji->hari_kerja); ?></td>
+                            <td><?php echo e($gaji->nama_pemesanan); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->nilai_kontrak, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->bbm, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->uang_makan, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->parkir, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->toll, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->total_operasional, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->sisa_nilai_kontrak, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->premi, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->cuci, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->subsidi, 0, ',', '.')); ?></td>
+                            <td><?php echo e('Rp ' . number_format($gaji->total_gaji, 0, ',', '.')); ?></td>
                         </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
                 <table class="table">
                     <tfoot>
                         <tr>
                             <th colspan="4">Jumlah Hari Dalam Satu Bulan:</th>
-                            <td colspan="2">{{ $totalharikerja }}</td>
+                            <td colspan="2"><?php echo e($totalharikerja); ?></td>
                             <th colspan="4">Total Premi:</th>
-                            <td colspan="2">{{ 'Rp ' . number_format($totalpremi, 0, ',', '.') }}</td>
+                            <td colspan="2"><?php echo e('Rp ' . number_format($totalpremi, 0, ',', '.')); ?></td>
                         </tr>
                         <tr>
                             <th colspan="4">Insentif:</th>
                             <td colspan="2">
-                            <form method="POST" action="{{ route('rekap.gaji.insentif', ['id_armada' => $armada->id_armada]) }}">
-                                @csrf
+                            <form method="POST" action="<?php echo e(route('rekap.gaji.insentif', ['id_armada' => $armada->id_armada])); ?>">
+                                <?php echo csrf_field(); ?>
                                 <div class="input-group">
-                                    <input type="number" name="insentif" class="form-control" id="insentif" value="{{ $datainsentif->insentif ?? 0 }}" oninput="calculateTotalPendapatan()">
+                                    <input type="number" name="insentif" class="form-control" id="insentif" value="<?php echo e($datainsentif->insentif ?? 0); ?>" oninput="calculateTotalPendapatan()">
                                     <button type="submit" class="btn btn-primary" id="submintinsentif">Simpan</button>
                                 </div>
                             </form>
                             </td>
                             <th colspan="4">Total Pendapatan:</th>
-                            <td colspan="2" id="totalPendapatan">{{ 'Rp ' . number_format($totalbulanan, 0, ',', '.') }}</td>
+                            <td colspan="2" id="totalPendapatan"><?php echo e('Rp ' . number_format($totalbulanan, 0, ',', '.')); ?></td>
                         </tr>
                     </tfoot>
                 </table>
-            @else
+            <?php else: ?>
                 <p class="text-muted">Tidak ada data rekap gaji untuk armada ini.</p>
-            @endif
+            <?php endif; ?>
         </div>
         <div class="container mb-3 mt-4">
         <div class="form-group row mb-3">
         <div class = "col-md-1">
-        <a class="btn btn-primary mt-2 " href="{{ route('rekap.gaji.edit', $armada->id_armada) }}" >Edit</a>
+        <a class="btn btn-primary mt-2 " href="<?php echo e(route('rekap.gaji.edit', $armada->id_armada)); ?>" >Edit</a>
         </div>
         <div class = "col-md-1">
-            <a class="btn btn-primary mt-2 " href="{{ route('manajemen_armada.index') }}" >Kembali</a>
+            <a class="btn btn-primary mt-2 " href="<?php echo e(route('manajemen_armada.index')); ?>" >Kembali</a>
         </div>
         <div class="col-md-2">
             <button id="printButton" class="btn btn-primary mt-2">Print Rekap Gaji</button>
@@ -162,7 +164,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function calculateTotalPendapatan() {
-        const totalPremi = {{ $totalpremi }};
+        const totalPremi = <?php echo e($totalpremi); ?>;
         const insentif = parseFloat(document.getElementById('insentif').value) || 0;
         const totalPendapatan = totalPremi + insentif;
 
@@ -202,14 +204,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-@if(session('success'))
+<?php if(session('success')): ?>
     <div id="successToast" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
         <div class="bs-toast toast show bg-success" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <div class="me-auto fw-semibold"> ✓ Data Rekap Gaji</div>
             </div>
             <div class="toast-body">
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
             </div>
         </div>
     </div>
@@ -224,8 +227,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 2500);
 
     </script>
-@endif
-@if($errors->any())
+<?php endif; ?>
+<?php if($errors->any()): ?>
     <div id="errorToast" style="position: fixed; top: 80px; right: 20px; z-index: 1050;">
         <div class="bs-toast toast show bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -234,9 +237,9 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="toast-body">
                 <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
+                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li><?php echo e($error); ?></li>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </ul>
             </div>
         </div>
@@ -251,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 2500);
     </script>
-@endif
-@endsection
+<?php endif; ?>
+<?php $__env->stopSection(); ?>
 
-@include('main_owner')
+<?php echo $__env->make('main_owner', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Windows 10 Pro\Documents\work\simapush\SIMA\resources\views/rekap_gaji_crew/index.blade.php ENDPATH**/ ?>
