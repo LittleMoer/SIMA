@@ -235,10 +235,10 @@ public function generate(Request $request)
                     'toll' => $spj->PenggunaanToll,
                     'total_operasional' => $totalOperasional,
                     'sisa_nilai_kontrak' => $sisaNilaiKontrak,
-                    'premi' => $premi,
+                    'premi' => $basePremi,
                     'presentase_premi' => $premiPercentage,
                     'subsidi' => null,
-                    'total_gaji' => $basePremi, // This already includes the car wash deduction
+                    'total_gaji' => $premi,
                 ];
                 try {
                     RekapGajiCrew::create($dataToCreate);
@@ -277,6 +277,37 @@ public function edit($id_armada)
 
     // Fetch the rekap gaji crew related to this armada using the correct property
     $rekapGajiCrew = Rekapgajicrew::where('id_armada', $id_armada)->get();
+    // For each rekap entry, compute a fallback presentase (percentage) using SP/SJ and Armada/Unit
+    foreach ($rekapGajiCrew as $gaji) {
+        $computedPercentage = null;
+        // try to find SJ that matches this record by tanggal and nama
+        $spCandidates = SP::whereDate('tgl_kepulangan', $gaji->tanggal)->get();
+        if ($spCandidates->isNotEmpty()) {
+            $sj = SJ::whereIn('id_sp', $spCandidates->pluck('id_sp')->toArray())
+                    ->where(function ($q) use ($gaji) {
+                        $q->where('driver', $gaji->nama)
+                          ->orWhere('driver2', $gaji->nama)
+                          ->orWhere('codriver', $gaji->nama);
+                    })
+                    ->first();
+
+            if ($sj) {
+                $arm = Armada::find($gaji->id_armada);
+                $unit = $arm ? Unit::where('id_unit', $arm->id_unit)->first() : null;
+                $seri = $unit ? $unit->seri_unit : null;
+                $posisi = $arm ? $arm->posisi : null;
+
+                if ($sj->driver2 != null && ($sj->driver2 === $gaji->nama || $sj->driver === $gaji->nama)) {
+                    $computedPercentage = 10;
+                } else {
+                    $computedPercentage = $this->calculatePremiPercentage($seri, $posisi);
+                }
+            }
+        }
+
+        // attach computed value to model instance for view use
+        $gaji->computed_presentase = $computedPercentage;
+    }
     //fetch insentif data from insentif table where nama is equal to nama from rekapgajicrew and bulan is equal to bulan and tahun is equal to tahun from rekapgajicrew
     // $insentif = Insentif::where('nama', $rekapGajiCrew->pluck('nama')->toArray())
     //                     ->where('bulan', $rekapGajiCrew->pluck('bulan')->toArray())
@@ -314,51 +345,149 @@ public function update(Request $request)
         // Find the record based on 'id_rekapgajicrew'
         $rekapGaji = RekapGajiCrew::findOrFail($rekapData['id_rekapgajicrew']);
 
-        // Calculate total operational costs using hidden values
-        $totalOperasional = ($rekapData['bbm_hidden'] ?? 0) + 
-                            ($rekapData['uang_makan_hidden'] ?? 0) + 
-                            ($rekapData['cuci_hidden'] ?? 0) + 
-                            ($rekapData['toll_hidden'] ?? 0) + 
-                            ($rekapData['parkir_hidden'] ?? 0);
+        // Try to recompute values using SP / SJ / SPJ and Armada/Unit similar to generate()
+        $tanggal = $rekapData['tanggal'] ?? $rekapGaji->tanggal;
+        $crewName = $rekapGaji->nama;
 
-        // Use the hidden nilai_kontrak value
-        $nilaiKontrak = $rekapData['nilai_kontrak_hidden']; // This should be a numeric value
+        // Find SPs that have the same tgl_kepulangan
+        $spCandidates = SP::whereDate('tgl_kepulangan', $tanggal)->get();
+        $computed = false;
 
-        // Determine the remaining contract value
-        $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
+        if ($spCandidates->isNotEmpty()) {
+            // Find SJ that matches this crew name within those SPs
+            $sj = SJ::whereIn('id_sp', $spCandidates->pluck('id_sp')->toArray())
+                    ->where(function ($q) use ($crewName) {
+                        $q->where('driver', $crewName)
+                          ->orWhere('driver2', $crewName)
+                          ->orWhere('codriver', $crewName);
+                    })
+                    ->first();
 
-        // Handle premium percentage
-        $premiPercentage = ($rekapData['premium_percentage'] === 'custom' && !empty($rekapData['custom_premium']))
-            ? (int)$rekapData['custom_premium'] // Ensure custom_premium is treated as an integer
-            : (int)($rekapData['premium_percentage'] ?? 0); // Fallback to 0 if not set
+            if ($sj) {
+                $sp = SP::find($sj->id_sp);
+                $spj = SPJ::where('id_sj', $sj->id_sj)->first();
+                $armada = Armada::find($rekapGaji->id_armada);
+                $unit = $armada ? Unit::where('id_unit', $armada->id_unit)->first() : null;
+                $seri = $unit ? $unit->seri_unit : null;
+                $posisi = $armada ? $armada->posisi : null;
 
-        // Calculate base premium
-        $basePremi = ($sisaNilaiKontrak * $premiPercentage) / 100;
-        
-        // Get car wash cost
-        $cuci = (int)($rekapData['cuci_hidden'] ?? 0);
-        
-        // Deduct car wash cost from premium (ensure it doesn't go below 0)
-        $premi = max(0, $basePremi - $cuci);
-        
-        // Calculate total gaji including subsidy
-        $totalGaji = $premi + ($rekapData['subsidi_hidden'] ?? 0);
+                // Determine nilai kontrak similar to generate()
+                $jumlahArmada = $sp->jumlah_armada;
+                if ($jumlahArmada == 1) {
+                    $nilaiKontrak = $sp->nilai_kontrak1;
+                } else {
+                    $allSjForSp = SJ::where('id_sp', $sp->id_sp)->orderBy('id_sj', 'asc')->get();
+                    if ($allSjForSp->isNotEmpty() && $allSjForSp->first()->id_sj == $sj->id_sj) {
+                        $nilaiKontrak = $sp->nilai_kontrak1;
+                    } else {
+                        $nilaiKontrak = $sp->nilai_kontrak2;
+                    }
+                }
 
-        // Update the record
-        $rekapGaji->update(array_merge($rekapData, [
-            'nilai_kontrak' => $nilaiKontrak, // Ensure this is the hidden value
-            'bbm' => $rekapData['bbm_hidden'], // Use the hidden value for bbm
-            'uang_makan' => $rekapData['uang_makan_hidden'], // Use the hidden value for uang_makan
-            'parkir' => $rekapData['parkir_hidden'], // Use the hidden value for parkir
-            'cuci' => $rekapData['cuci_hidden'], // Use the hidden value for cuci
-            'toll' => $rekapData['toll_hidden'], // Use the hidden value for toll
-            'subsidi' => $rekapData['subsidi_hidden'], // Use the hidden value for subsidi
-            'total_gaji' => $totalGaji,
-            'total_operasional' => $totalOperasional,
-            'sisa_nilai_kontrak' => $sisaNilaiKontrak,
-            'premi' => $premi,
-            'presentase_premi' => $premiPercentage
-        ]));
+                // Calculate total operational from SPJ (with safe defaults)
+                $totalOperasional = ($spj->totalisibbm ?? 0) + ($spj->uangmakan ?? 0) + ($spj->PenggunaanToll ?? 0) + ($spj->uanglainlain ?? 0);
+
+                $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
+
+                // Determine premium percentage.
+                // Prefer user-submitted value from the edit form (including custom %) when provided;
+                // otherwise fall back to the computed value based on SJ/SP/unit/posisi as in generate().
+                if (isset($rekapData['premium_percentage']) && $rekapData['premium_percentage'] !== '') {
+                    if ($rekapData['premium_percentage'] === 'custom' && !empty($rekapData['custom_premium'])) {
+                        $premiPercentage = (int)$rekapData['custom_premium'];
+                    } else {
+                        $premiPercentage = (int)$rekapData['premium_percentage'];
+                    }
+                } else {
+                    if ($sj->driver2 != null && ($sj->driver2 === $crewName || $sj->driver === $crewName)) {
+                        $premiPercentage = 10;
+                    } else {
+                        $premiPercentage = $this->calculatePremiPercentage($seri, $posisi);
+                    }
+                }
+
+                $basePremi = ($sisaNilaiKontrak * $premiPercentage) / 100;
+
+                // Car wash cost based on seri (same logic as generate)
+                $cuci = 0;
+                if ($seri == 1) {
+                    $cuci = 5000;
+                } elseif ($seri == 2) {
+                    $cuci = 5000;
+                } elseif ($seri == 3) {
+                    $cuci = 7500;
+                }
+
+                $premi = max(0, $basePremi - $cuci);
+
+                // Subsidy from form (match generate(): default to null)
+                $subsidi = array_key_exists('subsidi_hidden', $rekapData) ? $rekapData['subsidi_hidden'] : null;
+
+                $totalGaji = $premi + ($subsidi ?? 0);
+
+                // Recompute hari kerja if SP dates are available
+                $hariKerja = $sp ? $this->countWorkDays($sp->tgl_keberangkatan, $sp->tgl_kepulangan) : ($rekapData['hari_kerja'] ?? $rekapGaji->hari_kerja);
+
+                // Update model with computed values and keep any editable fields from the form
+                $rekapGaji->update(array_merge($rekapData, [
+                    'nilai_kontrak' => $nilaiKontrak,
+                    'bbm' => $spj->totalisibbm ?? ($rekapData['bbm_hidden'] ?? $rekapGaji->bbm),
+                    'uang_makan' => $spj->uangmakan ?? ($rekapData['uang_makan_hidden'] ?? $rekapGaji->uang_makan),
+                    'parkir' => $spj->uanglainlain ?? ($rekapData['parkir_hidden'] ?? $rekapGaji->parkir),
+                    'cuci' => $cuci,
+                    'toll' => $spj->PenggunaanToll ?? ($rekapData['toll_hidden'] ?? $rekapGaji->toll),
+                    'subsidi' => $subsidi,
+                    'total_gaji' => $totalGaji,
+                    'total_operasional' => $totalOperasional,
+                    'sisa_nilai_kontrak' => $sisaNilaiKontrak,
+                    // store 'premi' as base premium (before cuci deduction) to match generate()
+                    'premi' => $basePremi,
+                    'presentase_premi' => $premiPercentage,
+                    'hari_kerja' => $hariKerja,
+                ]));
+
+                $computed = true;
+            }
+        }
+
+        // If we couldn't compute using SP/SJ, fallback to previous behavior using submitted hidden values
+        if (! $computed) {
+            $totalOperasional = ($rekapData['bbm_hidden'] ?? 0) + 
+                                ($rekapData['uang_makan_hidden'] ?? 0) + 
+                                ($rekapData['cuci_hidden'] ?? 0) + 
+                                ($rekapData['toll_hidden'] ?? 0) + 
+                                ($rekapData['parkir_hidden'] ?? 0);
+
+            $nilaiKontrak = $rekapData['nilai_kontrak_hidden'] ?? $rekapGaji->nilai_kontrak;
+            $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
+
+            $premiPercentage = ($rekapData['premium_percentage'] === 'custom' && !empty($rekapData['custom_premium']))
+                ? (int)$rekapData['custom_premium'] 
+                : (int)($rekapData['premium_percentage'] ?? $rekapGaji->presentase_premi ?? 0);
+
+            $basePremi = ($sisaNilaiKontrak * $premiPercentage) / 100;
+            $cuci = (int)($rekapData['cuci_hidden'] ?? $rekapGaji->cuci ?? 0);
+            $premi = max(0, $basePremi - $cuci);
+            // Subsidy from form (match generate(): default to null)
+            $subsidi = array_key_exists('subsidi_hidden', $rekapData) ? $rekapData['subsidi_hidden'] : null;
+            $totalGaji = $premi + ($subsidi ?? 0);
+
+            $rekapGaji->update(array_merge($rekapData, [
+                'nilai_kontrak' => $nilaiKontrak, 
+                'bbm' => $rekapData['bbm_hidden'] ?? $rekapGaji->bbm, 
+                'uang_makan' => $rekapData['uang_makan_hidden'] ?? $rekapGaji->uang_makan, 
+                'parkir' => $rekapData['parkir_hidden'] ?? $rekapGaji->parkir, 
+                'cuci' => $rekapData['cuci_hidden'] ?? $rekapGaji->cuci, 
+                'toll' => $rekapData['toll_hidden'] ?? $rekapGaji->toll, 
+                'subsidi' => $subsidi, 
+                'total_gaji' => $totalGaji,
+                'total_operasional' => $totalOperasional,
+                'sisa_nilai_kontrak' => $sisaNilaiKontrak,
+                // store premi as base premium to match generate()
+                'premi' => $basePremi,
+                'presentase_premi' => $premiPercentage
+            ]));
+        }
     }
 
     // Redirect back with a success message

@@ -92,9 +92,9 @@
                                 <td>
                                     <select class="form-control mb-2 service-series" data-index="{{ $index }}" style="width: 100%;">
                                         <option value="">Pilih Seri</option>
-                                        <option value="101">Seri 1 (Rp 10.000)</option>
-                                        <option value="201">Seri 2 (Rp 5.000)</option>
-                                        <option value="301">Seri 3 (Rp 7.500)</option>
+                                        <option value="1">Seri 1 (Rp 5.000)</option>
+                                        <option value="2">Seri 2 (Rp 5.000)</option>
+                                        <option value="3">Seri 3 (Rp 7.500)</option>
                                     </select>
                                     <input type="text" id="cuci_{{ $index }}" name="data[{{ $index }}][cuci]"
                                         value="{{ number_format($gaji->cuci, 0, ',', '.') }}"
@@ -112,7 +112,7 @@
                                 <td>
                                     <input type="text" name="data[{{ $index }}][premium_percentage]"
                                         list="premium-options"
-                                        value="{{ $gaji->presentase_premi }}"
+                                        value="{{ old('data.'.$index.'.premium_percentage', $gaji->presentase_premi ?? $gaji->computed_presentase) }}"
                                         class="form-control premium-input" placeholder="Select or enter custom %"
                                         required>
                                     <datalist id="premium-options">
@@ -172,14 +172,14 @@
                 let price = 0;
                 
                 switch(e.target.value) {
-                    case '101':
-                        price = 10000; // Seri 1: Rp 10.000
+                    case '1':
+                        price = 5000; // Seri 1: Rp 5.000 (same as generate())
                         break;
-                    case '201':
-                        price = 5000;  // Seri 2: Rp 5.000
+                    case '2':
+                        price = 5000;  // Seri 2: Rp 5.000 (same as generate())
                         break;
-                    case '301':
-                        price = 7500;  // Seri 3: Rp 7.500
+                    case '3':
+                        price = 7500;  // Seri 3: Rp 7.500 (same as generate())
                         break;
                 }
                 
