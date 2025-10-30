@@ -178,17 +178,21 @@ public function generate(Request $request)
             if ($jumlahArmada == 1) {
                 $nilaiKontrak = $sp->nilai_kontrak1; 
             } else {
-                    $maxIdSj = SJ::where('id_sp', $sp->id_sp)
-                        ->where('id_unit', $armada->id_unit)
-                        ->max('id_sj');
-                    if ($sj->id_sj == $maxIdSj) {
-                        $nilaiKontrak = $sp->nilai_kontrak2;
-                    } else {
+                    // Ambil semua SJ untuk SP ini dan urutkan berdasarkan ID.
+                    $allSjForSp = SJ::where('id_sp', $sp->id_sp)
+                                    ->orderBy('id_sj', 'asc')
+                                    ->get();
+
+                    // Jika SJ yang sedang diproses adalah SJ pertama dalam urutan, gunakan nilai_kontrak1.
+                    if ($allSjForSp->isNotEmpty() && $allSjForSp->first()->id_sj == $sj->id_sj) {
                         $nilaiKontrak = $sp->nilai_kontrak1;
+                    } else {
+                        // Jika tidak, diasumsikan ini adalah armada kedua dan gunakan nilai_kontrak2.
+                        $nilaiKontrak = $sp->nilai_kontrak2;
                     }
             }
 
-            // Calculate total operational without car wash first
+            // Calculate total operational 
             $totalOperasional = $spj->totalisibbm + $spj->uangmakan + $spj->PenggunaanToll + $spj->uanglainlain;
             $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
             $totalGaji = $sisaNilaiKontrak;
@@ -205,7 +209,7 @@ public function generate(Request $request)
                 // Determine car wash price based on unit series
                 $cuci = 0;
                 if ($seri == 1) {
-                    $cuci = 10000; // Seri 1: Rp 10.000
+                    $cuci = 5000; // Seri 1: Rp 5.000
                 } elseif ($seri == 2) {
                     $cuci = 5000;  // Seri 2: Rp 5.000
                 } elseif ($seri == 3) {
@@ -229,12 +233,12 @@ public function generate(Request $request)
                     'parkir' => $spj->uanglainlain,
                     'cuci' => $cuci,
                     'toll' => $spj->PenggunaanToll,
-                    'total_operasional' => $totalOperasional + $cuci,
+                    'total_operasional' => $totalOperasional,
                     'sisa_nilai_kontrak' => $sisaNilaiKontrak,
-                    'premi' => $basePremi,
+                    'premi' => $premi,
                     'presentase_premi' => $premiPercentage,
-                    'subsidi' => null, 
-                    'total_gaji' => $premi, // This already includes the car wash deduction
+                    'subsidi' => null,
+                    'total_gaji' => $basePremi, // This already includes the car wash deduction
                 ];
                 try {
                     RekapGajiCrew::create($dataToCreate);
@@ -362,4 +366,3 @@ public function update(Request $request)
                      ->with('success', 'Rekap Gaji Crew successfully updated.');
 }
 }
-
