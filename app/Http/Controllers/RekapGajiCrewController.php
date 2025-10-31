@@ -385,13 +385,12 @@ public function update(Request $request)
                 }
 
                 // Calculate total operational from SPJ (with safe defaults)
+                // Prioritize user-submitted values from hidden inputs if available
+                $nilaiKontrak_to_use = $rekapData['nilai_kontrak_hidden'] ?? $nilaiKontrak;
+                $bbm_to_use = $rekapData['bbm_hidden'] ?? ($spj->totalisibbm ?? 0);
+                $uang_makan_to_use = $rekapData['uang_makan_hidden'] ?? ($spj->uangmakan ?? 0);
+                $parkir_to_use = $rekapData['parkir_hidden'] ?? ($spj->uanglainlain ?? 0);
                 $totalOperasional = ($spj->totalisibbm ?? 0) + ($spj->uangmakan ?? 0) + ($spj->PenggunaanToll ?? 0) + ($spj->uanglainlain ?? 0);
-
-                $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
-
-                // Determine premium percentage.
-                // Prefer user-submitted value from the edit form (including custom %) when provided;
-                // otherwise fall back to the computed value based on SJ/SP/unit/posisi as in generate().
                 if (isset($rekapData['premium_percentage']) && $rekapData['premium_percentage'] !== '') {
                     if ($rekapData['premium_percentage'] === 'custom' && !empty($rekapData['custom_premium'])) {
                         $premiPercentage = (int)$rekapData['custom_premium'];
@@ -406,8 +405,6 @@ public function update(Request $request)
                     }
                 }
 
-                $basePremi = ($sisaNilaiKontrak * $premiPercentage) / 100;
-
                 // Car wash cost based on seri (same logic as generate)
                 $cuci = 0;
                 if ($seri == 1) {
@@ -418,44 +415,54 @@ public function update(Request $request)
                     $cuci = 7500;
                 }
 
-                $premi = max(0, $basePremi - $cuci);
+                // Prioritize user-submitted cuci value, otherwise use calculated cuci
+                $cuci_to_use = $rekapData['cuci_hidden'] ?? $cuci;
+                $toll_to_use = $rekapData['toll_hidden'] ?? ($spj->PenggunaanToll ?? 0);
+                $subsidi_to_use = $rekapData['subsidi_hidden'] ?? null;
+
+                $totalOperasional = $bbm_to_use + $uang_makan_to_use + $parkir_to_use + $toll_to_use;
+                $sisaNilaiKontrak = $nilaiKontrak_to_use - $totalOperasional;
+
+                $basePremi = ($sisaNilaiKontrak * $premiPercentage) / 100;
+
+                $premi = max(0, ($sisaNilaiKontrak * $premiPercentage / 100) - $cuci_to_use);
 
                 // Subsidy from form (match generate(): default to null)
-                $subsidi = array_key_exists('subsidi_hidden', $rekapData) ? $rekapData['subsidi_hidden'] : null;
+                $totalGaji = $premi + ($subsidi_to_use ?? 0);
 
-                $totalGaji = $premi + ($subsidi ?? 0);
-
-                // Recompute hari kerja if SP dates are available
-                $hariKerja = $sp ? $this->countWorkDays($sp->tgl_keberangkatan, $sp->tgl_kepulangan) : ($rekapData['hari_kerja'] ?? $rekapGaji->hari_kerja);
+                // Use submitted hari_kerja, or recompute if SP dates are available, otherwise use existing
+                $hariKerja_to_use = $rekapData['hari_kerja'] ?? ($sp ? $this->countWorkDays($sp->tgl_keberangkatan, $sp->tgl_kepulangan) : $rekapGaji->hari_kerja);
 
                 // Update model with computed values and keep any editable fields from the form
-                $rekapGaji->update(array_merge($rekapData, [
-                    'nilai_kontrak' => $nilaiKontrak,
-                    'bbm' => $spj->totalisibbm ?? ($rekapData['bbm_hidden'] ?? $rekapGaji->bbm),
-                    'uang_makan' => $spj->uangmakan ?? ($rekapData['uang_makan_hidden'] ?? $rekapGaji->uang_makan),
-                    'parkir' => $spj->uanglainlain ?? ($rekapData['parkir_hidden'] ?? $rekapGaji->parkir),
-                    'cuci' => $cuci,
-                    'toll' => $spj->PenggunaanToll ?? ($rekapData['toll_hidden'] ?? $rekapGaji->toll),
-                    'subsidi' => $subsidi,
+                $rekapGaji->update([
+                    'tanggal' => $rekapData['tanggal'],
+                    'hari_kerja' => $hariKerja_to_use,
+                    'nama_pemesanan' => $rekapData['nama_pemesanan'],
+                    'nilai_kontrak' => $nilaiKontrak_to_use,
+                    'bbm' => $bbm_to_use,
+                    'uang_makan' => $uang_makan_to_use,
+                    'parkir' => $parkir_to_use,
+                    'cuci' => $cuci_to_use,
+                    'toll' => $toll_to_use,
+                    'subsidi' => $subsidi_to_use,
                     'total_gaji' => $totalGaji,
                     'total_operasional' => $totalOperasional,
                     'sisa_nilai_kontrak' => $sisaNilaiKontrak,
                     // store 'premi' as base premium (before cuci deduction) to match generate()
                     'premi' => $basePremi,
                     'presentase_premi' => $premiPercentage,
-                    'hari_kerja' => $hariKerja,
-                ]));
+                ]);
 
                 $computed = true;
             }
         }
 
         // If we couldn't compute using SP/SJ, fallback to previous behavior using submitted hidden values
-        if (! $computed) {
-            $totalOperasional = ($rekapData['bbm_hidden'] ?? 0) + 
-                                ($rekapData['uang_makan_hidden'] ?? 0) + 
-                                ($rekapData['cuci_hidden'] ?? 0) + 
-                                ($rekapData['toll_hidden'] ?? 0) + 
+        if (!$computed) {
+            $bbm_val = $rekapData['bbm_hidden'] ?? $rekapGaji->bbm;
+            $uang_makan_val = $rekapData['uang_makan_hidden'] ?? $rekapGaji->uang_makan;
+            $cuci_val = (int)($rekapData['cuci_hidden'] ?? $rekapGaji->cuci ?? 0);
+                                ($rekapData['toll_hidden'] ?? 0) +
                                 ($rekapData['parkir_hidden'] ?? 0);
 
             $nilaiKontrak = $rekapData['nilai_kontrak_hidden'] ?? $rekapGaji->nilai_kontrak;
@@ -465,28 +472,33 @@ public function update(Request $request)
                 ? (int)$rekapData['custom_premium'] 
                 : (int)($rekapData['premium_percentage'] ?? $rekapGaji->presentase_premi ?? 0);
 
+            $totalOperasional = $bbm_val + $uang_makan_val + ($rekapData['toll_hidden'] ?? $rekapGaji->toll ?? 0) + ($rekapData['parkir_hidden'] ?? $rekapGaji->parkir ?? 0);
+            $sisaNilaiKontrak = $nilaiKontrak - $totalOperasional;
+
             $basePremi = ($sisaNilaiKontrak * $premiPercentage) / 100;
-            $cuci = (int)($rekapData['cuci_hidden'] ?? $rekapGaji->cuci ?? 0);
-            $premi = max(0, $basePremi - $cuci);
+            $premi = max(0, $basePremi - $cuci_val);
             // Subsidy from form (match generate(): default to null)
             $subsidi = array_key_exists('subsidi_hidden', $rekapData) ? $rekapData['subsidi_hidden'] : null;
             $totalGaji = $premi + ($subsidi ?? 0);
 
-            $rekapGaji->update(array_merge($rekapData, [
-                'nilai_kontrak' => $nilaiKontrak, 
-                'bbm' => $rekapData['bbm_hidden'] ?? $rekapGaji->bbm, 
-                'uang_makan' => $rekapData['uang_makan_hidden'] ?? $rekapGaji->uang_makan, 
-                'parkir' => $rekapData['parkir_hidden'] ?? $rekapGaji->parkir, 
-                'cuci' => $rekapData['cuci_hidden'] ?? $rekapGaji->cuci, 
-                'toll' => $rekapData['toll_hidden'] ?? $rekapGaji->toll, 
-                'subsidi' => $subsidi, 
+            $rekapGaji->update([
+                'tanggal' => $rekapData['tanggal'],
+                'hari_kerja' => $rekapData['hari_kerja'],
+                'nama_pemesanan' => $rekapData['nama_pemesanan'],
+                'nilai_kontrak' => $nilaiKontrak, // This already uses $rekapData['nilai_kontrak_hidden']
+                'bbm' => $bbm_val,
+                'uang_makan' => $uang_makan_val,
+                'parkir' => $rekapData['parkir_hidden'] ?? $rekapGaji->parkir, // Use submitted, else existing
+                'cuci' => $cuci_val,
+                'toll' => $rekapData['toll_hidden'] ?? $rekapGaji->toll,
+                'subsidi' => $subsidi,
                 'total_gaji' => $totalGaji,
                 'total_operasional' => $totalOperasional,
                 'sisa_nilai_kontrak' => $sisaNilaiKontrak,
                 // store premi as base premium to match generate()
                 'premi' => $basePremi,
                 'presentase_premi' => $premiPercentage
-            ]));
+            ]);
         }
     }
 

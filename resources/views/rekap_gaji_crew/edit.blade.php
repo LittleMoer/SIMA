@@ -90,13 +90,25 @@
                                         name="data[{{ $index }}][parkir_hidden]" value="{{ $gaji->parkir }}">
                                 </td>
                                 <td>
+                                    @php
+                                        $unitSerie = $armada->unit->seri_unit ?? null;
+                                        $currentCuci = $gaji->cuci ?? 0;
+                                        if ($currentCuci == 7500) {
+                                            $selectValue = '3';
+                                        } elseif ($currentCuci == 5000) {
+                                            $selectValue = $unitSerie ? (string)$unitSerie : '1';
+                                        } else {
+                                            $selectValue = 'custom';
+                                        }
+                                    @endphp
                                     <select class="form-control mb-2 service-series" data-index="{{ $index }}" style="width: 100%;">
                                         <option value="">Pilih Seri</option>
-                                        <option value="1">Seri 1 (Rp 5.000)</option>
-                                        <option value="2">Seri 2 (Rp 5.000)</option>
-                                        <option value="3">Seri 3 (Rp 7.500)</option>
+                                        <option value="1" {{ $selectValue === '1' ? 'selected' : '' }}>Seri 1 (Rp 5.000)</option>
+                                        <option value="2" {{ $selectValue === '2' ? 'selected' : '' }}>Seri 2 (Rp 5.000)</option>
+                                        <option value="3" {{ $selectValue === '3' ? 'selected' : '' }}>Seri 3 (Rp 7.500)</option>
+                                        <option value="custom" {{ $selectValue === 'custom' ? 'selected' : '' }}>Custom (Isi sendiri)</option>
                                     </select>
-                                    <input type="text" id="cuci_{{ $index }}" name="data[{{ $index }}][cuci]"
+                                    <input type="text" id="cuci_{{ $index }}"
                                         value="{{ number_format($gaji->cuci, 0, ',', '.') }}"
                                         class="form-control currency-input" required placeholder="Cuci">
                                     <input type="hidden" id="cuci_{{ $index }}_hidden"
@@ -183,9 +195,22 @@
                         break;
                 }
                 
-                if (price > 0) {
+                if (price !== null) {
                     cuciHidden.value = price;
                     cuciInput.value = 'Rp ' + price.toLocaleString('id-ID');
+                    // make readonly so user can't overwrite preset values
+                    cuciInput.readOnly = true;
+                    cuciInput.classList.add('readonly');
+                } else {
+                    // custom: allow user to type a rupiah value
+                    cuciInput.readOnly = false;
+                    cuciInput.classList.remove('readonly');
+                    // if there is a hidden value, show it formatted
+                    if (cuciHidden.value && cuciHidden.value != '0') {
+                        cuciInput.value = formatToRupiah(cuciHidden.value.toString());
+                    } else {
+                        cuciInput.value = '';
+                    }
                 }
             }
         });
@@ -242,7 +267,7 @@
 
             // Validate nilai_kontrak against total operational costs
             if (nilaiKontrakValue < totalOperational) {
-                alert('Nilai Kontrak cannot be lower than the total operational costs (BBM + Uang Makan + Parkir + Cuci + Toll).');
+                alert('Nilai Kontrak cannot be lower than the total operational costs (BBM + Uang Makan + Parkir + Toll).');
                 nilaiKontrakInput.value = formatToRupiah(totalOperational); // Set to minimum valid value
                 document.getElementById('nilai_kontrak_' + index + '_hidden').value = totalOperational; // Update hidden input
             }
@@ -255,6 +280,11 @@
             if (hiddenInput) {
                 formatRupiahInput(input, hiddenInput); // Connect the function
             }
+        });
+
+        // Ensure service-series selects apply their initial state (readonly or custom) on load
+        document.querySelectorAll('.service-series').forEach(select => {
+            select.dispatchEvent(new Event('change'));
         });
     });
 </script>
